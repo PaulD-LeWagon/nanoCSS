@@ -1,0 +1,11 @@
+<h1>nanoCSS Themes</h1>
+
+<div id="nanocss-preview-style"><style><%= @css %></style></div>
+
+<div class="presets">
+  <% @presets.each do |preset| %>
+    <%= button_to preset[:name], theme_preview_path, params: { theme_configuration: { primary: preset[:primary] } }, form: { data: { turbo_stream: true } } %>
+  <% end %>
+</div>
+
+<%= link_to "Customise", configure_path %>

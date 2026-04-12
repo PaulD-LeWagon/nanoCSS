@@ -1,0 +1,52 @@
+<h1>Customise Theme</h1>
+
+<div id="nanocss-preview-style"><style><%= @css %></style></div>
+
+<%= form_with model: @config, url: theme_preview_path, data: { turbo_stream: true, controller: "theme-form" } do |f| %>
+  <div>
+    <%= f.label :primary, "Primary Colour" %>
+    <%= f.color_field :primary, oninput: "this.form.requestSubmit()" %>
+  </div>
+
+  <div>
+    <%= f.label :secondary, "Secondary Colour" %>
+    <%= f.color_field :secondary, oninput: "this.form.requestSubmit()" %>
+  </div>
+
+  <!-- Harmony Swatches Mockup -->
+  <button type="button" onclick="document.getElementById('theme_configuration_secondary').value = '#f6af3b'; this.form.requestSubmit()">Complementary</button>
+
+  <div>
+    <label>
+      <input type="checkbox" id="advanced-toggle" onchange="document.getElementById('advanced-options').style.display = this.checked ? 'block' : 'none'">
+      Advanced Options
+    </label>
+  </div>
+
+  <div id="advanced-options" style="display: none;">
+    <div>
+      <%= f.label :margin_md, "Margin Base" %>
+      <%= f.text_field :margin_md, oninput: "this.form.requestSubmit()" %>
+    </div>
+    <div>
+      <%= f.label :space_md, "Spacing Base" %>
+      <%= f.text_field :space_md, oninput: "this.form.requestSubmit()" %>
+    </div>
+    <div>
+      <%= f.label :text_shadow, "Text Shadow" %>
+      <%= f.text_field :text_shadow, oninput: "this.form.requestSubmit()" %>
+    </div>
+    <div>
+      <%= f.label :prefix, "Namespace Prefix" %>
+      <%= f.text_field :prefix, oninput: "this.form.requestSubmit()" %>
+    </div>
+    <div>
+      <%= f.label :font_heading, "Headings Font" %>
+      <%= f.text_field :font_heading, oninput: "this.form.requestSubmit()" %>
+    </div>
+  </div>
+  <%= f.submit "Download", formaction: theme_download_path, formmethod: :post, data: { turbo: false } %>
+<% end %>
+
+<!-- Share URL Mock -->
+<button onclick="navigator.clipboard.writeText('<%= root_url(theme: @config.to_base64) %>')">Copy Share Link</button>

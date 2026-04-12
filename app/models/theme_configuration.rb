@@ -35,6 +35,8 @@ class ThemeConfiguration
     vars = []
     
     # Prefix mapping
+    vars << "$prefix: '#{prefix}';" if prefix.present?
+    
     vars << "$#{prefix}-primary: #{primary};" if primary.present?
     vars << "$#{prefix}-secondary: #{secondary};" if secondary.present?
     vars << "$#{prefix}-tertiary: #{tertiary};" if tertiary.present?
