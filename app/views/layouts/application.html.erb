@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= content_for(:title) || "Nano Css" %></title>
+    <title><%= content_for(:title) || "nanoCSS | The Stateless Framework Generator" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="Generate a bespoke, dependency-free CSS framework tailored exactly to your design tokens.">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -18,6 +19,18 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div class="app-container">
+      <nav class="top-nav">
+        <%= link_to "nanoCSS", root_path, class: "nav-brand" %>
+        <div class="nav-links">
+          <%= link_to "Documentation", "#", class: "btn btn-outline", style: "border:none; padding: 0.5rem;" %>
+          <%= link_to "Component Catalogue", "#", class: "btn btn-outline" %>
+        </div>
+      </nav>
+      
+      <main style="flex: 1; display: flex; flex-direction: column;">
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>

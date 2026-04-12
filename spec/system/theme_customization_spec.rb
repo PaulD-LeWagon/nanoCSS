@@ -12,7 +12,9 @@ RSpec.describe "Theme Customization", type: :system do
     expect(page).to have_content("Playful")
     expect(page).to have_content("Minimalist")
 
-    click_on "Playful"
+    within(first('div.glass-panel', text: 'Playful')) do
+      click_on "Quick Apply"
+    end
     
     expect(page).to have_css("#nanocss-preview-style style", visible: false, text: /.nanocss-px/)
   end
@@ -49,13 +51,13 @@ RSpec.describe "Theme Customization", type: :system do
   it "auto-populates secondary colours via Harmony Generator" do
     visit configure_path
 
-    fill_in "Primary Colour", with: "#3b82f6"
+    fill_in "Primary", with: "#3b82f6"
     
     # Assuming Harmony Swatches are rendered as clickable elements #harmony-complementary etc
     click_on "Complementary"
 
     # Expect secondary and tertiary fields to be updated
-    expect(page).to have_field("Secondary Colour", with: "#f6af3b") # Placeholder harmony value
+    expect(page).to have_field("Secondary", with: "#f6af3b") # Placeholder harmony value
   end
 
   it "handles shareable theme URLs comprehensively" do
@@ -69,7 +71,7 @@ RSpec.describe "Theme Customization", type: :system do
     
     visit configure_path(theme: encoded_theme)
     
-    expect(page).to have_field("Primary Colour", with: "#00ff00")
+    expect(page).to have_field("Primary", with: "#00ff00")
     expect(page).to have_field("Headings Font", with: "Oswald", visible: false)
     expect(page).to have_field("Namespace Prefix", with: "tester", visible: false)
     
