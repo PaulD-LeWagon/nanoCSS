@@ -1,10 +1,17 @@
 class ThemesController < ApplicationController
+  # Download is a stateless read operation — no server mutation occurs.
+  # The CSRF token can fail when formaction overrides the original form target.
+  skip_forgery_protection only: :download
   def index
     @presets = [
       { name: "Corporate", primary: "#1e40af", default: true },
       { name: "Playful", primary: "#f43f5e" },
       { name: "Minimalist", primary: "#000000" }
     ]
+    # Pre-compile default CSS so the landing page preview works
+    @config = ThemeConfiguration.new
+    result = ScssCompilerService.call(@config)
+    @css = result[:css] || ""
   end
 
   def show
@@ -13,8 +20,8 @@ class ThemesController < ApplicationController
     else
       @config = ThemeConfiguration.new
     end
-    
-    # Pre-compile the CSS to show the current state in normal load
+
+    # Pre-compile the CSS for the initial page render
     result = ScssCompilerService.call(@config)
     @css = result[:css] || ""
   end
@@ -28,14 +35,19 @@ class ThemesController < ApplicationController
   end
 
   def download
-    @config = ThemeConfiguration.new(theme_params)
-    result = ScssCompilerService.call(@config)
-    
-    zip_data = ZipAssemblerService.call(@config, result[:css])
-    
-    send_data zip_data, 
-              type: 'application/zip', 
-              disposition: "attachment; filename=\"#{@config.prefix.presence || 'nanocss'}.zip\""
+    config = ThemeConfiguration.new(theme_params)
+    result = ScssCompilerService.call(config)
+
+    if result[:css].nil?
+      head :unprocessable_entity
+      return
+    end
+
+    zip_data = ZipAssemblerService.call(config, result[:css])
+
+    send_data zip_data,
+              type: 'application/zip',
+              disposition: "attachment; filename=\"#{config.prefix.presence || 'nanocss'}.zip\""
   end
 
   private

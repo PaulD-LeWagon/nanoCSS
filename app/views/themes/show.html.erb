@@ -1,32 +1,75 @@
 <div style="display: flex; flex: 1; height: calc(100vh - 73px);">
   <!-- LEFT PANE: CONFIG SIDEBAR -->
-  <aside class="glass-panel" style="width: 400px; border-radius: 0; border: none; border-right: 1px solid var(--color-border); overflow-y: auto; padding: 2rem;">
+  <aside class="glass-panel" style="width: 420px; border-radius: 0; border: none; border-right: 1px solid var(--color-border); overflow-y: auto; padding: 2rem;">
     <h2 style="font-size: 1.5rem; margin-bottom: 2rem;">Theme Tokens</h2>
     
-    <%= form_with model: @config, url: theme_preview_path, data: { turbo_stream: true, controller: "theme-form" } do |f| %>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem;">
+    <%= form_with model: @config, url: theme_preview_path, method: :post, data: { turbo_stream: true } do |f| %>
+
+      <%# ===== BRAND COLOURS (Always visible — Basic Mode) ===== %>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
         <div class="form-group" style="margin: 0;">
           <%= f.label :primary, "Primary", class: "form-label" %>
-          <%= f.color_field :primary, oninput: "this.form.requestSubmit()", style: "width: 100%; border:none; border-radius: 0.25rem; background: transparent; cursor: pointer;" %>
+          <%= f.color_field :primary, oninput: "this.form.requestSubmit()", style: "width: 100%; height: 3rem; border:none; border-radius: 0.25rem; background: transparent; cursor: pointer;" %>
         </div>
         <div class="form-group" style="margin: 0;">
           <%= f.label :secondary, "Secondary", class: "form-label" %>
-          <%= f.color_field :secondary, oninput: "this.form.requestSubmit()", style: "width: 100%; border:none; border-radius: 0.25rem; background: transparent; cursor: pointer;" %>
+          <%= f.color_field :secondary, oninput: "this.form.requestSubmit()", style: "width: 100%; height: 3rem; border:none; border-radius: 0.25rem; background: transparent; cursor: pointer;" %>
         </div>
         <div class="form-group" style="margin: 0;">
           <%= f.label :tertiary, "Tertiary", class: "form-label" %>
-          <%= f.color_field :tertiary, oninput: "this.form.requestSubmit()", style: "width: 100%; border:none; border-radius: 0.25rem; background: transparent; cursor: pointer;" %>
+          <%= f.color_field :tertiary, oninput: "this.form.requestSubmit()", style: "width: 100%; height: 3rem; border:none; border-radius: 0.25rem; background: transparent; cursor: pointer;" %>
         </div>
       </div>
 
-      <!-- Harmony Swatches Mockup (Sprint 2 placeholder logically, but keeping Capybara GREEN) -->
+      <%# ===== HARMONY (Sprint 2 placeholder — functional stub) ===== %>
       <div class="form-group">
         <label class="form-label">Auto Harmony</label>
         <button type="button" class="btn btn-outline" style="width: 100%; padding: 0.5rem;" onclick="document.getElementById('theme_configuration_secondary').value = '#f6af3b'; this.form.requestSubmit()">Complementary</button>
       </div>
 
-      <div style="margin: 2rem 0; border-bottom: 1px solid var(--color-border);"></div>
+      <div style="margin: 1.5rem 0; border-bottom: 1px solid var(--color-border);"></div>
 
+      <%# ===== FONTS (Always visible — Basic Mode per UC-002 AC1) ===== %>
+      <div class="form-group">
+        <%= f.label :font_heading, "Headings Font", class: "form-label" %>
+        <%= f.text_field :font_heading, class: "form-input", oninput: "this.form.requestSubmit()" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :font_subtitle, "Subtitle Font", class: "form-label" %>
+        <%= f.text_field :font_subtitle, class: "form-input", oninput: "this.form.requestSubmit()" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :font_body, "Body Font", class: "form-label" %>
+        <%= f.text_field :font_body, class: "form-input", oninput: "this.form.requestSubmit()" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :font_code, "Code Font", class: "form-label" %>
+        <%= f.text_field :font_code, class: "form-input", oninput: "this.form.requestSubmit()" %>
+      </div>
+
+      <div style="margin: 1.5rem 0; border-bottom: 1px solid var(--color-border);"></div>
+
+      <%# ===== ANCHOR VARIABLES (Always visible — Basic Mode per UC-002 AC1) ===== %>
+      <div class="form-group">
+        <%= f.label :base_typography, "Typography Base", class: "form-label" %>
+        <%= f.text_field :base_typography, class: "form-input", oninput: "this.form.requestSubmit()" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :base_space, "Spacing Base", class: "form-label" %>
+        <%= f.text_field :base_space, class: "form-input", oninput: "this.form.requestSubmit()" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :base_radius, "Border Radius Base", class: "form-label" %>
+        <%= f.text_field :base_radius, class: "form-input", oninput: "this.form.requestSubmit()" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :base_border_width, "Border Width Base", class: "form-label" %>
+        <%= f.text_field :base_border_width, class: "form-input", oninput: "this.form.requestSubmit()" %>
+      </div>
+
+      <div style="margin: 1.5rem 0; border-bottom: 1px solid var(--color-border);"></div>
+
+      <%# ===== ADVANCED OPTIONS TOGGLE ===== %>
       <div class="form-group">
         <label class="form-label" style="display: flex; align-items: center; cursor: pointer;">
           <input type="checkbox" id="advanced-toggle" style="margin-right: 0.5rem;" onchange="
@@ -45,32 +88,29 @@
 
       <div id="advanced-options" style="display: none; transition: opacity 0.3s ease;">
         <div class="form-group">
-          <%= f.label :margin_md, "Margin Base", class: "form-label" %>
-          <%= f.text_field :margin_md, class: "form-input", oninput: "this.form.requestSubmit()" %>
-        </div>
-        <div class="form-group">
-          <%= f.label :space_md, "Spacing Base", class: "form-label" %>
-          <%= f.text_field :space_md, class: "form-input", oninput: "this.form.requestSubmit()" %>
-        </div>
-        <div class="form-group">
-          <%= f.label :text_shadow, "Text Shadow", class: "form-label" %>
-          <%= f.text_field :text_shadow, class: "form-input", oninput: "this.form.requestSubmit()" %>
+          <%= f.label :base_margin, "Margin Base", class: "form-label" %>
+          <%= f.text_field :base_margin, class: "form-input", oninput: "this.form.requestSubmit()" %>
         </div>
         <div class="form-group">
           <%= f.label :prefix, "Namespace Prefix", class: "form-label" %>
           <%= f.text_field :prefix, class: "form-input", oninput: "this.form.requestSubmit()" %>
         </div>
         <div class="form-group">
-          <%= f.label :font_heading, "Headings Font", class: "form-label" %>
-          <%= f.text_field :font_heading, class: "form-input", oninput: "this.form.requestSubmit()" %>
+          <%= f.label :text_shadow, "Text Shadow", class: "form-label" %>
+          <%= f.text_field :text_shadow, class: "form-input", oninput: "this.form.requestSubmit()" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :drop_shadow, "Drop Shadow", class: "form-label" %>
+          <%= f.text_field :drop_shadow, class: "form-input", oninput: "this.form.requestSubmit()" %>
         </div>
       </div>
       
-      <div style="margin: 2rem 0; border-bottom: 1px solid var(--color-border);"></div>
+      <div style="margin: 1.5rem 0; border-bottom: 1px solid var(--color-border);"></div>
       
+      <%# ===== ACTION BUTTONS ===== %>
       <div style="display: flex; gap: 1rem; flex-direction: column;">
         <%= f.submit "Download", formaction: theme_download_path, formmethod: :post, data: { turbo: false }, class: "btn btn-primary" %>
-        <button type="button" class="btn btn-outline" onclick="navigator.clipboard.writeText('<%= root_url(theme: @config.to_base64) %>'); alert('Copied!');">Copy Share Link</button>
+        <button type="button" class="btn btn-outline" onclick="navigator.clipboard.writeText(window.location.origin + '/configure?theme=<%= @config.to_base64 %>'); alert('Share link copied to clipboard!');">Copy Share Link</button>
       </div>
     <% end %>
   </aside>
@@ -82,26 +122,28 @@
     <div style="max-width: 800px; margin: 0 auto; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 1rem; padding: 3rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
       <h3 style="margin-bottom: 0.5rem; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted);">Preview Canvas</h3>
       <div style="margin-bottom: 2rem; border-bottom: 1px dashed var(--color-border); padding-bottom: 2rem;">
-        
-        <!-- Placeholder block pretending to use nanocss -->
-        <h1 class="<%= @config.prefix %>-text-xxl <%= @config.prefix %>-font-bold <%= @config.prefix %>-mb-md">Fluid Heading Example</h1>
-        <p class="<%= @config.prefix %>-text-sm <%= @config.prefix %>-font-light <%= @config.prefix %>-mb-lg">
-          This preview dynamically updates using the Turbo Stream emitted by the compiler. Notice how the spacing and typography utilities respond perfectly.
+        <h1>Fluid Heading Example</h1>
+        <p>
+          This preview dynamically updates using the Turbo Stream emitted by the compiler. 
+          Notice how the spacing and typography utilities respond perfectly.
         </p>
         
-        <!-- We don't have components yet, so this uses raw HTML mimicking future component classes -->
-        <div class="<%= @config.prefix %>-flex <%= @config.prefix %>-gap-md" style="gap: 1rem;">
-          <button style="background: <%= @config.primary %>; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: <%= @config.base_radius %>; cursor: pointer; text-shadow: <%= @config.text_shadow %>;">Primary Button</button>
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+          <button style="background: <%= @config.primary %>; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: <%= @config.base_radius %>; cursor: pointer;">Primary Button</button>
           <button style="background: <%= @config.secondary %>; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: <%= @config.base_radius %>; cursor: pointer;">Secondary Button</button>
+          <button style="background: <%= @config.tertiary %>; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: <%= @config.base_radius %>; cursor: pointer;">Tertiary Button</button>
         </div>
-
       </div>
       
-      <!-- Utility showcase -->
-      <div class="<%= @config.prefix %>-grid <%= @config.prefix %>-grid-cols-2" style="gap: 2rem;">
-        <div class="<%= @config.prefix %>-p-md" style="background: rgba(0,0,0,0.2); border: 1px solid var(--color-border); border-radius: <%= @config.base_radius %>;">
-          <h4 class="<%= @config.prefix %>-text-md <%= @config.prefix %>-mb-sm" style="color: <%= @config.tertiary %>">Tertiary Glow</h4>
-          <p class="<%= @config.prefix %>-text-sm">We can verify spacing maps (like .px and .py) dynamically. The actual `.nanocss-card` components are slated for Sprint 2.</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--color-border); border-radius: <%= @config.base_radius %>; padding: 1rem;">
+          <h4 style="color: <%= @config.tertiary %>; margin-bottom: 0.5rem;">Tertiary Glow</h4>
+          <p style="font-size: 0.875rem;">Spacing, margins, and radius adapt in real time through the SCSS compilation pipeline.</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--color-border); border-radius: <%= @config.base_radius %>; padding: 1rem;">
+          <h4 style="margin-bottom: 0.5rem;">Typography</h4>
+          <p style="font-family: <%= @config.font_body %>; font-size: 0.875rem;">Body: <%= @config.font_body %></p>
+          <code style="font-family: <%= @config.font_code %>; font-size: 0.8rem; background: rgba(0,0,0,0.3); padding: 0.25rem 0.5rem; border-radius: 0.25rem;">code { font: <%= @config.font_code %> }</code>
         </div>
       </div>
     </div>

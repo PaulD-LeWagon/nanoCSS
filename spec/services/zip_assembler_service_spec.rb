@@ -1,52 +1,67 @@
 require 'rails_helper'
+require 'zip'
 
+# Traces: design/BACKLOG.md UC-003
+# Traces: design/SYSTEM_DESIGN.md §ZipAssemblerService
 RSpec.describe ZipAssemblerService do
+  # NO MOCKS — test with real compiled CSS from the real compiler
   let(:config) { ThemeConfiguration.new(prefix: 'nanocss') }
-  let(:compiled_css) { ".nanocss-primary { color: #3b82f6; }" }
+  let(:compiled_css) do
+    result = ScssCompilerService.call(config)
+    result[:css]
+  end
 
-  describe '.call' do
-    before do
-      # Mock the file system to pretend we have real partials
-      allow(Dir).to receive(:glob).and_return([
-        'app/assets/stylesheets/nanocss/_variables.scss',
-        'app/assets/stylesheets/nanocss/_mixins.scss',
-        'app/assets/stylesheets/nanocss/components/_buttons.scss'
-      ])
-      allow(File).to receive(:read).and_return('// mock scss content')
-      allow(File).to receive(:basename).and_call_original
-      allow(File).to receive(:dirname).and_call_original
-    end
-
-    it 'returns a binary string representing a valid ZIP archive' do
-      zip_data = ZipAssemblerService.call(config, compiled_css)
+  describe '.call with real data' do
+    it 'returns valid ZIP binary data' do
+      zip_data = described_class.call(config, compiled_css)
       expect(zip_data).to be_a(String)
-      expect(zip_data[0..1]).to eq("PK") # ZIP file signature
+      expect(zip_data[0..1]).to eq('PK') # ZIP magic bytes
     end
 
-    it 'maps the app/assets/stylesheets/nanocss partials into the scss/ directory' do
-      zip_data = ZipAssemblerService.call(config, compiled_css)
-      files = []
-      Zip::File.open_buffer(zip_data) do |zip|
-        zip.each { |entry| files << entry.name }
-      end
-
-      expect(files).to include('scss/_variables.scss')
-      expect(files).to include('scss/_mixins.scss')
-      expect(files).to include('scss/components/_buttons.scss')
+    # UC-003 AC2: Archive contains {prefix}.css, {prefix}.min.css, scss/ directory
+    it 'contains {prefix}.css and {prefix}.min.css' do
+      zip_data = described_class.call(config, compiled_css)
+      entries = extract_entry_names(zip_data)
+      expect(entries).to include('nanocss.css')
+      expect(entries).to include('nanocss.min.css')
     end
 
-    it 'injects the compiled css as correctly prefixed filenames' do
+    it 'contains scss/ directory with the framework partials' do
+      zip_data = described_class.call(config, compiled_css)
+      entries = extract_entry_names(zip_data)
+      expect(entries).to include('scss/_variables.scss')
+      expect(entries).to include('scss/_mixins.scss')
+      expect(entries).to include('scss/_utilities.scss')
+    end
+
+    # UC-003 AC3: Custom prefix respected in filenames
+    it 'uses the custom prefix for CSS filenames' do
       config.prefix = 'mytheme'
-      zip_data = ZipAssemblerService.call(config, compiled_css)
-      
-      files = []
-      Zip::File.open_buffer(zip_data) do |zip|
-        zip.each { |entry| files << entry.name }
-      end
-
-      expect(files).to include('mytheme.css')
-      expect(files).to include('mytheme.min.css')
-      expect(files).not_to include('nanocss.css')
+      css = ScssCompilerService.call(config)[:css]
+      zip_data = described_class.call(config, css)
+      entries = extract_entry_names(zip_data)
+      expect(entries).to include('mytheme.css')
+      expect(entries).to include('mytheme.min.css')
+      expect(entries).not_to include('nanocss.css')
     end
+
+    it 'the {prefix}.min.css is smaller than {prefix}.css' do
+      zip_data = described_class.call(config, compiled_css)
+      full_size = 0
+      min_size = 0
+      Zip::File.open_buffer(zip_data) do |zip|
+        full_size = zip.find_entry('nanocss.css').size
+        min_size = zip.find_entry('nanocss.min.css').size
+      end
+      expect(min_size).to be < full_size
+    end
+  end
+
+  private
+
+  def extract_entry_names(zip_data)
+    names = []
+    Zip::File.open_buffer(zip_data) { |zip| zip.each { |e| names << e.name } }
+    names
   end
 end

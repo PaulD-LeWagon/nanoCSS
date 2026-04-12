@@ -60,9 +60,10 @@ font-size: clamp(#{$min-size}, #{$y-axis-intersect}rem + #{$slope * 100}vw, #{$m
 // Iterates over a map of values to generate classes like .mt-sm, .mt-md
 @mixin generate-utility($css-property, $class-prefix, $values-map) {
     @each $key, $value in $values-map {
-        // If the key is 'md' (our base), output the class without a suffix (e.g., .mt)
-        // Otherwise, append the scale suffix (e.g., .mt-sm)
-        $suffix: if($key =='md', '', '-#{$key}');
+        $suffix: "";
+        @if $key != 'md' {
+            $suffix: "-#{$key}";
+        }
 
         .#{$prefix}-#{$class-prefix}#{$suffix} {
             #{$css-property}: $value !important;
