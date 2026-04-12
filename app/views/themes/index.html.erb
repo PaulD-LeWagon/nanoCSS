@@ -13,9 +13,9 @@
 <div id="presets" style="padding: 4rem 2rem; background: rgba(0,0,0,0.2); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
   <div style="max-width: 1200px; margin: 0 auto;">
     <h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center;">One-Click Preset Themes</h2>
-    
-    <!-- We inject the preview styles somewhere safely for testing -->
-    <div id="nanocss-preview-style" style="display: none;"><style><%= @css %></style></div>
+
+    <%# Compiled nanoCSS style tag — Turbo Stream replaces this on Quick Apply %>
+    <div id="nanocss-preview-style"><style><%= @css %></style></div>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
       <% @presets.each do |preset| %>
@@ -29,15 +29,152 @@
           
           <div style="display: flex; gap: 1rem;">
             <%= button_to "Quick Apply", theme_preview_path, 
-                  params: { theme_configuration: { primary: preset[:primary] } }, 
+                  params: { theme_configuration: { primary: preset[:primary], secondary: preset[:secondary], tertiary: preset[:tertiary] } }, 
                   form: { data: { turbo_stream: true } }, 
                   class: "btn btn-primary", style: "flex: 1;" %>
                   
-            <%= link_to "Edit", configure_path(theme: ThemeConfiguration.new(primary: preset[:primary]).to_base64), 
+            <%= link_to "Edit", configure_path(theme: ThemeConfiguration.new(primary: preset[:primary], secondary: preset[:secondary], tertiary: preset[:tertiary]).to_base64), 
                   class: "btn btn-outline", style: "flex: 1;" %>
           </div>
         </div>
       <% end %>
+    </div>
+  </div>
+</div>
+
+<%# ================================================================
+    LIVE PREVIEW SECTION — styled entirely by nanoCSS output.
+    Every element uses var(--nanocss-*) CSS custom properties.
+    When "Quick Apply" fires, the Turbo Stream replaces the <style>
+    tag above and all these elements visually update.
+    Traces: PRD FR-004 "render against real, representative HTML"
+    ================================================================ %>
+<div id="live-preview" style="padding: 4rem 2rem;">
+  <div style="max-width: 900px; margin: 0 auto;">
+    <h2 style="font-size: 2rem; margin-bottom: 0.5rem; text-align: center; color: var(--color-text);">Live Preview</h2>
+    <p style="text-align: center; color: var(--color-text-muted); margin-bottom: 2rem;">Click <strong>Quick Apply</strong> on any preset above and watch the elements below change instantly.</p>
+
+    <%# Preview card styled entirely by nanoCSS custom properties %>
+    <div id="preview-card" style="
+      background: var(--nanocss-neutral-100, #f3f4f6);
+      color: var(--nanocss-neutral-900, #111827);
+      border-radius: var(--nanocss-radius-lg, 0.5rem);
+      padding: var(--nanocss-space-xl, 1rem);
+      box-shadow: var(--nanocss-shadow-md, 0 4px 6px rgba(0,0,0,0.1));
+      transition: all 0.3s ease;
+    ">
+      <h1 style="
+        font-family: var(--nanocss-font-heading, Inter, sans-serif);
+        font-size: var(--nanocss-text-xxl, 2.44rem);
+        color: var(--nanocss-neutral-900, #111827);
+        margin-bottom: var(--nanocss-margin-sm, 0.625rem);
+        font-weight: var(--nanocss-weight-bold, 700);
+        line-height: var(--nanocss-line-height-heading, 1.2);
+      ">Heading Preview</h1>
+
+      <p style="
+        font-family: var(--nanocss-font-body, Roboto, sans-serif);
+        font-size: var(--nanocss-text-sm, 1rem);
+        color: var(--nanocss-neutral-700, #374151);
+        line-height: var(--nanocss-line-height-body, 1.65);
+        margin-bottom: var(--nanocss-margin-md, 1.25rem);
+        max-width: 70ch;
+      ">
+        This card is styled <em>entirely</em> by your compiled nanoCSS framework — no hardcoded colours, fonts, or spacing. Every property references a <code style="font-family: var(--nanocss-font-code, monospace); background: var(--nanocss-neutral-300, #d1d5db); padding: 0.125em 0.375em; border-radius: var(--nanocss-radius-sm, 0.125rem); font-size: 0.875em;">var(--nanocss-*)</code> custom property.
+      </p>
+
+      <blockquote style="
+        border-left: var(--nanocss-border-width-lg, 4px) solid var(--nanocss-primary, #3b82f6);
+        padding: var(--nanocss-space-md, 0.5rem) var(--nanocss-space-lg, 0.75rem);
+        margin: var(--nanocss-margin-md, 1.25rem) 0;
+        font-style: italic;
+        color: var(--nanocss-neutral-700, #374151);
+        background: rgba(0,0,0,0.03);
+        border-radius: 0 var(--nanocss-radius-sm, 0.125rem) var(--nanocss-radius-sm, 0.125rem) 0;
+      ">
+        "The blockquote border uses the <strong>primary</strong> brand colour. Click a preset and watch it change."
+      </blockquote>
+
+      <%# Buttons — primary, secondary, tertiary, semantic %>
+      <div style="display: flex; gap: var(--nanocss-space-sm, 0.25rem); flex-wrap: wrap; margin-bottom: var(--nanocss-margin-md, 1.25rem);">
+        <button style="
+          background: var(--nanocss-primary, #3b82f6);
+          color: white; border: none; cursor: pointer;
+          padding: var(--nanocss-space-sm, 0.25rem) var(--nanocss-space-lg, 0.75rem);
+          border-radius: var(--nanocss-radius-md, 0.25rem);
+          font-family: var(--nanocss-font-body, sans-serif);
+          font-weight: var(--nanocss-weight-medium, 500);
+          font-size: var(--nanocss-text-sm, 1rem);
+          transition: filter 0.2s ease;
+        ">Primary</button>
+        <button style="
+          background: var(--nanocss-secondary, #8b5cf6);
+          color: white; border: none; cursor: pointer;
+          padding: var(--nanocss-space-sm, 0.25rem) var(--nanocss-space-lg, 0.75rem);
+          border-radius: var(--nanocss-radius-md, 0.25rem);
+          font-family: var(--nanocss-font-body, sans-serif);
+          font-weight: var(--nanocss-weight-medium, 500);
+          font-size: var(--nanocss-text-sm, 1rem);
+          transition: filter 0.2s ease;
+        ">Secondary</button>
+        <button style="
+          background: var(--nanocss-tertiary, #ec4899);
+          color: white; border: none; cursor: pointer;
+          padding: var(--nanocss-space-sm, 0.25rem) var(--nanocss-space-lg, 0.75rem);
+          border-radius: var(--nanocss-radius-md, 0.25rem);
+          font-family: var(--nanocss-font-body, sans-serif);
+          font-weight: var(--nanocss-weight-medium, 500);
+          font-size: var(--nanocss-text-sm, 1rem);
+          transition: filter 0.2s ease;
+        ">Tertiary</button>
+        <button style="
+          background: var(--nanocss-success, #10b981);
+          color: white; border: none; cursor: pointer;
+          padding: var(--nanocss-space-sm, 0.25rem) var(--nanocss-space-lg, 0.75rem);
+          border-radius: var(--nanocss-radius-md, 0.25rem);
+          font-family: var(--nanocss-font-body, sans-serif);
+          font-weight: var(--nanocss-weight-medium, 500);
+          font-size: var(--nanocss-text-sm, 1rem);
+          transition: filter 0.2s ease;
+        ">Success</button>
+        <button style="
+          background: var(--nanocss-danger, #ef4444);
+          color: white; border: none; cursor: pointer;
+          padding: var(--nanocss-space-sm, 0.25rem) var(--nanocss-space-lg, 0.75rem);
+          border-radius: var(--nanocss-radius-md, 0.25rem);
+          font-family: var(--nanocss-font-body, sans-serif);
+          font-weight: var(--nanocss-weight-medium, 500);
+          font-size: var(--nanocss-text-sm, 1rem);
+          transition: filter 0.2s ease;
+        ">Danger</button>
+      </div>
+
+      <%# Colour swatches %>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--nanocss-space-sm, 0.25rem); margin-bottom: var(--nanocss-margin-sm, 0.625rem);">
+        <div style="background: var(--nanocss-primary, #3b82f6); height: 3rem; border-radius: var(--nanocss-radius-md, 0.25rem); transition: background 0.3s ease;"></div>
+        <div style="background: var(--nanocss-secondary, #8b5cf6); height: 3rem; border-radius: var(--nanocss-radius-md, 0.25rem); transition: background 0.3s ease;"></div>
+        <div style="background: var(--nanocss-tertiary, #ec4899); height: 3rem; border-radius: var(--nanocss-radius-md, 0.25rem); transition: background 0.3s ease;"></div>
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-bottom: var(--nanocss-margin-md, 1.25rem);">
+        <small style="color: var(--nanocss-neutral-500, #6b7280); font-size: var(--nanocss-text-xs, 0.8rem);">Primary</small>
+        <small style="color: var(--nanocss-neutral-500, #6b7280); font-size: var(--nanocss-text-xs, 0.8rem);">Secondary</small>
+        <small style="color: var(--nanocss-neutral-500, #6b7280); font-size: var(--nanocss-text-xs, 0.8rem);">Tertiary</small>
+      </div>
+
+      <hr style="
+        border: none;
+        border-top: var(--nanocss-border-width-sm, 1px) solid var(--nanocss-neutral-300, #d1d5db);
+        margin: var(--nanocss-margin-md, 1.25rem) 0;
+      ">
+
+      <p style="
+        font-family: var(--nanocss-font-body, sans-serif);
+        font-size: var(--nanocss-text-xs, 0.8rem);
+        color: var(--nanocss-neutral-500, #6b7280);
+        text-align: center;
+      ">
+        <em>This preview updates live via Turbo Stream — no page reload required.</em>
+      </p>
     </div>
   </div>
 </div>

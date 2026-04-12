@@ -4,9 +4,9 @@ class ThemesController < ApplicationController
   skip_forgery_protection only: :download
   def index
     @presets = [
-      { name: "Corporate", primary: "#1e40af", default: true },
-      { name: "Playful", primary: "#f43f5e" },
-      { name: "Minimalist", primary: "#000000" }
+      { name: "Corporate", primary: "#1e40af", secondary: "#6366f1", tertiary: "#06b6d4", default: true },
+      { name: "Playful", primary: "#f43f5e", secondary: "#a855f7", tertiary: "#f97316" },
+      { name: "Minimalist", primary: "#000000", secondary: "#404040", tertiary: "#737373" }
     ]
     # Pre-compile default CSS so the landing page preview works
     @config = ThemeConfiguration.new
