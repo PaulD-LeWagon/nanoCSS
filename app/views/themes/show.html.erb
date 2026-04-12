@@ -22,10 +22,8 @@
       </div>
 
       <%# ===== HARMONY (Sprint 2 placeholder — functional stub) ===== %>
-      <div class="form-group">
-        <label class="form-label">Auto Harmony</label>
-        <button type="button" class="btn btn-outline" style="width: 100%; padding: 0.5rem;" onclick="document.getElementById('theme_configuration_secondary').value = '#f6af3b'; this.form.requestSubmit()">Complementary</button>
-      </div>
+      <%# ===== HARMONY (Sprint 2 - Auto Harmony Generator) ===== %>
+      <%= render partial: "themes/harmony_options", locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic } %>
 
       <div style="margin: 1.5rem 0; border-bottom: 1px solid var(--color-border);"></div>
 

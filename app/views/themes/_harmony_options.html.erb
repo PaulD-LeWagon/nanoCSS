@@ -1,0 +1,43 @@
+<div class="form-group" id="harmony-options">
+  <label class="form-label">Auto Harmony</label>
+  <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+    <!-- Complementary -->
+    <% if defined?(complementary) && complementary.present? %>
+      <div style="display: flex; gap: 0.5rem;">
+        <button type="button" class="btn btn-outline harmony-swatch" data-color="<%= complementary[0] %>" style="flex: 1; padding: 0.5rem; text-align: left;"
+          onclick="document.getElementById('theme_configuration_secondary').value = '<%= complementary[0] %>'; document.getElementById('theme_configuration_tertiary').value = '<%= complementary[1] %>'; this.form.requestSubmit()">
+          Complementary
+        </button>
+        <div style="width: 2rem; border-radius: 0.25rem; background-color: <%= complementary[0] %>;"></div>
+      </div>
+    <% end %>
+
+    <!-- Analogous -->
+    <% if defined?(analogous) && analogous.present? %>
+      <div style="display: flex; gap: 0.5rem;">
+        <button type="button" class="btn btn-outline harmony-swatch" data-color="<%= analogous[0] %>" style="flex: 1; padding: 0.5rem; text-align: left;"
+          onclick="document.getElementById('theme_configuration_secondary').value = '<%= analogous[0] %>'; document.getElementById('theme_configuration_tertiary').value = '<%= analogous[1] %>'; this.form.requestSubmit()">
+          Analogous
+        </button>
+        <div style="display: flex; width: 2rem; border-radius: 0.25rem; overflow: hidden;">
+          <div style="flex: 1; background-color: <%= analogous[0] %>;"></div>
+          <div style="flex: 1; background-color: <%= analogous[1] %>;"></div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Triadic -->
+    <% if defined?(triadic) && triadic.present? %>
+      <div style="display: flex; gap: 0.5rem;">
+        <button type="button" class="btn btn-outline harmony-swatch" data-color="<%= triadic[0] %>" style="flex: 1; padding: 0.5rem; text-align: left;"
+          onclick="document.getElementById('theme_configuration_secondary').value = '<%= triadic[0] %>'; document.getElementById('theme_configuration_tertiary').value = '<%= triadic[1] %>'; this.form.requestSubmit()">
+          Triadic
+        </button>
+        <div style="display: flex; width: 2rem; border-radius: 0.25rem; overflow: hidden;">
+          <div style="flex: 1; background-color: <%= triadic[0] %>;"></div>
+          <div style="flex: 1; background-color: <%= triadic[1] %>;"></div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

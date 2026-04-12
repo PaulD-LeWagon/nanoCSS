@@ -24,14 +24,22 @@ class ThemesController < ApplicationController
     # Pre-compile the CSS for the initial page render
     result = ScssCompilerService.call(@config)
     @css = result[:css] || ""
+    
+    @complementary = ColourHarmonyService.call(@config.primary, harmony_type: :complementary)
+    @analogous = ColourHarmonyService.call(@config.primary, harmony_type: :analogous)
+    @triadic = ColourHarmonyService.call(@config.primary, harmony_type: :triadic)
   end
 
   def preview
     @config = ThemeConfiguration.new(theme_params)
     result = ScssCompilerService.call(@config)
     @css = result[:css] || ""
-
-    render turbo_stream: turbo_stream.update("nanocss-preview-style", "<style>#{@css}</style>")
+    
+    @complementary = ColourHarmonyService.call(@config.primary, harmony_type: :complementary)
+    @analogous = ColourHarmonyService.call(@config.primary, harmony_type: :analogous)
+    @triadic = ColourHarmonyService.call(@config.primary, harmony_type: :triadic)
+    
+    # Renders preview.turbo_stream.erb implicitly
   end
 
   def download

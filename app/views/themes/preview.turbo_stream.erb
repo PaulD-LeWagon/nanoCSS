@@ -1,0 +1,2 @@
+<%= turbo_stream.update "nanocss-preview-style", "<style>#{@css}</style>".html_safe %>
+<%= turbo_stream.replace "harmony-options", partial: "themes/harmony_options", locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic } %>

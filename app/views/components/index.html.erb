@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Component Catalogue - nanoCSS</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <style><%= @css %></style>
+  <style>
+    /* Styling for the catalogue page itself - keeping it isolated */
+    body { font-family: system-ui, sans-serif; background: #f9fafb; margin: 0; padding: 2rem; color: #111827; }
+    .component-section { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 2rem; overflow: hidden; }
+    .component-header { padding: 1.5rem; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+    .component-header h2 { margin: 0; font-size: 1.25rem; font-weight: 600; }
+    .component-preview { padding: 2rem; background: #f3f4f6; }
+    .component-code { background: #1f2937; color: #f3f4f6; padding: 1.5rem; position: relative; }
+    .component-code pre { margin: 0; overflow-x: auto; font-family: monospace; font-size: 0.875rem; }
+    .copy-btn { position: absolute; top: 1rem; right: 1rem; background: #4b5563; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+    .copy-btn:hover { background: #6b7280; }
+  </style>
+</head>
+<body>
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="margin-bottom: 3rem;">
+      <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">Component Catalogue</h1>
+      <p style="font-size: 1.125rem; color: #4b5563;">A visual reference and code repository for all <%= @prefix %> components.</p>
+    </div>
+
+    <!-- 0. Text Banner -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header">
+        <h2>Text Banner</h2>
+      </div>
+      <div class="component-preview">
+        <hgroup>
+          <h1 style="font-family: var(--<%= @prefix %>-font-heading); font-size: var(--<%= @prefix %>-text-xxl); margin-bottom: 0.25rem;">Main Headline Here</h1>
+          <p style="font-family: var(--<%= @prefix %>-font-subtitle); font-size: var(--<%= @prefix %>-text-lg); color: var(--<%= @prefix %>-neutral-500); margin-top: 0;">This is the supporting subtitle text directly underneath.</p>
+        </hgroup>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;hgroup&gt;
+  &lt;h1&gt;Main Headline Here&lt;/h1&gt;
+  &lt;p&gt;This is the supporting subtitle text directly underneath.&lt;/p&gt;
+&lt;/hgroup&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 1. Hero Banner -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header">
+        <h2>Hero Banner</h2>
+      </div>
+      <div class="component-preview">
+        <section class="<%= @prefix %>-hero" style="background: var(--<%= @prefix %>-neutral-100); padding: var(--<%= @prefix %>-space-xxl) var(--<%= @prefix %>-space-lg); text-align: center; border-radius: var(--<%= @prefix %>-radius-lg);">
+          <h1 style="font-family: var(--<%= @prefix %>-font-heading); font-size: var(--<%= @prefix %>-text-xxl); margin-bottom: var(--<%= @prefix %>-margin-md);">Big Hero Headline</h1>
+          <p style="margin-bottom: var(--<%= @prefix %>-margin-lg); font-size: var(--<%= @prefix %>-text-lg);">Supporting value prop goes here, expanding upon the headline.</p>
+          <button style="background: var(--<%= @prefix %>-primary); color: white; padding: var(--<%= @prefix %>-space-sm) var(--<%= @prefix %>-space-lg); border: none; border-radius: var(--<%= @prefix %>-radius-md); font-weight: bold; cursor: pointer;">Get Started</button>
+        </section>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;section class="<%= @prefix %>-hero"&gt;
+  &lt;h1&gt;Big Hero Headline&lt;/h1&gt;
+  &lt;p&gt;Supporting value prop goes here, expanding upon the headline.&lt;/p&gt;
+  &lt;button&gt;Get Started&lt;/button&gt;
+&lt;/section&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 3. Accordion -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header">
+        <h2>Accordion</h2>
+      </div>
+      <div class="component-preview">
+        <details style="border: 1px solid var(--<%= @prefix %>-neutral-300); border-radius: var(--<%= @prefix %>-radius-md); padding: var(--<%= @prefix %>-space-md); margin-bottom: var(--<%= @prefix %>-space-sm); background: white;">
+          <summary style="cursor: pointer; font-weight: bold;">Accordion Title 1</summary>
+          <p style="margin-top: var(--<%= @prefix %>-space-md);">Here is the hidden content that is now revealed natively by the browser.</p>
+        </details>
+        <details style="border: 1px solid var(--<%= @prefix %>-neutral-300); border-radius: var(--<%= @prefix %>-radius-md); padding: var(--<%= @prefix %>-space-md); background: white;" open>
+          <summary style="cursor: pointer; font-weight: bold; border-bottom: 1px solid var(--<%= @prefix %>-neutral-300); padding-bottom: var(--<%= @prefix %>-space-sm); margin-bottom: var(--<%= @prefix %>-space-md);">Accordion Title 2</summary>
+          <p>This details element is open by default. It's fully semantic HTML5.</p>
+        </details>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;details&gt;
+  &lt;summary&gt;Accordion Title 1&lt;/summary&gt;
+  &lt;p&gt;Here is the hidden content that is now revealed natively by the browser.&lt;/p&gt;
+&lt;/details&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 12. Buttons -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header">
+        <h2>Buttons</h2>
+      </div>
+      <div class="component-preview" style="display: flex; gap: 1rem; align-items: center;">
+        <button style="background: var(--<%= @prefix %>-primary); color: white; padding: var(--<%= @prefix %>-space-sm) var(--<%= @prefix %>-space-lg); border: none; border-radius: var(--<%= @prefix %>-radius-md); cursor: pointer;">Primary</button>
+        <button style="background: transparent; color: var(--<%= @prefix %>-primary); border: 2px solid var(--<%= @prefix %>-primary); padding: var(--<%= @prefix %>-space-sm) var(--<%= @prefix %>-space-lg); border-radius: var(--<%= @prefix %>-radius-md); cursor: pointer;">Secondary</button>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;button&gt;Primary&lt;/button&gt;
+&lt;button class="<%= @prefix %>-btn-secondary"&gt;Secondary&lt;/button&gt;</code></pre>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
