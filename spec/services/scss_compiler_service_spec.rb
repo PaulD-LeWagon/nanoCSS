@@ -33,18 +33,20 @@ RSpec.describe ScssCompilerService do
     it 'prepends the dynamic variables before passing to Dart Sass' do
       # We intercept Sass.compile_string to see what string was passed
       expect(Sass).to receive(:compile_string).with(
-        a_string_including('$nanocss-primary: #3b82f6;'),
-        anything
+        a_string_including('$nanocss-primary: #3b82f6;')
       ).and_call_original
       
       ScssCompilerService.call(config)
     end
 
     it 'handles compilation errors gracefully' do
-      allow(Sass).to receive(:compile_string).and_raise(Sass::CompileError.new("Invalid CSS", nil, nil))
+      error = Sass::CompileError.allocate
+      allow(error).to receive(:message).and_return("Invalid SCSS structure")
+      allow(Sass).to receive(:compile_string).and_raise(error)
+      
       result = ScssCompilerService.call(config)
       expect(result[:css]).to be_nil
-      expect(result[:error]).to eq("Invalid CSS")
+      expect(result[:error]).to eq("Invalid SCSS structure")
     end
   end
 end
