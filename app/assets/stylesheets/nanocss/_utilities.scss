@@ -1,0 +1,143 @@
+// =========================================================
+// nanoCSS - Standard Tier Utilities
+// =========================================================
+
+// Create SCSS Maps from our variables to feed the generator
+$spacing-map: (
+    'xs': $nanocss-space-xs,
+    'sm': $nanocss-space-sm,
+    'md': $nanocss-space-md,
+    'lg': $nanocss-space-lg,
+    'xl': $nanocss-space-xl,
+    'xxl': $nanocss-space-xxl
+);
+
+$margin-map: (
+    'xs': $nanocss-margin-xs,
+    'sm': $nanocss-margin-sm,
+    'md': $nanocss-margin-md,
+    'lg': $nanocss-margin-lg,
+    'xl': $nanocss-margin-xl,
+    'xxl': $nanocss-margin-xxl,
+    'auto': auto
+);
+
+// 1. Spacing (Padding)
+// Outputs: .nanocss-p-sm, .nanocss-pt-lg, .nanocss-px, etc.
+// ---------------------------------------------------------
+@include generate-utility('padding', 'p', $spacing-map);
+@include generate-utility('padding-top', 'pt', $spacing-map);
+@include generate-utility('padding-bottom', 'pb', $spacing-map);
+@include generate-utility('padding-left', 'pl', $spacing-map);
+@include generate-utility('padding-right', 'pr', $spacing-map);
+
+.#{$prefix}-px {
+    padding-left: $nanocss-space-md !important;
+    padding-right: $nanocss-space-md !important;
+}
+
+.#{$prefix}-py {
+    padding-top: $nanocss-space-md !important;
+    padding-bottom: $nanocss-space-md !important;
+}
+
+// 2. Margin
+// Outputs: .nanocss-m-sm, .nanocss-mt-lg, .nanocss-mx-auto, etc.
+// ---------------------------------------------------------
+@include generate-utility('margin', 'm', $margin-map);
+@include generate-utility('margin-top', 'mt', $margin-map);
+@include generate-utility('margin-bottom', 'mb', $margin-map);
+@include generate-utility('margin-left', 'ml', $margin-map);
+@include generate-utility('margin-right', 'mr', $margin-map);
+
+.#{$prefix}-mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+// 3. Flexbox & Grid (Structural Essentials)
+// ---------------------------------------------------------
+.#{$prefix}-flex {
+    display: flex !important;
+}
+
+.#{$prefix}-flex-col {
+    flex-direction: column !important;
+}
+
+.#{$prefix}-flex-wrap {
+    flex-wrap: wrap !important;
+}
+
+.#{$prefix}-items-center {
+    align-items: center !important;
+}
+
+.#{$prefix}-justify-between {
+    justify-content: space-between !important;
+}
+
+.#{$prefix}-justify-center {
+    justify-content: center !important;
+}
+
+.#{$prefix}-grid {
+    display: grid !important;
+}
+
+.#{$prefix}-grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.#{$prefix}-grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.#{$prefix}-grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+// 4. Display & Visibility
+// ---------------------------------------------------------
+.#{$prefix}-hidden {
+    display: none !important;
+}
+
+.#{$prefix}-block {
+    display: block !important;
+}
+
+.#{$prefix}-inline-block {
+    display: inline-block !important;
+}
+
+// Screen Reader Only (Crucial for accessibility)
+.#{$prefix}-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+// 5. Typography Helpers
+// ---------------------------------------------------------
+.#{$prefix}-text-center {
+    text-align: center !important;
+}
+
+.#{$prefix}-text-right {
+    text-align: right !important;
+}
+
+.#{$prefix}-font-bold {
+    font-weight: $nanocss-weight-bold !important;
+}
+
+.#{$prefix}-font-light {
+    font-weight: $nanocss-weight-light !important;
+}

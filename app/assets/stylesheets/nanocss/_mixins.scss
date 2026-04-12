@@ -1,0 +1,71 @@
+// =========================================================
+// nanoCSS - Mixins & Tooling
+// =========================================================
+
+// 1. Media Queries (Mobile-First)
+// ---------------------------------------------------------
+@mixin breakpoint-up($size) {
+    @if $size ==sm {
+        @media (min-width: $nanocss-bp-sm) {
+            @content;
+        }
+    }
+
+    @else if $size ==md {
+        @media (min-width: $nanocss-bp-md) {
+            @content;
+        }
+    }
+
+    @else if $size ==lg {
+        @media (min-width: $nanocss-bp-lg) {
+            @content;
+        }
+    }
+
+    @else if $size ==xl {
+        @media (min-width: $nanocss-bp-xl) {
+            @content;
+        }
+    }
+
+    @else {
+        @error "Unknown breakpoint: #{$size}";
+    }
+}
+
+// 2. Fluid Typography (Clamp)
+// ---------------------------------------------------------
+// Calculates a fluid clamp() between a min and max viewport.
+// Assuming a fluid range from 320px to 1200px viewport width.
+@mixin fluid-text($min-size, $max-size) {
+    $min-vw: 320px;
+    $max-vw: $nanocss-bp-xl;
+
+    // Stripping units for the calc
+    $min-size-rem: $min-size / 1rem;
+    $max-size-rem: $max-size / 1rem;
+
+    // The magic slope formula
+    $slope: (
+        $max-size-rem - $min-size-rem) / (($max-vw / 16px) - ($min-vw / 16px)
+    );
+$y-axis-intersect: -1 * (($min-vw / 16px) * $slope) + $min-size-rem;
+
+font-size: clamp(#{$min-size}, #{$y-axis-intersect}rem + #{$slope * 100}vw, #{$max-size});
+}
+
+// 3. Utility Generator Engine
+// ---------------------------------------------------------
+// Iterates over a map of values to generate classes like .mt-sm, .mt-md
+@mixin generate-utility($css-property, $class-prefix, $values-map) {
+    @each $key, $value in $values-map {
+        // If the key is 'md' (our base), output the class without a suffix (e.g., .mt)
+        // Otherwise, append the scale suffix (e.g., .mt-sm)
+        $suffix: if($key =='md', '', '-#{$key}');
+
+        .#{$prefix}-#{$class-prefix}#{$suffix} {
+            #{$css-property}: $value !important;
+        }
+    }
+}

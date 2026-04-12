@@ -1,0 +1,153 @@
+// =========================================================
+// nanoCSS - Core Variables & Design Tokens
+// =========================================================
+
+// 0. Namespace Prefix
+// ---------------------------------------------------------
+// Used for interpolating CSS Custom Properties and class names.
+$prefix: 'nanocss' !default;
+// 1. Base Anchor Variables (The Root of the System)
+// ---------------------------------------------------------
+// These five variables are the foundation. Every other measurement
+// in the framework is mathematically derived from these anchors.
+$nanocss-base-typography: 1rem !default; // 16px base font size
+$nanocss-line-height-body: 1.5 !default; // Standard for readability
+$nanocss-line-height-heading: 1.2 !default; // Tighter for large text
+$nanocss-base-space: 0.5rem !default; // 8px grid (Padding & Gaps)
+$nanocss-base-margin: 1.25rem !default; // 20px grid (Separation)
+$nanocss-base-radius: 0.25rem !default; // 4px base rounding
+$nanocss-base-border-width: 1px !default; // Base stroke thickness
+
+$nanocss-line-height: 1.5 !default; // Global line height
+
+// 2. Breakpoints (Mobile-first min-widths)
+// ---------------------------------------------------------
+$nanocss-bp-sm: 576px !default; // Large phones / small tablets
+$nanocss-bp-md: 768px !default; // Tablets
+$nanocss-bp-lg: 992px !default; // Laptops
+$nanocss-bp-xl: 1200px !default; // Desktops
+
+// 3. Spacing Scale (Padding & Gaps)
+// ---------------------------------------------------------
+// Calculated using the standard multiplier scale against Base Space
+$nanocss-space-xs: (
+    $nanocss-base-space * 0.25) !default; // 0.125rem / 2px
+$nanocss-space-sm: (
+    $nanocss-base-space * 0.5) !default; // 0.25rem  / 4px
+$nanocss-space-md: (
+    $nanocss-base-space * 1) !default; // 0.5rem   / 8px  (Default)
+$nanocss-space-lg: (
+    $nanocss-base-space * 1.5) !default; // 0.75rem  / 12px
+$nanocss-space-xl: (
+    $nanocss-base-space * 2) !default; // 1rem     / 16px
+$nanocss-space-xxl: (
+    $nanocss-base-space * 3) !default; // 1.5rem   / 24px
+
+// 4. Margin Scale (Element Separation)
+// ---------------------------------------------------------
+// Calculated using the standard multiplier scale against Base Margin
+$nanocss-margin-xs: (
+    $nanocss-base-margin * 0.25) !default; // 0.3125rem / 5px
+$nanocss-margin-sm: (
+    $nanocss-base-margin * 0.5) !default; // 0.625rem  / 10px
+$nanocss-margin-md: (
+    $nanocss-base-margin * 1) !default; // 1.25rem   / 20px (Default)
+$nanocss-margin-lg: (
+    $nanocss-base-margin * 1.5) !default; // 1.875rem  / 30px
+$nanocss-margin-xl: (
+    $nanocss-base-margin * 2) !default; // 2.5rem    / 40px
+$nanocss-margin-xxl: (
+    $nanocss-base-margin * 3) !default; // 3.75rem   / 60px
+
+// 5. Typography Scale (Major Third Scale applied to Base)
+// ---------------------------------------------------------
+// Scales mathematically for a visually pleasing, predictable hierarchy
+$nanocss-text-xs: (
+    $nanocss-base-typography * 0.8) !default; // Small print, tooltips
+$nanocss-text-sm: (
+    $nanocss-base-typography * 1) !default; // Body text
+$nanocss-text-md: (
+    $nanocss-base-typography * 1.25) !default; // Subtitles (h4, h5)
+$nanocss-text-lg: (
+    $nanocss-base-typography * 1.56) !default; // Section headers (h3)
+$nanocss-text-xl: (
+    $nanocss-base-typography * 1.95) !default; // Main headers (h2)
+$nanocss-text-xxl: (
+    $nanocss-base-typography * 2.44) !default; // Hero headers (h1)
+
+// 6. Border Radius & Width Scale
+// ---------------------------------------------------------
+$nanocss-radius-sm: (
+    $nanocss-base-radius * 0.5) !default;
+$nanocss-radius-md: (
+    $nanocss-base-radius * 1) !default; // Standard for cards/buttons
+$nanocss-radius-lg: (
+    $nanocss-base-radius * 2) !default;
+$nanocss-radius-pill: 9999px !default; // Always fully rounded
+
+$nanocss-border-width-sm: (
+    $nanocss-base-border-width * 0.5) !default;
+$nanocss-border-width-md: (
+    $nanocss-base-border-width * 1) !default;
+$nanocss-border-width-lg: (
+    $nanocss-base-border-width * 2) !default;
+
+// 7. Typography (Fonts & Weights)
+// ---------------------------------------------------------
+// Mapped directly to the UI Configuration slots
+$nanocss-font-heading: 'Inter',
+    system-ui,
+    sans-serif !default;
+$nanocss-font-subtitle: 'Inter',
+    system-ui,
+    sans-serif !default;
+$nanocss-font-body: 'Roboto',
+    system-ui,
+    sans-serif !default;
+$nanocss-font-code: 'Fira Code',
+    'JetBrains Mono',
+    monospace !default;
+
+$nanocss-weight-light: 300 !default;
+$nanocss-weight-normal: 400 !default;
+$nanocss-weight-medium: 500 !default;
+$nanocss-weight-bold: 700 !default;
+
+// 8. Colour System (Base Variables)
+// ---------------------------------------------------------
+// Brand Colors
+$nanocss-primary: #3b82f6 !default;
+$nanocss-secondary: #8b5cf6 !default;
+$nanocss-tertiary: #ec4899 !default;
+
+// Semantic Colors
+$nanocss-success: #10b981 !default;
+$nanocss-info: #0ea5e9 !default;
+$nanocss-warning: #f59e0b !default;
+$nanocss-danger: #ef4444 !default;
+
+// Neutrals (Greyscale)
+$nanocss-neutral-100: #f3f4f6 !default;
+$nanocss-neutral-300: #d1d5db !default;
+$nanocss-neutral-500: #6b7280 !default;
+$nanocss-neutral-700: #374151 !default;
+$nanocss-neutral-900: #111827 !default;
+
+// 9. Elevations (Shadow Matrices)
+// ---------------------------------------------------------
+// X | Y | Blur | Color (converted to RGBA for opacity)
+// The UI will pass exact CSS strings into these variables.
+$nanocss-text-shadow: 0.25rem 0.25rem 0.5rem rgba(5, 5, 5, 0.5) !default;
+$nanocss-drop-shadow: 0.5rem 0.5rem 1rem rgba(1, 1, 1, 0.25) !default;
+
+// Legacy standard box-shadows (Optional: Can keep for basic tiers or deprecate)
+$nanocss-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !default;
+$nanocss-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !default;
+$nanocss-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !default;
+
+// 10. Z-Index Scale
+// ---------------------------------------------------------
+$nanocss-z-dropdown: 1000 !default;
+$nanocss-z-sticky: 1020 !default;
+$nanocss-z-modal: 1040 !default;
+$nanocss-z-toast: 1060 !default;
