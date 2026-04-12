@@ -34,34 +34,37 @@ class ThemeConfiguration
   def to_scss_variables_string
     vars = []
     
-    # Prefix mapping
+    # $prefix controls output naming (class names, CSS custom property names).
+    # All SCSS variable overrides MUST use $nanocss-* to correctly override
+    # the !default declarations in _variables.scss.
     vars << "$prefix: '#{prefix}';" if prefix.present?
     
-    vars << "$#{prefix}-primary: #{primary};" if primary.present?
-    vars << "$#{prefix}-secondary: #{secondary};" if secondary.present?
-    vars << "$#{prefix}-tertiary: #{tertiary};" if tertiary.present?
+    # Brand colours
+    vars << "$nanocss-primary: #{primary};" if primary.present?
+    vars << "$nanocss-secondary: #{secondary};" if secondary.present?
+    vars << "$nanocss-tertiary: #{tertiary};" if tertiary.present?
     
     # Typography slots
-    vars << "$#{prefix}-font-heading: \"#{font_heading}\";" if font_heading.present?
-    vars << "$#{prefix}-font-subtitle: \"#{font_subtitle}\";" if font_subtitle.present?
-    vars << "$#{prefix}-font-body: \"#{font_body}\";" if font_body.present?
-    vars << "$#{prefix}-font-code: \"#{font_code}\";" if font_code.present?
+    vars << "$nanocss-font-heading: \"#{font_heading}\";" if font_heading.present?
+    vars << "$nanocss-font-subtitle: \"#{font_subtitle}\";" if font_subtitle.present?
+    vars << "$nanocss-font-body: \"#{font_body}\";" if font_body.present?
+    vars << "$nanocss-font-code: \"#{font_code}\";" if font_code.present?
     
     # Base Anchors
-    vars << "$#{prefix}-base-typography: #{base_typography};" if base_typography.present?
-    vars << "$#{prefix}-base-space: #{base_space};" if base_space.present?
-    vars << "$#{prefix}-base-margin: #{base_margin};" if base_margin.present?
-    vars << "$#{prefix}-base-radius: #{base_radius};" if base_radius.present?
-    vars << "$#{prefix}-base-border-width: #{base_border_width};" if base_border_width.present?
+    vars << "$nanocss-base-typography: #{base_typography};" if base_typography.present?
+    vars << "$nanocss-base-space: #{base_space};" if base_space.present?
+    vars << "$nanocss-base-margin: #{base_margin};" if base_margin.present?
+    vars << "$nanocss-base-radius: #{base_radius};" if base_radius.present?
+    vars << "$nanocss-base-border-width: #{base_border_width};" if base_border_width.present?
     
-    # Matrix parsing
-    vars << "$#{prefix}-text-shadow: #{text_shadow};" if text_shadow.present?
-    vars << "$#{prefix}-drop-shadow: #{drop_shadow};" if drop_shadow.present?
+    # Shadow matrices
+    vars << "$nanocss-text-shadow: #{text_shadow};" if text_shadow.present?
+    vars << "$nanocss-drop-shadow: #{drop_shadow};" if drop_shadow.present?
     
-    # Advanced logic: decoupling
+    # Advanced mode: decoupled overrides
     if mode == 'advanced'
-      vars << "$#{prefix}-margin-md: #{margin_md};" if margin_md.present?
-      vars << "$#{prefix}-space-md: #{space_md};" if space_md.present?
+      vars << "$nanocss-margin-md: #{margin_md};" if margin_md.present?
+      vars << "$nanocss-space-md: #{space_md};" if space_md.present?
     end
 
     vars.join("\n")

@@ -1,0 +1,105 @@
+// =========================================================
+// nanoCSS - Bespoke CSS Reset (FR-013)
+// =========================================================
+// A lightweight modern reset. No Normalize.css, no Eric Meyer.
+// Scoped to the prefix where applicable.
+
+// 1. Box-Sizing Reset
+// ---------------------------------------------------------
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// 2. Remove Default Margins & Padding
+// ---------------------------------------------------------
+body,
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre,
+dl, dd, ol, ul,
+figure, figcaption,
+fieldset, legend,
+hr {
+  margin: 0;
+  padding: 0;
+}
+
+// 3. Root Defaults
+// ---------------------------------------------------------
+html {
+  font-size: 100%;          // Respects user's browser font-size setting
+  line-height: $nanocss-line-height;
+  -webkit-text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// 4. Typography Reset
+// ---------------------------------------------------------
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+// 5. Media Elements
+// ---------------------------------------------------------
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+// 6. Form Elements
+// ---------------------------------------------------------
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+// 7. Table Reset
+// ---------------------------------------------------------
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+// 8. Anchor Reset
+// ---------------------------------------------------------
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+// 9. Remove Animations for Reduced Motion
+// ---------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

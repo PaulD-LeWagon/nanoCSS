@@ -116,36 +116,91 @@
   </aside>
 
   <!-- RIGHT PANE: PREVIEW CANVAS -->
-  <section style="flex: 1; padding: 4rem; overflow-y: auto; background: var(--color-base); position: relative;">
+  <%# The preview pane is styled ENTIRELY by the compiled nanoCSS output.
+      Every element uses var(--nanocss-*) CSS custom properties.
+      When Turbo Stream replaces the <style> tag, everything updates visually. %>
+  <section id="preview-canvas" style="flex: 1; overflow-y: auto; position: relative;">
     <div id="nanocss-preview-style"><style><%= @css %></style></div>
-    
-    <div style="max-width: 800px; margin: 0 auto; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 1rem; padding: 3rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
-      <h3 style="margin-bottom: 0.5rem; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted);">Preview Canvas</h3>
-      <div style="margin-bottom: 2rem; border-bottom: 1px dashed var(--color-border); padding-bottom: 2rem;">
-        <h1>Fluid Heading Example</h1>
-        <p>
-          This preview dynamically updates using the Turbo Stream emitted by the compiler. 
-          Notice how the spacing and typography utilities respond perfectly.
-        </p>
-        
-        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-          <button style="background: <%= @config.primary %>; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: <%= @config.base_radius %>; cursor: pointer;">Primary Button</button>
-          <button style="background: <%= @config.secondary %>; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: <%= @config.base_radius %>; cursor: pointer;">Secondary Button</button>
-          <button style="background: <%= @config.tertiary %>; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: <%= @config.base_radius %>; cursor: pointer;">Tertiary Button</button>
-        </div>
+
+    <%# Scoping container — inherits all nanoCSS base styling %>
+    <div style="max-width: 800px; margin: 0 auto; padding: var(--<%= @config.prefix %>-space-xl, 2rem);">
+
+      <h1>Fluid Heading</h1>
+      <p>This preview is a <strong>living example</strong> of your nanoCSS framework. Every element on this page is styled using the CSS your configuration generates — <em>no hardcoded inline styles</em>. Change any input and watch everything transform instantly.</p>
+
+      <h2>Typography Scale</h2>
+      <p>Body text uses <code>var(--<%= @config.prefix %>-font-body)</code>, headings use <code>var(--<%= @config.prefix %>-font-heading)</code>, and this inline code sample uses <code>var(--<%= @config.prefix %>-font-code)</code>.</p>
+
+      <blockquote>
+        Blockquotes get a branded left border using the primary colour. This demonstrates the semantic styling that ships with every nanoCSS build.
+      </blockquote>
+
+      <h3>Buttons</h3>
+      <p>These are plain <code>&lt;button&gt;</code> elements — they receive the primary brand colour automatically from the base stylesheet:</p>
+      <div style="display: flex; gap: var(--<%= @config.prefix %>-space-md, 0.5rem); flex-wrap: wrap; margin-bottom: var(--<%= @config.prefix %>-margin-md, 1.25rem);">
+        <button>Primary Action</button>
+        <button style="background-color: var(--<%= @config.prefix %>-secondary);">Secondary</button>
+        <button style="background-color: var(--<%= @config.prefix %>-tertiary);">Tertiary</button>
+        <button style="background-color: var(--<%= @config.prefix %>-success);">Success</button>
+        <button style="background-color: var(--<%= @config.prefix %>-danger);">Danger</button>
       </div>
-      
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--color-border); border-radius: <%= @config.base_radius %>; padding: 1rem;">
-          <h4 style="color: <%= @config.tertiary %>; margin-bottom: 0.5rem;">Tertiary Glow</h4>
-          <p style="font-size: 0.875rem;">Spacing, margins, and radius adapt in real time through the SCSS compilation pipeline.</p>
-        </div>
-        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--color-border); border-radius: <%= @config.base_radius %>; padding: 1rem;">
-          <h4 style="margin-bottom: 0.5rem;">Typography</h4>
-          <p style="font-family: <%= @config.font_body %>; font-size: 0.875rem;">Body: <%= @config.font_body %></p>
-          <code style="font-family: <%= @config.font_code %>; font-size: 0.8rem; background: rgba(0,0,0,0.3); padding: 0.25rem 0.5rem; border-radius: 0.25rem;">code { font: <%= @config.font_code %> }</code>
-        </div>
+
+      <h3>Form Elements</h3>
+      <form onsubmit="return false;" style="margin-bottom: var(--<%= @config.prefix %>-margin-md, 1.25rem);">
+        <label for="preview-input">Text Input</label>
+        <input type="text" id="preview-input" placeholder="Type something...">
+        <label for="preview-select" style="margin-top: var(--<%= @config.prefix %>-space-md, 0.5rem);">Select</label>
+        <select id="preview-select">
+          <option>Option Alpha</option>
+          <option>Option Bravo</option>
+          <option>Option Charlie</option>
+        </select>
+      </form>
+
+      <h3>Code Block</h3>
+      <pre><code>/* Your generated CSS custom properties */
+:root {
+  --<%= @config.prefix %>-primary: <%= @config.primary %>;
+  --<%= @config.prefix %>-font-heading: "<%= @config.font_heading %>";
+  --<%= @config.prefix %>-font-code: "<%= @config.font_code %>";
+}</code></pre>
+
+      <h3>Table</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Variable</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Primary</td><td><code>--<%= @config.prefix %>-primary</code></td><td style="color: var(--<%= @config.prefix %>-primary);"><strong><%= @config.primary %></strong></td></tr>
+          <tr><td>Secondary</td><td><code>--<%= @config.prefix %>-secondary</code></td><td style="color: var(--<%= @config.prefix %>-secondary);"><strong><%= @config.secondary %></strong></td></tr>
+          <tr><td>Tertiary</td><td><code>--<%= @config.prefix %>-tertiary</code></td><td style="color: var(--<%= @config.prefix %>-tertiary);"><strong><%= @config.tertiary %></strong></td></tr>
+          <tr><td>Heading Font</td><td><code>--<%= @config.prefix %>-font-heading</code></td><td><%= @config.font_heading %></td></tr>
+          <tr><td>Code Font</td><td><code>--<%= @config.prefix %>-font-code</code></td><td><%= @config.font_code %></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Accordion (Native &lt;details&gt;)</h3>
+      <details>
+        <summary>Click to expand — this is a native HTML5 accordion</summary>
+        <p>This <code>&lt;details&gt;</code> element is styled entirely by nanoCSS base styles. No JavaScript required. The border, padding, and chevron rotation all come from your compiled CSS.</p>
+      </details>
+
+      <hr>
+
+      <h3>Semantic Colours</h3>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--<%= @config.prefix %>-space-md, 0.5rem);">
+        <div style="background: var(--<%= @config.prefix %>-success); color: white; padding: var(--<%= @config.prefix %>-space-md, 0.5rem); border-radius: var(--<%= @config.prefix %>-radius-md, 0.25rem); text-align: center; font-weight: var(--<%= @config.prefix %>-weight-bold, 700);">Success</div>
+        <div style="background: var(--<%= @config.prefix %>-info); color: white; padding: var(--<%= @config.prefix %>-space-md, 0.5rem); border-radius: var(--<%= @config.prefix %>-radius-md, 0.25rem); text-align: center; font-weight: var(--<%= @config.prefix %>-weight-bold, 700);">Info</div>
+        <div style="background: var(--<%= @config.prefix %>-warning); color: white; padding: var(--<%= @config.prefix %>-space-md, 0.5rem); border-radius: var(--<%= @config.prefix %>-radius-md, 0.25rem); text-align: center; font-weight: var(--<%= @config.prefix %>-weight-bold, 700);">Warning</div>
+        <div style="background: var(--<%= @config.prefix %>-danger); color: white; padding: var(--<%= @config.prefix %>-space-md, 0.5rem); border-radius: var(--<%= @config.prefix %>-radius-md, 0.25rem); text-align: center; font-weight: var(--<%= @config.prefix %>-weight-bold, 700);">Danger</div>
       </div>
+
+      <hr>
+      <p><small>This preview renders using only the nanoCSS output your configuration produces — semantic HTML with zero hardcoded styling.</small></p>
     </div>
   </section>
 </div>

@@ -113,13 +113,15 @@ RSpec.describe ThemeConfiguration, type: :model do
       expect(scss).to include('$nanocss-drop-shadow: 0.5rem 0.5rem 1rem rgba(1, 1, 1, 0.25);')
     end
 
-    it 'respects custom prefix in all variable names' do
+    it 'respects custom prefix in $prefix variable while keeping $nanocss-* vars' do
       config.prefix = 'mytheme'
       scss = config.to_scss_variables_string
+      # $prefix controls output naming (class names, CSS custom properties)
       expect(scss).to include("$prefix: 'mytheme';")
-      expect(scss).to include('$mytheme-primary:')
-      expect(scss).to include('$mytheme-font-code:')
-      expect(scss).not_to include('$nanocss-')
+      # All SCSS variable overrides MUST use $nanocss-* to override !default declarations
+      expect(scss).to include('$nanocss-primary:')
+      expect(scss).to include('$nanocss-font-code:')
+      expect(scss).not_to include('$mytheme-primary:')
     end
   end
 

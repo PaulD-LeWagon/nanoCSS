@@ -1,0 +1,85 @@
+// =========================================================
+// nanoCSS - CSS Custom Properties Output
+// =========================================================
+// Maps SCSS variables to CSS Custom Properties so that
+// any HTML element using var(--{prefix}-*) will reactively
+// update when the <style> tag is replaced via Turbo Stream.
+
+:root {
+  // Brand Colours
+  --#{$prefix}-primary: #{$nanocss-primary};
+  --#{$prefix}-secondary: #{$nanocss-secondary};
+  --#{$prefix}-tertiary: #{$nanocss-tertiary};
+
+  // Semantic Colours
+  --#{$prefix}-success: #{$nanocss-success};
+  --#{$prefix}-info: #{$nanocss-info};
+  --#{$prefix}-warning: #{$nanocss-warning};
+  --#{$prefix}-danger: #{$nanocss-danger};
+
+  // Neutrals
+  --#{$prefix}-neutral-100: #{$nanocss-neutral-100};
+  --#{$prefix}-neutral-300: #{$nanocss-neutral-300};
+  --#{$prefix}-neutral-500: #{$nanocss-neutral-500};
+  --#{$prefix}-neutral-700: #{$nanocss-neutral-700};
+  --#{$prefix}-neutral-900: #{$nanocss-neutral-900};
+
+  // Typography
+  --#{$prefix}-font-heading: #{$nanocss-font-heading};
+  --#{$prefix}-font-subtitle: #{$nanocss-font-subtitle};
+  --#{$prefix}-font-body: #{$nanocss-font-body};
+  --#{$prefix}-font-code: #{$nanocss-font-code};
+
+  // Typography Scale
+  --#{$prefix}-text-xs: #{$nanocss-text-xs};
+  --#{$prefix}-text-sm: #{$nanocss-text-sm};
+  --#{$prefix}-text-md: #{$nanocss-text-md};
+  --#{$prefix}-text-lg: #{$nanocss-text-lg};
+  --#{$prefix}-text-xl: #{$nanocss-text-xl};
+  --#{$prefix}-text-xxl: #{$nanocss-text-xxl};
+
+  // Spacing Scale
+  --#{$prefix}-space-xs: #{$nanocss-space-xs};
+  --#{$prefix}-space-sm: #{$nanocss-space-sm};
+  --#{$prefix}-space-md: #{$nanocss-space-md};
+  --#{$prefix}-space-lg: #{$nanocss-space-lg};
+  --#{$prefix}-space-xl: #{$nanocss-space-xl};
+  --#{$prefix}-space-xxl: #{$nanocss-space-xxl};
+
+  // Margin Scale
+  --#{$prefix}-margin-xs: #{$nanocss-margin-xs};
+  --#{$prefix}-margin-sm: #{$nanocss-margin-sm};
+  --#{$prefix}-margin-md: #{$nanocss-margin-md};
+  --#{$prefix}-margin-lg: #{$nanocss-margin-lg};
+  --#{$prefix}-margin-xl: #{$nanocss-margin-xl};
+  --#{$prefix}-margin-xxl: #{$nanocss-margin-xxl};
+
+  // Radius
+  --#{$prefix}-radius-sm: #{$nanocss-radius-sm};
+  --#{$prefix}-radius-md: #{$nanocss-radius-md};
+  --#{$prefix}-radius-lg: #{$nanocss-radius-lg};
+  --#{$prefix}-radius-pill: #{$nanocss-radius-pill};
+
+  // Border Width
+  --#{$prefix}-border-width-sm: #{$nanocss-border-width-sm};
+  --#{$prefix}-border-width-md: #{$nanocss-border-width-md};
+  --#{$prefix}-border-width-lg: #{$nanocss-border-width-lg};
+
+  // Shadows
+  --#{$prefix}-text-shadow: #{$nanocss-text-shadow};
+  --#{$prefix}-drop-shadow: #{$nanocss-drop-shadow};
+  --#{$prefix}-shadow-sm: #{$nanocss-shadow-sm};
+  --#{$prefix}-shadow-md: #{$nanocss-shadow-md};
+  --#{$prefix}-shadow-lg: #{$nanocss-shadow-lg};
+
+  // Font Weights
+  --#{$prefix}-weight-light: #{$nanocss-weight-light};
+  --#{$prefix}-weight-normal: #{$nanocss-weight-normal};
+  --#{$prefix}-weight-medium: #{$nanocss-weight-medium};
+  --#{$prefix}-weight-bold: #{$nanocss-weight-bold};
+
+  // Line Heights
+  --#{$prefix}-line-height: #{$nanocss-line-height};
+  --#{$prefix}-line-height-body: #{$nanocss-line-height-body};
+  --#{$prefix}-line-height-heading: #{$nanocss-line-height-heading};
+}

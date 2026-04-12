@@ -48,6 +48,47 @@ RSpec.describe ScssCompilerService do
       expect(result[:error]).to be_nil
     end
 
+    # CSS Custom Properties — reactive Turbo Stream updates (PRD §9.1)
+    it 'emits CSS custom properties for all design tokens in :root' do
+      result = described_class.call(config)
+      expect(result[:css]).to include('--nanocss-primary:')
+      expect(result[:css]).to include('--nanocss-secondary:')
+      expect(result[:css]).to include('--nanocss-tertiary:')
+      expect(result[:css]).to include('--nanocss-font-heading:')
+      expect(result[:css]).to include('--nanocss-font-code:')
+      expect(result[:css]).to include('--nanocss-space-md:')
+      expect(result[:css]).to include('--nanocss-radius-md:')
+    end
+
+    it 'uses the custom prefix in CSS custom property names' do
+      config.prefix = 'mycorp'
+      config.primary = '#ff0000'
+      result = described_class.call(config)
+      expect(result[:css]).to include('--mycorp-primary:')
+      expect(result[:css]).to include('#ff0000')
+      expect(result[:css]).not_to include('--nanocss-primary:')
+    end
+
+    # Bespoke CSS Reset (FR-013)
+    it 'includes the bespoke CSS reset (box-sizing, margin removal)' do
+      result = described_class.call(config)
+      expect(result[:css]).to include('box-sizing: border-box')
+    end
+
+    # Semantic HTML base styling — Nano tier (FR-005)
+    it 'applies sensible default styles to semantic HTML elements' do
+      result = described_class.call(config)
+      css = result[:css]
+      # Body gets font-family from custom property
+      expect(css).to include('var(--nanocss-font-body)')
+      # Headings get styled
+      expect(css).to match(/h1\s*\{/)
+      # Links get primary colour
+      expect(css).to include('var(--nanocss-primary)')
+      # Code gets monospace font
+      expect(css).to include('var(--nanocss-font-code)')
+    end
+
     it 'handles a compilation error gracefully without raising' do
       # Force an invalid SCSS string by mocking the variables file
       allow(File).to receive(:read).and_call_original

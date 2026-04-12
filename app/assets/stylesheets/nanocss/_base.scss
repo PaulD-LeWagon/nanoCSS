@@ -1,0 +1,370 @@
+// =========================================================
+// nanoCSS - Semantic HTML Base Styling (Nano Tier)
+// =========================================================
+// "Out-of-the-box" styling for ALL semantic HTML5 elements.
+// Uses CSS Custom Properties so everything responds to
+// Turbo Stream live preview updates.
+// Traces: PRD FR-005 Nano Tier, §9.4 Typography
+
+// 1. Body
+// ---------------------------------------------------------
+body {
+  font-family: var(--#{$prefix}-font-body);
+  font-size: var(--#{$prefix}-text-sm);
+  font-weight: var(--#{$prefix}-weight-normal);
+  line-height: var(--#{$prefix}-line-height-body);
+  color: var(--#{$prefix}-neutral-900);
+  background-color: var(--#{$prefix}-neutral-100);
+}
+
+// 2. Headings (h1–h6)
+// ---------------------------------------------------------
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--#{$prefix}-font-heading);
+  font-weight: var(--#{$prefix}-weight-bold);
+  line-height: var(--#{$prefix}-line-height-heading);
+  color: var(--#{$prefix}-neutral-900);
+  margin-bottom: var(--#{$prefix}-margin-sm);
+}
+
+h1 { font-size: var(--#{$prefix}-text-xxl); margin-bottom: var(--#{$prefix}-margin-md); }
+h2 { font-size: var(--#{$prefix}-text-xl); }
+h3 { font-size: var(--#{$prefix}-text-lg); }
+h4 { font-size: var(--#{$prefix}-text-md); }
+h5 { font-size: var(--#{$prefix}-text-sm); font-weight: var(--#{$prefix}-weight-medium); }
+h6 { font-size: var(--#{$prefix}-text-xs); font-weight: var(--#{$prefix}-weight-medium); text-transform: uppercase; letter-spacing: 0.05em; }
+
+// 3. Body Text
+// ---------------------------------------------------------
+p {
+  margin-bottom: var(--#{$prefix}-margin-sm);
+  max-width: 70ch; // Optimal reading width
+}
+
+strong, b { font-weight: var(--#{$prefix}-weight-bold); }
+em, i { font-style: italic; }
+small { font-size: var(--#{$prefix}-text-xs); }
+
+// 4. Links
+// ---------------------------------------------------------
+a {
+  color: var(--#{$prefix}-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+
+  &:hover {
+    color: var(--#{$prefix}-secondary);
+    text-decoration-color: var(--#{$prefix}-secondary);
+  }
+
+  &:visited {
+    color: var(--#{$prefix}-tertiary);
+  }
+}
+
+// 5. Blockquotes
+// ---------------------------------------------------------
+blockquote {
+  border-left: var(--#{$prefix}-border-width-lg) solid var(--#{$prefix}-primary);
+  padding: var(--#{$prefix}-space-md) var(--#{$prefix}-space-lg);
+  margin: var(--#{$prefix}-margin-md) 0;
+  font-style: italic;
+  color: var(--#{$prefix}-neutral-700);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 0 var(--#{$prefix}-radius-sm) var(--#{$prefix}-radius-sm) 0;
+}
+
+// 6. Code & Pre
+// ---------------------------------------------------------
+code, kbd, samp {
+  font-family: var(--#{$prefix}-font-code);
+  font-size: 0.875em;
+  background: var(--#{$prefix}-neutral-100);
+  border: var(--#{$prefix}-border-width-sm) solid var(--#{$prefix}-neutral-300);
+  border-radius: var(--#{$prefix}-radius-sm);
+  padding: 0.125em 0.375em;
+}
+
+pre {
+  font-family: var(--#{$prefix}-font-code);
+  font-size: var(--#{$prefix}-text-xs);
+  background: var(--#{$prefix}-neutral-900);
+  color: var(--#{$prefix}-neutral-100);
+  border-radius: var(--#{$prefix}-radius-md);
+  padding: var(--#{$prefix}-space-lg);
+  margin: var(--#{$prefix}-margin-md) 0;
+  overflow-x: auto;
+  line-height: 1.6;
+
+  code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+}
+
+kbd {
+  background: var(--#{$prefix}-neutral-700);
+  color: var(--#{$prefix}-neutral-100);
+  border-color: var(--#{$prefix}-neutral-500);
+  font-size: 0.8em;
+  padding: 0.15em 0.4em;
+}
+
+// 7. Horizontal Rule
+// ---------------------------------------------------------
+hr {
+  border: none;
+  border-top: var(--#{$prefix}-border-width-sm) solid var(--#{$prefix}-neutral-300);
+  margin: var(--#{$prefix}-margin-lg) 0;
+}
+
+// 8. Lists
+// ---------------------------------------------------------
+ol, ul {
+  padding-left: var(--#{$prefix}-space-xl);
+  margin-bottom: var(--#{$prefix}-margin-sm);
+}
+
+ul { list-style-type: disc; }
+ol { list-style-type: decimal; }
+
+li {
+  margin-bottom: var(--#{$prefix}-space-xs);
+}
+
+li > ul, li > ol {
+  margin-top: var(--#{$prefix}-space-xs);
+  margin-bottom: 0;
+}
+
+// 9. Tables
+// ---------------------------------------------------------
+table {
+  width: 100%;
+  margin: var(--#{$prefix}-margin-md) 0;
+  font-size: var(--#{$prefix}-text-sm);
+}
+
+thead {
+  border-bottom: var(--#{$prefix}-border-width-md) solid var(--#{$prefix}-neutral-500);
+}
+
+th {
+  text-align: left;
+  font-weight: var(--#{$prefix}-weight-bold);
+  padding: var(--#{$prefix}-space-sm) var(--#{$prefix}-space-md);
+  color: var(--#{$prefix}-neutral-700);
+}
+
+td {
+  padding: var(--#{$prefix}-space-sm) var(--#{$prefix}-space-md);
+  border-bottom: var(--#{$prefix}-border-width-sm) solid var(--#{$prefix}-neutral-300);
+}
+
+tbody tr:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+// 10. Forms (Global out-of-the-box styling)
+// ---------------------------------------------------------
+label {
+  display: block;
+  font-weight: var(--#{$prefix}-weight-medium);
+  margin-bottom: var(--#{$prefix}-space-xs);
+  font-size: var(--#{$prefix}-text-sm);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="url"],
+input[type="tel"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="time"],
+textarea,
+select {
+  display: block;
+  width: 100%;
+  padding: var(--#{$prefix}-space-sm) var(--#{$prefix}-space-md);
+  font-family: var(--#{$prefix}-font-body);
+  font-size: var(--#{$prefix}-text-sm);
+  line-height: var(--#{$prefix}-line-height);
+  color: var(--#{$prefix}-neutral-900);
+  background-color: white;
+  border: var(--#{$prefix}-border-width-md) solid var(--#{$prefix}-neutral-300);
+  border-radius: var(--#{$prefix}-radius-md);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--#{$prefix}-primary);
+    box-shadow: 0 0 0 3px rgba(var(--#{$prefix}-primary), 0.15);
+  }
+
+  &::placeholder {
+    color: var(--#{$prefix}-neutral-500);
+  }
+}
+
+fieldset {
+  border: var(--#{$prefix}-border-width-md) solid var(--#{$prefix}-neutral-300);
+  border-radius: var(--#{$prefix}-radius-md);
+  padding: var(--#{$prefix}-space-lg);
+  margin: var(--#{$prefix}-margin-md) 0;
+}
+
+legend {
+  font-weight: var(--#{$prefix}-weight-bold);
+  padding: 0 var(--#{$prefix}-space-sm);
+}
+
+// 11. Buttons (Semantic — unstyled buttons get sensible defaults)
+// ---------------------------------------------------------
+button,
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--#{$prefix}-space-sm) var(--#{$prefix}-space-lg);
+  font-family: var(--#{$prefix}-font-body);
+  font-size: var(--#{$prefix}-text-sm);
+  font-weight: var(--#{$prefix}-weight-medium);
+  line-height: var(--#{$prefix}-line-height);
+  color: white;
+  background-color: var(--#{$prefix}-primary);
+  border: var(--#{$prefix}-border-width-md) solid transparent;
+  border-radius: var(--#{$prefix}-radius-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+
+  &:hover {
+    filter: brightness(1.1);
+    box-shadow: var(--#{$prefix}-shadow-sm);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--#{$prefix}-primary);
+    outline-offset: 2px;
+  }
+}
+
+// 12. Images & Figures
+// ---------------------------------------------------------
+figure {
+  margin: var(--#{$prefix}-margin-md) 0;
+}
+
+figcaption {
+  font-size: var(--#{$prefix}-text-xs);
+  color: var(--#{$prefix}-neutral-500);
+  margin-top: var(--#{$prefix}-space-xs);
+  font-style: italic;
+}
+
+// 13. Abbreviations
+// ---------------------------------------------------------
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+// 14. Mark (Highlight)
+// ---------------------------------------------------------
+mark {
+  background: rgba(245, 158, 11, 0.3); // Warning-tinted highlight
+  padding: 0.1em 0.25em;
+  border-radius: var(--#{$prefix}-radius-sm);
+}
+
+// 15. Details / Summary (Native Accordion)
+// ---------------------------------------------------------
+details {
+  border: var(--#{$prefix}-border-width-md) solid var(--#{$prefix}-neutral-300);
+  border-radius: var(--#{$prefix}-radius-md);
+  padding: var(--#{$prefix}-space-md);
+  margin: var(--#{$prefix}-margin-sm) 0;
+
+  &[open] summary {
+    margin-bottom: var(--#{$prefix}-space-md);
+    border-bottom: var(--#{$prefix}-border-width-sm) solid var(--#{$prefix}-neutral-300);
+    padding-bottom: var(--#{$prefix}-space-sm);
+  }
+}
+
+summary {
+  cursor: pointer;
+  font-weight: var(--#{$prefix}-weight-medium);
+  list-style: none;
+
+  &::-webkit-details-marker { display: none; }
+
+  &::before {
+    content: '▶';
+    display: inline-block;
+    margin-right: var(--#{$prefix}-space-sm);
+    font-size: 0.75em;
+    transition: transform 0.2s ease;
+  }
+
+  details[open] > &::before {
+    transform: rotate(90deg);
+  }
+}
+
+// 16. Progress
+// ---------------------------------------------------------
+progress {
+  width: 100%;
+  height: 0.5rem;
+  border: none;
+  border-radius: var(--#{$prefix}-radius-pill);
+  margin: var(--#{$prefix}-margin-sm) 0;
+  appearance: none;
+
+  &::-webkit-progress-bar {
+    background: var(--#{$prefix}-neutral-300);
+    border-radius: var(--#{$prefix}-radius-pill);
+  }
+
+  &::-webkit-progress-value {
+    background: var(--#{$prefix}-primary);
+    border-radius: var(--#{$prefix}-radius-pill);
+  }
+
+  &::-moz-progress-bar {
+    background: var(--#{$prefix}-primary);
+    border-radius: var(--#{$prefix}-radius-pill);
+  }
+}
+
+// 17. Dialog (Native Modal)
+// ---------------------------------------------------------
+dialog {
+  border: none;
+  border-radius: var(--#{$prefix}-radius-lg);
+  padding: var(--#{$prefix}-space-xl);
+  box-shadow: var(--#{$prefix}-shadow-lg);
+  max-width: 32rem;
+  width: 90%;
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+}
