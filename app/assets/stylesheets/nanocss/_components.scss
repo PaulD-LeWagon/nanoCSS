@@ -1,0 +1,382 @@
+/* ==========================================================================
+   nanoCSS: Components
+   18 Core framework components mapped dynamically to semantic variables
+   Reference: design/UI_COMPONENTS.md
+   ========================================================================== */
+
+/* 1. Hero Banner */
+.#{$prefix}-hero {
+  background-color: var(--#{$prefix}-neutral-100, #f3f4f6);
+  padding: var(--#{$prefix}-space-xxl, 4rem) var(--#{$prefix}-space-lg, 1.5rem);
+  text-align: center;
+  border-radius: var(--#{$prefix}-radius-lg, 0.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 2. Carousel */
+.#{$prefix}-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: var(--#{$prefix}-space-md, 1rem);
+  padding-bottom: var(--#{$prefix}-space-sm, 0.5rem);
+  scroll-behavior: smooth;
+  & > * {
+    scroll-snap-align: center;
+    flex-shrink: 0;
+  }
+}
+
+/* 4. Card */
+.#{$prefix}-card {
+  background-color: var(--#{$prefix}-neutral-100, #f3f4f6);
+  border: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+  border-radius: var(--#{$prefix}-radius-md, 0.25rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  header, footer, .card-body {
+    padding: var(--#{$prefix}-space-md, 1rem);
+  }
+  
+  header {
+    border-bottom: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+  }
+  footer {
+    border-top: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+    margin-top: auto; /* Push to bottom if height is fixed */
+  }
+}
+
+/* 5. Dropdown */
+.#{$prefix}-dropdown {
+  position: relative;
+  display: inline-block;
+  
+  ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    background-color: var(--#{$prefix}-neutral-50, #f9fafb);
+    border: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+    border-radius: var(--#{$prefix}-radius-sm, 0.125rem);
+    box-shadow: var(--#{$prefix}-shadow-lg, 0 10px 15px -3px rgba(0,0,0,0.1));
+    list-style: none;
+    margin: var(--#{$prefix}-space-xs, 0.25rem) 0 0 0;
+    padding: 0;
+    min-width: 10rem;
+    
+    li {
+      padding: var(--#{$prefix}-space-sm, 0.5rem) var(--#{$prefix}-space-md, 1rem);
+      cursor: pointer;
+      &:hover {
+        background-color: var(--#{$prefix}-neutral-200, #e5e7eb);
+      }
+    }
+  }
+
+  /* Reveal logic: when wrapping a details or simple focus-within block */
+  &:focus-within ul,
+  &.open ul {
+    display: block;
+  }
+}
+
+/* 6. Group (Input / Button groups joining elements) */
+.#{$prefix}-group {
+  display: flex;
+  align-items: stretch;
+  
+  > * {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    position: relative;
+    
+    &:focus-within {
+      z-index: 10;
+    }
+  }
+  
+  > *:first-child {
+    border-top-left-radius: var(--#{$prefix}-radius-md, 0.25rem) !important;
+    border-bottom-left-radius: var(--#{$prefix}-radius-md, 0.25rem) !important;
+  }
+  
+  > *:last-child {
+    border-top-right-radius: var(--#{$prefix}-radius-md, 0.25rem) !important;
+    border-bottom-right-radius: var(--#{$prefix}-radius-md, 0.25rem) !important;
+  }
+}
+
+/* 7. Loading Indicator */
+.#{$prefix}-loader {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--#{$prefix}-primary, #3b82f6);
+  animation: #{$prefix}-spin 1s linear infinite;
+}
+@keyframes #{$prefix}-spin { 
+  to { transform: rotate(360deg); } 
+}
+
+/* 8. Modal */
+dialog.#{$prefix}-modal {
+  padding: var(--#{$prefix}-space-lg, 1.5rem);
+  border: none;
+  border-radius: var(--#{$prefix}-radius-lg, 0.5rem);
+  box-shadow: var(--#{$prefix}-shadow-xl, 0 20px 25px -5px rgba(0,0,0,0.1));
+  max-width: 32rem;
+  width: 100%;
+  
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* 9. Nav / NavBar */
+.#{$prefix}-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--#{$prefix}-space-md, 1rem);
+  background: var(--#{$prefix}-neutral-50, #f9fafb);
+  border-bottom: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+
+  .nav-menu {
+    display: flex;
+    gap: var(--#{$prefix}-space-md, 1rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    .nav-menu {
+      display: none; /* Mobile logic applied externally via class toggle */
+      flex-direction: column;
+      width: 100%;
+      margin-top: var(--#{$prefix}-space-md, 1rem);
+      &.open { display: flex; }
+    }
+  }
+}
+
+/* 11. Tooltip */
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+
+  &::before, &::after {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 100;
+  }
+  
+  /* Triangle */
+  &::before {
+    content: '';
+    border: 5px solid transparent;
+    border-top-color: #333;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  /* Bubble */
+  &::after {
+    content: attr(data-tooltip);
+    background: #333;
+    color: #fff;
+    padding: var(--#{$prefix}-space-xs, 0.25rem) var(--#{$prefix}-space-sm, 0.5rem);
+    border-radius: var(--#{$prefix}-radius-sm, 0.125rem);
+    font-size: var(--#{$prefix}-text-xs, 0.75rem);
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-5px);
+    white-space: nowrap;
+  }
+
+  &:hover::before, &:hover::after, &:focus::before, &:focus::after {
+    opacity: 1;
+  }
+}
+
+/* 12. Buttons */
+.#{$prefix}-btn-primary {
+  background-color: var(--#{$prefix}-primary, #3b82f6);
+  color: #fff;
+  border: 1px solid var(--#{$prefix}-primary, #3b82f6);
+}
+.#{$prefix}-btn-secondary {
+  background-color: var(--#{$prefix}-secondary, #8b5cf6);
+  color: #fff;
+  border: 1px solid var(--#{$prefix}-secondary, #8b5cf6);
+}
+.#{$prefix}-btn-outline {
+  background-color: transparent;
+  color: var(--#{$prefix}-primary, #3b82f6);
+  border: 1px solid var(--#{$prefix}-primary, #3b82f6);
+  &:hover {
+    background-color: var(--#{$prefix}-primary, #3b82f6);
+    color: #fff;
+  }
+}
+
+/* 13. Badges */
+.#{$prefix}-badge {
+  display: inline-block;
+  padding: 0.125rem var(--#{$prefix}-space-sm, 0.5rem);
+  font-size: var(--#{$prefix}-text-xs, 0.75rem);
+  font-weight: var(--#{$prefix}-weight-bold, 700);
+  border-radius: 9999px; /* Pill */
+  background-color: var(--#{$prefix}-info, #3b82f6);
+  color: #fff;
+
+  &.success { background-color: var(--#{$prefix}-success, #10b981); }
+  &.warning { background-color: var(--#{$prefix}-warning, #f59e0b); }
+  &.danger { background-color: var(--#{$prefix}-danger, #ef4444); }
+}
+
+/* 14. Tags */
+.#{$prefix}-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--#{$prefix}-neutral-200, #e5e7eb);
+  color: var(--#{$prefix}-neutral-800, #1f2937);
+  padding: var(--#{$prefix}-space-xs, 0.25rem) var(--#{$prefix}-space-sm, 0.5rem);
+  border-radius: var(--#{$prefix}-radius-sm, 0.125rem);
+  font-size: var(--#{$prefix}-text-sm, 0.875rem);
+
+  button {
+    background: transparent;
+    border: none;
+    color: currentColor;
+    margin-left: var(--#{$prefix}-space-sm, 0.5rem);
+    padding: 0;
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0.6;
+    &:hover { opacity: 1; }
+  }
+}
+
+/* 15. Breadcrumbs */
+nav[aria-label="breadcrumb"] {
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--#{$prefix}-space-sm, 0.5rem);
+  }
+
+  li:not(:last-child)::after {
+    content: '/';
+    margin-left: var(--#{$prefix}-space-sm, 0.5rem);
+    color: var(--#{$prefix}-neutral-400, #9ca3af);
+  }
+
+  li:last-child {
+    color: var(--#{$prefix}-neutral-600, #4b5563);
+    pointer-events: none;
+  }
+}
+
+/* 16. Pagination */
+.#{$prefix}-pagination {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: var(--#{$prefix}-space-xs, 0.25rem);
+
+  li {
+    a, span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+      border-radius: var(--#{$prefix}-radius-sm, 0.125rem);
+      text-decoration: none;
+      color: var(--#{$prefix}-primary, #3b82f6);
+    }
+
+    &.active span, a:hover {
+      background-color: var(--#{$prefix}-primary, #3b82f6);
+      color: #fff;
+      border-color: var(--#{$prefix}-primary, #3b82f6);
+    }
+    
+    &.disabled span {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: var(--#{$prefix}-neutral-100, #f3f4f6);
+    }
+  }
+}
+
+/* 17. Tabs */
+.#{$prefix}-tabs {
+  display: flex;
+  flex-wrap: wrap;
+
+  & > input[type="radio"] {
+    display: none;
+  }
+
+  & > label {
+    padding: var(--#{$prefix}-space-sm, 0.5rem) var(--#{$prefix}-space-md, 1rem);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    font-weight: var(--#{$prefix}-weight-medium, 500);
+    order: 1;
+    color: var(--#{$prefix}-neutral-600, #4b5563);
+    
+    &:hover {
+      color: var(--#{$prefix}-primary, #3b82f6);
+    }
+  }
+
+  & > .panel {
+    display: none;
+    width: 100%;
+    order: 2;
+    padding: var(--#{$prefix}-space-md, 1rem);
+    border-top: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+  }
+
+  /* When radio is checked, highly active UI logic triggers */
+  & > input[type="radio"]:checked + label {
+    color: var(--#{$prefix}-primary, #3b82f6);
+    border-bottom-color: var(--#{$prefix}-primary, #3b82f6);
+  }
+
+  & > input[id^="tab1"]:checked ~ #panel1,
+  & > input[id^="tab2"]:checked ~ #panel2,
+  & > input[id^="tab3"]:checked ~ #panel3 {
+    display: block; /* Requires IDs to strictly match, or we could use generic sibling logic if structural order is tight */
+  }
+
+  /* Cleaner :has() approach if supported, though the ID fallback above is safer */
+  &:has(> input[type="radio"]:nth-of-type(1):checked) > .panel:nth-of-type(1),
+  &:has(> input[type="radio"]:nth-of-type(2):checked) > .panel:nth-of-type(2),
+  &:has(> input[type="radio"]:nth-of-type(3):checked) > .panel:nth-of-type(3) {
+    display: block;
+  }
+}

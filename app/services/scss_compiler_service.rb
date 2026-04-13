@@ -39,6 +39,12 @@ class ScssCompilerService
       # 5. Semantic HTML base styling — Nano tier (FR-005)
       base_scss = File.read(File.join(base_path, '_base.scss'))
 
+      # 5a. UI Components styling
+      components_scss = ""
+      if [:standard, :full].include?(@tier)
+        components_scss = File.read(File.join(base_path, '_components.scss'))
+      end
+
       # 6. Standard tier: utility classes
       utilities_scss = ""
       if [:standard, :full].include?(@tier)
@@ -53,6 +59,7 @@ class ScssCompilerService
         custom_props_scss,
         reset_scss,
         base_scss,
+        components_scss,
         utilities_scss
       ].join("\n\n")
 

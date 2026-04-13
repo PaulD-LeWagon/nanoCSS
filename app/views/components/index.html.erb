@@ -4,13 +4,14 @@
   <title>Component Catalogue - nanoCSS</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
+  <%= javascript_importmap_tags %>
   <style><%= @css %></style>
   <style>
-    /* Styling for the catalogue page itself - keeping it isolated */
-    body { font-family: system-ui, sans-serif; background: #f9fafb; margin: 0; padding: 2rem; color: #111827; }
+    /* Styling for the catalogue page wrapper itself */
+    body { background: #f9fafb; margin: 0; padding: 2rem; color: #111827; }
     .component-section { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 2rem; overflow: hidden; }
     .component-header { padding: 1.5rem; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
-    .component-header h2 { margin: 0; font-size: 1.25rem; font-weight: 600; }
+    .component-header h2 { margin: 0; font-size: 1.25rem; font-weight: 600; font-family: sans-serif; }
     .component-preview { padding: 2rem; background: #f3f4f6; }
     .component-code { background: #1f2937; color: #f3f4f6; padding: 1.5rem; position: relative; }
     .component-code pre { margin: 0; overflow-x: auto; font-family: monospace; font-size: 0.875rem; }
@@ -18,7 +19,7 @@
     .copy-btn:hover { background: #6b7280; }
   </style>
 </head>
-<body>
+<body style="font-family: system-ui, sans-serif;">
   <div style="max-width: 1200px; margin: 0 auto;">
     <div style="margin-bottom: 3rem;">
       <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">Component Catalogue</h1>
@@ -27,13 +28,11 @@
 
     <!-- 0. Text Banner -->
     <section class="component-section" data-controller="clipboard">
-      <div class="component-header">
-        <h2>Text Banner</h2>
-      </div>
+      <div class="component-header"><h2>Text Banner</h2></div>
       <div class="component-preview">
         <hgroup>
-          <h1 style="font-family: var(--<%= @prefix %>-font-heading); font-size: var(--<%= @prefix %>-text-xxl); margin-bottom: 0.25rem;">Main Headline Here</h1>
-          <p style="font-family: var(--<%= @prefix %>-font-subtitle); font-size: var(--<%= @prefix %>-text-lg); color: var(--<%= @prefix %>-neutral-500); margin-top: 0;">This is the supporting subtitle text directly underneath.</p>
+          <h1>Main Headline Here</h1>
+          <p>This is the supporting subtitle text directly underneath.</p>
         </hgroup>
       </div>
       <div class="component-code">
@@ -47,14 +46,12 @@
 
     <!-- 1. Hero Banner -->
     <section class="component-section" data-controller="clipboard">
-      <div class="component-header">
-        <h2>Hero Banner</h2>
-      </div>
+      <div class="component-header"><h2>Hero Banner</h2></div>
       <div class="component-preview">
-        <section class="<%= @prefix %>-hero" style="background: var(--<%= @prefix %>-neutral-100); padding: var(--<%= @prefix %>-space-xxl) var(--<%= @prefix %>-space-lg); text-align: center; border-radius: var(--<%= @prefix %>-radius-lg);">
-          <h1 style="font-family: var(--<%= @prefix %>-font-heading); font-size: var(--<%= @prefix %>-text-xxl); margin-bottom: var(--<%= @prefix %>-margin-md);">Big Hero Headline</h1>
-          <p style="margin-bottom: var(--<%= @prefix %>-margin-lg); font-size: var(--<%= @prefix %>-text-lg);">Supporting value prop goes here, expanding upon the headline.</p>
-          <button style="background: var(--<%= @prefix %>-primary); color: white; padding: var(--<%= @prefix %>-space-sm) var(--<%= @prefix %>-space-lg); border: none; border-radius: var(--<%= @prefix %>-radius-md); font-weight: bold; cursor: pointer;">Get Started</button>
+        <section class="<%= @prefix %>-hero">
+          <h1>Big Hero Headline</h1>
+          <p>Supporting value prop goes here, expanding upon the headline.</p>
+          <button class="<%= @prefix %>-btn-primary">Get Started</button>
         </section>
       </div>
       <div class="component-code">
@@ -62,24 +59,38 @@
         <pre><code data-clipboard-target="source">&lt;section class="<%= @prefix %>-hero"&gt;
   &lt;h1&gt;Big Hero Headline&lt;/h1&gt;
   &lt;p&gt;Supporting value prop goes here, expanding upon the headline.&lt;/p&gt;
-  &lt;button&gt;Get Started&lt;/button&gt;
+  &lt;button class="<%= @prefix %>-btn-primary"&gt;Get Started&lt;/button&gt;
 &lt;/section&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 2. Carousel -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Carousel</h2></div>
+      <div class="component-preview">
+        <div class="<%= @prefix %>-carousel">
+          <div class="<%= @prefix %>-card" style="width: 250px; flex-shrink: 0;"><div class="card-body">Slide 1</div></div>
+          <div class="<%= @prefix %>-card" style="width: 250px; flex-shrink: 0;"><div class="card-body">Slide 2</div></div>
+          <div class="<%= @prefix %>-card" style="width: 250px; flex-shrink: 0;"><div class="card-body">Slide 3</div></div>
+          <div class="<%= @prefix %>-card" style="width: 250px; flex-shrink: 0;"><div class="card-body">Slide 4</div></div>
+        </div>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;div class="<%= @prefix %>-carousel"&gt;
+  &lt;div class="<%= @prefix %>-card" style="width: 250px;"&gt;...&lt;/div&gt;
+  &lt;div class="<%= @prefix %>-card" style="width: 250px;"&gt;...&lt;/div&gt;
+&lt;/div&gt;</code></pre>
       </div>
     </section>
 
     <!-- 3. Accordion -->
     <section class="component-section" data-controller="clipboard">
-      <div class="component-header">
-        <h2>Accordion</h2>
-      </div>
+      <div class="component-header"><h2>Accordion</h2></div>
       <div class="component-preview">
-        <details style="border: 1px solid var(--<%= @prefix %>-neutral-300); border-radius: var(--<%= @prefix %>-radius-md); padding: var(--<%= @prefix %>-space-md); margin-bottom: var(--<%= @prefix %>-space-sm); background: white;">
-          <summary style="cursor: pointer; font-weight: bold;">Accordion Title 1</summary>
-          <p style="margin-top: var(--<%= @prefix %>-space-md);">Here is the hidden content that is now revealed natively by the browser.</p>
-        </details>
-        <details style="border: 1px solid var(--<%= @prefix %>-neutral-300); border-radius: var(--<%= @prefix %>-radius-md); padding: var(--<%= @prefix %>-space-md); background: white;" open>
-          <summary style="cursor: pointer; font-weight: bold; border-bottom: 1px solid var(--<%= @prefix %>-neutral-300); padding-bottom: var(--<%= @prefix %>-space-sm); margin-bottom: var(--<%= @prefix %>-space-md);">Accordion Title 2</summary>
-          <p>This details element is open by default. It's fully semantic HTML5.</p>
+        <details>
+          <summary>Accordion Title 1</summary>
+          <p>Here is the hidden content that is now revealed natively by the browser.</p>
         </details>
       </div>
       <div class="component-code">
@@ -91,19 +102,277 @@
       </div>
     </section>
 
-    <!-- 12. Buttons -->
+    <!-- 4. Card -->
     <section class="component-section" data-controller="clipboard">
-      <div class="component-header">
-        <h2>Buttons</h2>
-      </div>
-      <div class="component-preview" style="display: flex; gap: 1rem; align-items: center;">
-        <button style="background: var(--<%= @prefix %>-primary); color: white; padding: var(--<%= @prefix %>-space-sm) var(--<%= @prefix %>-space-lg); border: none; border-radius: var(--<%= @prefix %>-radius-md); cursor: pointer;">Primary</button>
-        <button style="background: transparent; color: var(--<%= @prefix %>-primary); border: 2px solid var(--<%= @prefix %>-primary); padding: var(--<%= @prefix %>-space-sm) var(--<%= @prefix %>-space-lg); border-radius: var(--<%= @prefix %>-radius-md); cursor: pointer;">Secondary</button>
+      <div class="component-header"><h2>Card</h2></div>
+      <div class="component-preview">
+        <article class="<%= @prefix %>-card" style="max-width: 400px;">
+          <header>Card Title</header>
+          <div class="card-body">This is the main body of the card, populated with standard readable text.</div>
+          <footer><button class="<%= @prefix %>-btn-primary">Action</button></footer>
+        </article>
       </div>
       <div class="component-code">
         <button class="copy-btn" data-action="clipboard#copy">Copy</button>
-        <pre><code data-clipboard-target="source">&lt;button&gt;Primary&lt;/button&gt;
-&lt;button class="<%= @prefix %>-btn-secondary"&gt;Secondary&lt;/button&gt;</code></pre>
+        <pre><code data-clipboard-target="source">&lt;article class="<%= @prefix %>-card"&gt;
+  &lt;header&gt;Card Title&lt;/header&gt;
+  &lt;div class="card-body"&gt;Content...&lt;/div&gt;
+  &lt;footer&gt;&lt;button class="<%= @prefix %>-btn-primary"&gt;Action&lt;/button&gt;&lt;/footer&gt;
+&lt;/article&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 5. Dropdown -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Dropdown</h2></div>
+      <div class="component-preview" style="height: 200px;">
+        <div class="<%= @prefix %>-dropdown">
+          <button class="<%= @prefix %>-btn-outline">Actions ▼</button>
+          <ul>
+            <li>Edit Profile</li>
+            <li>Settings</li>
+             <li>Logout</li>
+          </ul>
+        </div>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;div class="<%= @prefix %>-dropdown" tabindex="0"&gt;
+  &lt;button class="<%= @prefix %>-btn-outline"&gt;Actions ▼&lt;/button&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Edit Profile&lt;/li&gt;
+    &lt;li&gt;Settings&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 6. Group -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Group</h2></div>
+      <div class="component-preview">
+        <div class="<%= @prefix %>-group">
+          <input type="text" placeholder="Search..." style="border: 1px solid #d1d5db; padding: 0.5rem;" />
+          <button class="<%= @prefix %>-btn-primary">Submit</button>
+        </div>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;div class="<%= @prefix %>-group"&gt;
+  &lt;input type="text" placeholder="Search..." /&gt;
+  &lt;button class="<%= @prefix %>-btn-primary"&gt;Submit&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 7. Loading -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Loading</h2></div>
+      <div class="component-preview">
+        <span class="<%= @prefix %>-loader"></span>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;span class="<%= @prefix %>-loader"&gt;&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 8. Modal -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Modal</h2></div>
+      <div class="component-preview">
+        <button class="<%= @prefix %>-btn-outline" onclick="document.getElementById('demo-modal').showModal()">Open Modal</button>
+        <dialog id="demo-modal" class="<%= @prefix %>-modal">
+          <h2 style="margin-top: 0;">Modal Title</h2>
+          <p>Please confirm your action to proceed.</p>
+          <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+            <button class="<%= @prefix %>-btn-outline" onclick="document.getElementById('demo-modal').close()">Cancel</button>
+            <button class="<%= @prefix %>-btn-primary" onclick="document.getElementById('demo-modal').close()">Confirm</button>
+          </div>
+        </dialog>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;dialog class="<%= @prefix %>-modal" id="my-modal"&gt;
+  &lt;h2&gt;Modal Title&lt;/h2&gt;
+  &lt;p&gt;Modal content goes here.&lt;/p&gt;
+  &lt;button onclick="document.getElementById('my-modal').close()"&gt;Close&lt;/button&gt;
+&lt;/dialog&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 9. Nav / NavBar -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Nav / NavBar</h2></div>
+      <div class="component-preview">
+        <nav class="<%= @prefix %>-nav">
+          <div style="font-weight: bold; font-size: 1.25rem;">BrandLogo</div>
+          <ul class="nav-menu">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;nav class="<%= @prefix %>-nav"&gt;
+  &lt;div&gt;BrandLogo&lt;/div&gt;
+  &lt;ul class="nav-menu"&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;About&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 10. Progress -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Progress</h2></div>
+      <div class="component-preview">
+        <progress value="45" max="100">45%</progress>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;progress value="45" max="100"&gt;45%&lt;/progress&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 11. Tooltip -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Tooltip</h2></div>
+      <div class="component-preview">
+        <span tabindex="0" data-tooltip="This is an informational message!">Hover or Focus Me</span>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;span data-tooltip="Informational message here"&gt;Hover Me&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 12. Buttons -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Buttons</h2></div>
+      <div class="component-preview" style="display: flex; gap: 1rem; align-items: center;">
+        <button class="<%= @prefix %>-btn-primary">Primary</button>
+        <button class="<%= @prefix %>-btn-secondary">Secondary</button>
+        <button class="<%= @prefix %>-btn-outline">Outline</button>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;button class="<%= @prefix %>-btn-primary"&gt;Primary&lt;/button&gt;
+&lt;button class="<%= @prefix %>-btn-secondary"&gt;Secondary&lt;/button&gt;
+&lt;button class="<%= @prefix %>-btn-outline"&gt;Outline&lt;/button&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 13. Badges -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Badges</h2></div>
+      <div class="component-preview" style="display: flex; gap: 0.5rem;">
+        <span class="<%= @prefix %>-badge">New</span>
+        <span class="<%= @prefix %>-badge success">Approved</span>
+        <span class="<%= @prefix %>-badge warning">Pending</span>
+        <span class="<%= @prefix %>-badge danger">Error</span>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;span class="<%= @prefix %>-badge"&gt;New&lt;/span&gt;
+&lt;span class="<%= @prefix %>-badge success"&gt;Approved&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 14. Tags -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Tags</h2></div>
+      <div class="component-preview" style="display: flex; gap: 0.5rem;">
+        <span class="<%= @prefix %>-tag">Ruby <button type="button" aria-label="Remove">×</button></span>
+        <span class="<%= @prefix %>-tag">Rails <button type="button" aria-label="Remove">×</button></span>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;span class="<%= @prefix %>-tag"&gt;
+  Ruby &lt;button type="button" aria-label="Remove"&gt;×&lt;/button&gt;
+&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 15. Breadcrumbs -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Breadcrumbs</h2></div>
+      <div class="component-preview">
+        <nav aria-label="breadcrumb">
+          <ol>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Products</a></li>
+            <li>Shoes</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;nav aria-label="breadcrumb"&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Products&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;Shoes&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 16. Pagination -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Pagination</h2></div>
+      <div class="component-preview">
+        <ul class="<%= @prefix %>-pagination">
+          <li class="disabled"><span>&laquo;</span></li>
+          <li class="active"><span>1</span></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">&raquo;</a></li>
+        </ul>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;ul class="<%= @prefix %>-pagination"&gt;
+  &lt;li class="disabled"&gt;&lt;span&gt;&amp;laquo;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="active"&gt;&lt;span&gt;1&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#"&gt;&amp;raquo;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 17. Tabs -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Tabs</h2></div>
+      <div class="component-preview">
+        <div class="<%= @prefix %>-tabs">
+          <input type="radio" id="tab1" name="demo_tabs" checked />
+          <label for="tab1">Overview</label>
+          <div class="panel" id="panel1">This is the overview panel content. Zero JS.</div>
+
+          <input type="radio" id="tab2" name="demo_tabs" />
+          <label for="tab2">Specifications</label>
+          <div class="panel" id="panel2">These are the technical specifications. Built natively.</div>
+          
+          <input type="radio" id="tab3" name="demo_tabs" />
+          <label for="tab3">Reviews</label>
+          <div class="panel" id="panel3">Customer reviews go here. Completely semantic.</div>
+        </div>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;div class="<%= @prefix %>-tabs"&gt;
+  &lt;input type="radio" id="tab1" name="tabs" checked /&gt;
+  &lt;label for="tab1"&gt;Tab 1&lt;/label&gt;
+  &lt;div class="panel" id="panel1"&gt;Panel 1 Content&lt;/div&gt;
+
+  &lt;input type="radio" id="tab2" name="tabs" /&gt;
+  &lt;label for="tab2"&gt;Tab 2&lt;/label&gt;
+  &lt;div class="panel" id="panel2"&gt;Panel 2 Content&lt;/div&gt;
+&lt;/div&gt;</code></pre>
       </div>
     </section>
 

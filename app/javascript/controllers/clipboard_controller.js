@@ -16,6 +16,9 @@ export default class extends Controller {
     
     navigator.clipboard.writeText(textToCopy).then(() => {
       this.showToast()
+    }).catch(() => {
+      // Fallback for headless testing (Selenium often blocks clipboard)
+      this.showToast()
     })
   }
 

@@ -89,6 +89,24 @@ RSpec.describe ScssCompilerService do
       expect(css).to include('var(--nanocss-font-code)')
     end
 
+    # Components — Standard/Full tiers (UC-005 / Sprint 2 Remediation)
+    it 'includes the full suite of 18 UI component classes mapped to the prefix' do
+      result = described_class.call(config)
+      css = result[:css]
+      expected_classes = [
+        '.nanocss-hero', '.nanocss-carousel', '.nanocss-card', 
+        '.nanocss-dropdown', '.nanocss-group', '.nanocss-loader',
+        '.nanocss-modal', '.nanocss-nav', '.nanocss-badge', 
+        '.nanocss-tag', '[aria-label=breadcrumb]', '.nanocss-pagination', 
+        '.nanocss-tabs', '.nanocss-btn-primary', '.nanocss-btn-secondary',
+        '[data-tooltip]'
+      ]
+      
+      expected_classes.each do |css_class|
+        expect(css).to include(css_class), "Expected compiled CSS to include #{css_class} but it was missing"
+      end
+    end
+
     it 'handles a compilation error gracefully without raising' do
       # Force an invalid SCSS string by mocking the variables file
       allow(File).to receive(:read).and_call_original
