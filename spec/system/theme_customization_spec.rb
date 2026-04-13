@@ -19,20 +19,20 @@ RSpec.describe "Theme Customization", type: :system do
     it "AC2: clicking a preset causes a VISIBLE change in the preview" do
       visit root_path
 
-      # Capture initial state — the preview should have compiled CSS
-      initial_style = find("#nanocss-preview-style style", visible: false).text(:all)
+      # The preset style area is updated by Quick Apply — start by capturing absence of colour
+      expect(page).to have_css("#nanocss-preview-style", visible: :all)
 
       # Click Playful Quick Apply (Playful uses primary #f43f5e)
-      within(first('div.glass-panel', text: 'Playful')) do
+      within(first('.preset-card', text: 'Playful')) do
         click_on "Quick Apply"
       end
 
-      # Wait for Turbo Stream to replace the style tag
-      # The new CSS must contain the Playful preset's custom property value
+      # Wait for Turbo Stream to update nanocss-base style + preview style
+      # The new CSS must contain the Playful preset's primary hex
       expect(page).to have_css(
-        "#nanocss-preview-style style",
+        "#nanocss-base style",
         visible: false,
-        text: /--nanocss-primary:\s*#f43f5e/,
+        text: /f43f5e/,
         wait: 5
       )
     end

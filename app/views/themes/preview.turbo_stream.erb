@@ -1,2 +1,11 @@
+<%# preview.turbo_stream.erb
+    Updates three targets on every preview request:
+    1. nanocss-preview-style — the style tag scoped to the /configure preview pane
+    2. nanocss-base — the global layout style tag, so the app chrome updates too (dogfooding)
+    3. harmony-options — the colour harmony suggestion swatches below the colour pickers
+    Traces: design/BACKLOG.md UC-002 AC4, UC-006 %>
 <%= turbo_stream.update "nanocss-preview-style", "<style>#{@css}</style>".html_safe %>
-<%= turbo_stream.replace "harmony-options", partial: "themes/harmony_options", locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic } %>
+<%= turbo_stream.update "nanocss-base", "<style>#{@css}</style>".html_safe %>
+<%= turbo_stream.replace "harmony-options",
+      partial: "themes/harmony_options",
+      locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic } %>

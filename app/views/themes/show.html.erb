@@ -1,170 +1,217 @@
-<div style="display: flex; flex: 1; height: calc(100vh - 73px);">
-  <!-- LEFT PANE: CONFIG SIDEBAR -->
-  <aside class="glass-panel" style="width: 420px; border-radius: 0; border: none; border-right: 1px solid var(--color-border); overflow-y: auto; padding: 2rem;">
-    <h2 style="font-size: 1.5rem; margin-bottom: 2rem;">Theme Tokens</h2>
-    
+<%# Configuration Page — SCR-002
+    Traces: design/BACKLOG.md UC-002, UC-003, UC-004, UC-006
+    Layout: configure-layout (sidebar + preview) defined in application.css %>
+
+<div class="configure-layout">
+
+  <%# ── LEFT: Config Sidebar ─────────────────────────────────────────────── %>
+  <aside class="config-sidebar">
+    <h2>Theme Tokens</h2>
+
     <%= form_with model: @config, url: theme_preview_path, method: :post, data: { turbo_stream: true } do |f| %>
 
-      <%# ===== BRAND COLOURS (Always visible — Basic Mode) ===== %>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
-        <div class="form-group" style="margin: 0;">
+      <%# Brand Colours — always visible (Basic Mode AC1) %>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.25rem;">
+        <div>
           <%= f.label :primary, "Primary", class: "form-label" %>
-          <%= f.color_field :primary, oninput: "this.form.requestSubmit()", style: "width: 100%; height: 3rem; border:none; border-radius: 0.25rem; background: transparent; cursor: pointer;" %>
+          <%= f.color_field :primary, oninput: "this.form.requestSubmit()", style: "width:100%; height:2.75rem; border:1px solid var(--chrome-border); border-radius:0.5rem; background:transparent; cursor:pointer; padding:0.2rem;" %>
         </div>
-        <div class="form-group" style="margin: 0;">
+        <div>
           <%= f.label :secondary, "Secondary", class: "form-label" %>
-          <%= f.color_field :secondary, oninput: "this.form.requestSubmit()", style: "width: 100%; height: 3rem; border:none; border-radius: 0.25rem; background: transparent; cursor: pointer;" %>
+          <%= f.color_field :secondary, oninput: "this.form.requestSubmit()", style: "width:100%; height:2.75rem; border:1px solid var(--chrome-border); border-radius:0.5rem; background:transparent; cursor:pointer; padding:0.2rem;" %>
         </div>
-        <div class="form-group" style="margin: 0;">
+        <div>
           <%= f.label :tertiary, "Tertiary", class: "form-label" %>
-          <%= f.color_field :tertiary, oninput: "this.form.requestSubmit()", style: "width: 100%; height: 3rem; border:none; border-radius: 0.25rem; background: transparent; cursor: pointer;" %>
+          <%= f.color_field :tertiary, oninput: "this.form.requestSubmit()", style: "width:100%; height:2.75rem; border:1px solid var(--chrome-border); border-radius:0.5rem; background:transparent; cursor:pointer; padding:0.2rem;" %>
         </div>
       </div>
 
-      <%# ===== HARMONY (Sprint 2 placeholder — functional stub) ===== %>
-      <%# ===== HARMONY (Sprint 2 - Auto Harmony Generator) ===== %>
-      <%= render partial: "themes/harmony_options", locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic } %>
+      <%# Auto Harmony (UC-006) %>
+      <div id="harmony-options">
+        <%= render partial: "themes/harmony_options", locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic } %>
+      </div>
 
-      <div style="margin: 1.5rem 0; border-bottom: 1px solid var(--color-border);"></div>
+      <hr class="config-divider">
 
-      <%# ===== FONTS (Always visible — Basic Mode per UC-002 AC1) ===== %>
-      <div class="form-group">
+      <%# Fonts — Basic Mode (AC1) %>
+      <div>
         <%= f.label :font_heading, "Headings Font", class: "form-label" %>
-        <%= f.text_field :font_heading, class: "form-input", oninput: "this.form.requestSubmit()" %>
+        <%= f.text_field :font_heading, class: "form-input", oninput: "this.form.requestSubmit()", placeholder: "Inter" %>
       </div>
-      <div class="form-group">
+      <div>
         <%= f.label :font_subtitle, "Subtitle Font", class: "form-label" %>
-        <%= f.text_field :font_subtitle, class: "form-input", oninput: "this.form.requestSubmit()" %>
+        <%= f.text_field :font_subtitle, class: "form-input", oninput: "this.form.requestSubmit()", placeholder: "Inter" %>
       </div>
-      <div class="form-group">
+      <div>
         <%= f.label :font_body, "Body Font", class: "form-label" %>
-        <%= f.text_field :font_body, class: "form-input", oninput: "this.form.requestSubmit()" %>
+        <%= f.text_field :font_body, class: "form-input", oninput: "this.form.requestSubmit()", placeholder: "Roboto" %>
       </div>
-      <div class="form-group">
+      <div>
         <%= f.label :font_code, "Code Font", class: "form-label" %>
-        <%= f.text_field :font_code, class: "form-input", oninput: "this.form.requestSubmit()" %>
+        <%= f.text_field :font_code, class: "form-input", oninput: "this.form.requestSubmit()", placeholder: "Fira Code" %>
       </div>
 
-      <div style="margin: 1.5rem 0; border-bottom: 1px solid var(--color-border);"></div>
+      <hr class="config-divider">
 
-      <%# ===== ANCHOR VARIABLES (Always visible — Basic Mode per UC-002 AC1) ===== %>
-      <div class="form-group">
+      <%# Anchor Variables — Basic Mode (AC1) %>
+      <div>
         <%= f.label :base_typography, "Typography Base", class: "form-label" %>
         <%= f.text_field :base_typography, class: "form-input", oninput: "this.form.requestSubmit()" %>
       </div>
-      <div class="form-group">
+      <div>
         <%= f.label :base_space, "Spacing Base", class: "form-label" %>
         <%= f.text_field :base_space, class: "form-input", oninput: "this.form.requestSubmit()" %>
       </div>
-      <div class="form-group">
+      <div>
         <%= f.label :base_radius, "Border Radius Base", class: "form-label" %>
         <%= f.text_field :base_radius, class: "form-input", oninput: "this.form.requestSubmit()" %>
       </div>
-      <div class="form-group">
+      <div>
         <%= f.label :base_border_width, "Border Width Base", class: "form-label" %>
         <%= f.text_field :base_border_width, class: "form-input", oninput: "this.form.requestSubmit()" %>
       </div>
 
-      <div style="margin: 1.5rem 0; border-bottom: 1px solid var(--color-border);"></div>
+      <hr class="config-divider">
 
-      <%# ===== ADVANCED OPTIONS TOGGLE ===== %>
-      <div class="form-group">
-        <label class="form-label" style="display: flex; align-items: center; cursor: pointer;">
-          <input type="checkbox" id="advanced-toggle" style="margin-right: 0.5rem;" onchange="
-            const opts = document.getElementById('advanced-options');
-            if(this.checked) {
-              opts.style.display = 'block';
-              opts.style.opacity = '1';
-            } else {
-              opts.style.display = 'none';
-              opts.style.opacity = '0';
-            }
-          ">
+      <%# Advanced toggle (AC-UC002) %>
+      <div>
+        <label class="form-label" style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+          <input type="checkbox" id="advanced-toggle"
+            onchange="const opts=document.getElementById('advanced-options'); opts.style.display=this.checked?'block':'none';">
           Advanced Options
         </label>
       </div>
 
-      <div id="advanced-options" style="display: none; transition: opacity 0.3s ease;">
-        <div class="form-group">
+      <div id="advanced-options" style="display:none;">
+        <div>
           <%= f.label :base_margin, "Margin Base", class: "form-label" %>
           <%= f.text_field :base_margin, class: "form-input", oninput: "this.form.requestSubmit()" %>
         </div>
-        <div class="form-group">
+        <div>
           <%= f.label :prefix, "Namespace Prefix", class: "form-label" %>
           <%= f.text_field :prefix, class: "form-input", oninput: "this.form.requestSubmit()" %>
         </div>
-        <div class="form-group">
+        <div>
           <%= f.label :text_shadow, "Text Shadow", class: "form-label" %>
           <%= f.text_field :text_shadow, class: "form-input", oninput: "this.form.requestSubmit()" %>
         </div>
-        <div class="form-group">
+        <div>
           <%= f.label :drop_shadow, "Drop Shadow", class: "form-label" %>
           <%= f.text_field :drop_shadow, class: "form-input", oninput: "this.form.requestSubmit()" %>
         </div>
       </div>
-      
-      <div style="margin: 1.5rem 0; border-bottom: 1px solid var(--color-border);"></div>
-      
-      <%# ===== ACTION BUTTONS ===== %>
-      <div style="display: flex; gap: 1rem; flex-direction: column;">
-        <%= f.submit "Download", formaction: theme_download_path, formmethod: :post, data: { turbo: false }, class: "btn btn-primary" %>
-        <button type="button" class="btn btn-outline" onclick="navigator.clipboard.writeText(window.location.origin + '/configure?theme=<%= @config.to_base64 %>'); alert('Share link copied to clipboard!');">Copy Share Link</button>
+
+      <hr class="config-divider">
+
+      <%# Actions %>
+      <div style="display:flex; flex-direction:column; gap:0.75rem;">
+        <%= f.submit "⬇ Download nanoCSS",
+              formaction: theme_download_path,
+              formmethod: :post,
+              data: { turbo: false },
+              class: "btn-hero-primary",
+              style: "justify-content:center; text-decoration:none;" %>
+
+        <button type="button" class="btn-preset-outline"
+          onclick="navigator.clipboard.writeText(window.location.origin + '/configure?theme=<%= @config.to_base64 %>'); alert('Share link copied!');">
+          🔗 Copy Share Link
+        </button>
       </div>
+
     <% end %>
   </aside>
 
-  <!-- RIGHT PANE: PREVIEW CANVAS -->
-  <%# The preview pane is styled ENTIRELY by the compiled nanoCSS output.
-      Every element uses var(--nanocss-*) CSS custom properties.
-      When Turbo Stream replaces the <style> tag, everything updates visually. %>
-  <section id="preview-canvas" style="flex: 1; overflow-y: auto; position: relative;">
+  <%# ── RIGHT: Preview Canvas ─────────────────────────────────────────────── %>
+  <section class="preview-canvas" id="preview-canvas">
+
+    <%# The style tag Turbo Stream targets to update all nanocss vars in the preview %>
     <div id="nanocss-preview-style"><style><%= @css %></style></div>
 
-    <%# Scoping container — inherits all nanoCSS base styling %>
-    <div style="max-width: 800px; margin: 0 auto; padding: var(--<%= @config.prefix %>-space-xl, 2rem);">
+    <div style="max-width: 860px; margin: 0 auto; padding: 2rem;">
 
-      <h1>Fluid Heading</h1>
-      <p>This preview is a <strong>living example</strong> of your nanoCSS framework. Every element on this page is styled using the CSS your configuration generates — <em>no hardcoded inline styles</em>. Change any input and watch everything transform instantly.</p>
-
-      <h2>Typography Scale</h2>
-      <p>Body text uses <code>var(--<%= @config.prefix %>-font-body)</code>, headings use <code>var(--<%= @config.prefix %>-font-heading)</code>, and this inline code sample uses <code>var(--<%= @config.prefix %>-font-code)</code>.</p>
-
-      <blockquote>
-        Blockquotes get a branded left border using the primary colour. This demonstrates the semantic styling that ships with every nanoCSS build.
-      </blockquote>
-
-      <h3>Buttons</h3>
-      <p>These are plain <code>&lt;button&gt;</code> elements — they receive the primary brand colour automatically from the base stylesheet:</p>
-      <div style="display: flex; gap: var(--<%= @config.prefix %>-space-md, 0.5rem); flex-wrap: wrap; margin-bottom: var(--<%= @config.prefix %>-margin-md, 1.25rem);">
-        <button>Primary Action</button>
-        <button style="background-color: var(--<%= @config.prefix %>-secondary);">Secondary</button>
-        <button style="background-color: var(--<%= @config.prefix %>-tertiary);">Tertiary</button>
-        <button style="background-color: var(--<%= @config.prefix %>-success);">Success</button>
-        <button style="background-color: var(--<%= @config.prefix %>-danger);">Danger</button>
+      <%# Hero %>
+      <div class="nanocss-hero" style="margin-bottom: 2rem;">
+        <hgroup>
+          <h1>Fluid Heading</h1>
+          <p>Every element in this pane is styled by <strong>your compiled nanoCSS</strong> — change any token and watch the transformation.</p>
+        </hgroup>
+        <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap; margin-top:1rem;">
+          <button class="nanocss-btn-primary">Primary Action</button>
+          <button class="nanocss-btn-secondary">Secondary</button>
+          <button class="nanocss-btn-outline">Outline</button>
+        </div>
       </div>
 
-      <h3>Form Elements</h3>
-      <form onsubmit="return false;" style="margin-bottom: var(--<%= @config.prefix %>-margin-md, 1.25rem);">
-        <label for="preview-input">Text Input</label>
-        <input type="text" id="preview-input" placeholder="Type something...">
-        <label for="preview-select" style="margin-top: var(--<%= @config.prefix %>-space-md, 0.5rem);">Select</label>
-        <select id="preview-select">
-          <option>Option Alpha</option>
-          <option>Option Bravo</option>
-          <option>Option Charlie</option>
-        </select>
-      </form>
+      <%# Colour swatches %>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 2rem;">
+        <div style="background: var(--<%= @config.prefix %>-primary); height: 3.5rem; border-radius: var(--<%= @config.prefix %>-radius-md, 0.25rem); display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.75rem; font-weight:600;">Primary<br><small><%= @config.primary %></small></div>
+        <div style="background: var(--<%= @config.prefix %>-secondary); height: 3.5rem; border-radius: var(--<%= @config.prefix %>-radius-md, 0.25rem); display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.75rem; font-weight:600;">Secondary<br><small><%= @config.secondary %></small></div>
+        <div style="background: var(--<%= @config.prefix %>-tertiary); height: 3.5rem; border-radius: var(--<%= @config.prefix %>-radius-md, 0.25rem); display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.75rem; font-weight:600;">Tertiary<br><small><%= @config.tertiary %></small></div>
+      </div>
 
-      <h3>Code Block</h3>
-      <pre><code>/* Your generated CSS custom properties */
-:root {
-  --<%= @config.prefix %>-primary: <%= @config.primary %>;
-  --<%= @config.prefix %>-font-heading: "<%= @config.font_heading %>";
-  --<%= @config.prefix %>-font-code: "<%= @config.font_code %>";
-}</code></pre>
+      <%# Cards with badges %>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+        <article class="nanocss-card">
+          <header>Card Title <span class="nanocss-badge success">Active</span></header>
+          <div class="card-body">
+            <p>This <code>nanocss-card</code> is fully styled by your generated framework — borders, radius and shadows come from your config.</p>
+          </div>
+          <footer><button class="nanocss-btn-primary">Action</button></footer>
+        </article>
+        <article class="nanocss-card">
+          <header>Second Card <span class="nanocss-badge warning">Draft</span></header>
+          <div class="card-body">
+            <p>The <code>nanocss-badge</code> colours use <code>--<%= @config.prefix %>-success</code>, <code>--warning</code>, <code>--danger</code>.</p>
+          </div>
+          <footer><button class="nanocss-btn-outline">Details</button></footer>
+        </article>
+      </div>
 
-      <h3>Table</h3>
-      <table>
+      <%# Tabs %>
+      <div class="nanocss-tabs" style="margin-bottom: 2rem;">
+        <input type="radio" id="cfg-tab1" name="cfg_tabs" checked />
+        <label for="cfg-tab1">Typography</label>
+        <div class="panel" id="cfg-panel1">
+          <blockquote>The border of this blockquote uses <code>--<%= @config.prefix %>-primary</code>. Change the primary colour to see it update.</blockquote>
+          <p>Body text in <code>--<%= @config.prefix %>-font-body</code> (<%= @config.font_body %>). Heading font: <code><%= @config.font_heading %></code>.</p>
+          <pre><code>/* Generated CSS root */
+--<%= @config.prefix %>-primary: <%= @config.primary %>;
+--<%= @config.prefix %>-font-heading: "<%= @config.font_heading %>";</code></pre>
+        </div>
+        <input type="radio" id="cfg-tab2" name="cfg_tabs" />
+        <label for="cfg-tab2">Form Elements</label>
+        <div class="panel" id="cfg-panel2">
+          <label for="cfg-text">Text input</label>
+          <input type="text" id="cfg-text" placeholder="Styled by nanocss base layer...">
+          <label for="cfg-sel" style="margin-top:0.75rem;">Select</label>
+          <select id="cfg-sel">
+            <option>Option Alpha</option>
+            <option>Option Bravo</option>
+          </select>
+        </div>
+        <input type="radio" id="cfg-tab3" name="cfg_tabs" />
+        <label for="cfg-tab3">Feedback UI</label>
+        <div class="panel" id="cfg-panel3">
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem;">
+            <span class="nanocss-tag">CSS <button type="button" aria-label="Remove">×</button></span>
+            <span class="nanocss-tag">nanocss <button type="button" aria-label="Remove">×</button></span>
+          </div>
+          <progress value="72" max="100" style="margin-bottom:0.75rem;">72%</progress>
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <span class="nanocss-loader"></span>
+            <span style="font-size:0.875rem;">Loading...</span>
+          </div>
+        </div>
+      </div>
+
+      <%# Accordion %>
+      <details style="margin-bottom: 1rem;">
+        <summary>Accordion — zero JS, native &lt;details&gt;</summary>
+        <p style="margin-top:0.75rem;">This is a native HTML5 accordion styled entirely by the nanoCSS <code>_base.scss</code> partial. The chevron rotation and border come from your config tokens.</p>
+      </details>
+
+      <%# Table %>
+      <table style="margin-bottom: 2rem;">
         <thead>
           <tr>
             <th>Token</th>
@@ -173,32 +220,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>Primary</td><td><code>--<%= @config.prefix %>-primary</code></td><td style="color: var(--<%= @config.prefix %>-primary);"><strong><%= @config.primary %></strong></td></tr>
-          <tr><td>Secondary</td><td><code>--<%= @config.prefix %>-secondary</code></td><td style="color: var(--<%= @config.prefix %>-secondary);"><strong><%= @config.secondary %></strong></td></tr>
-          <tr><td>Tertiary</td><td><code>--<%= @config.prefix %>-tertiary</code></td><td style="color: var(--<%= @config.prefix %>-tertiary);"><strong><%= @config.tertiary %></strong></td></tr>
+          <tr><td>Primary</td><td><code>--<%= @config.prefix %>-primary</code></td><td style="color: var(--<%= @config.prefix %>-primary); font-weight:700;"><%= @config.primary %></td></tr>
+          <tr><td>Secondary</td><td><code>--<%= @config.prefix %>-secondary</code></td><td style="color: var(--<%= @config.prefix %>-secondary); font-weight:700;"><%= @config.secondary %></td></tr>
+          <tr><td>Tertiary</td><td><code>--<%= @config.prefix %>-tertiary</code></td><td style="color: var(--<%= @config.prefix %>-tertiary); font-weight:700;"><%= @config.tertiary %></td></tr>
           <tr><td>Heading Font</td><td><code>--<%= @config.prefix %>-font-heading</code></td><td><%= @config.font_heading %></td></tr>
           <tr><td>Code Font</td><td><code>--<%= @config.prefix %>-font-code</code></td><td><%= @config.font_code %></td></tr>
         </tbody>
       </table>
 
-      <h3>Accordion (Native &lt;details&gt;)</h3>
-      <details>
-        <summary>Click to expand — this is a native HTML5 accordion</summary>
-        <p>This <code>&lt;details&gt;</code> element is styled entirely by nanoCSS base styles. No JavaScript required. The border, padding, and chevron rotation all come from your compiled CSS.</p>
-      </details>
-
-      <hr>
-
-      <h3>Semantic Colours</h3>
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--<%= @config.prefix %>-space-md, 0.5rem);">
-        <div style="background: var(--<%= @config.prefix %>-success); color: white; padding: var(--<%= @config.prefix %>-space-md, 0.5rem); border-radius: var(--<%= @config.prefix %>-radius-md, 0.25rem); text-align: center; font-weight: var(--<%= @config.prefix %>-weight-bold, 700);">Success</div>
-        <div style="background: var(--<%= @config.prefix %>-info); color: white; padding: var(--<%= @config.prefix %>-space-md, 0.5rem); border-radius: var(--<%= @config.prefix %>-radius-md, 0.25rem); text-align: center; font-weight: var(--<%= @config.prefix %>-weight-bold, 700);">Info</div>
-        <div style="background: var(--<%= @config.prefix %>-warning); color: white; padding: var(--<%= @config.prefix %>-space-md, 0.5rem); border-radius: var(--<%= @config.prefix %>-radius-md, 0.25rem); text-align: center; font-weight: var(--<%= @config.prefix %>-weight-bold, 700);">Warning</div>
-        <div style="background: var(--<%= @config.prefix %>-danger); color: white; padding: var(--<%= @config.prefix %>-space-md, 0.5rem); border-radius: var(--<%= @config.prefix %>-radius-md, 0.25rem); text-align: center; font-weight: var(--<%= @config.prefix %>-weight-bold, 700);">Danger</div>
+      <%# Pagination %>
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+        <ul class="nanocss-pagination" style="list-style:none; padding:0; margin:0;">
+          <li class="disabled"><span>‹</span></li>
+          <li class="active"><span>1</span></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">›</a></li>
+        </ul>
+        <p style="font-size:0.75rem; color:var(--<%= @config.prefix %>-neutral-500, #6b7280); margin:0;"><em>This pane renders using only the nanoCSS output your config produces.</em></p>
       </div>
 
-      <hr>
-      <p><small>This preview renders using only the nanoCSS output your configuration produces — semantic HTML with zero hardcoded styling.</small></p>
-    </div>
+    </div><%# /inner %>
   </section>
-</div>
+
+</div><%# /configure-layout %>

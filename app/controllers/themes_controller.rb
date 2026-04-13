@@ -8,10 +8,10 @@ class ThemesController < ApplicationController
       { name: "Playful", primary: "#f43f5e", secondary: "#a855f7", tertiary: "#f97316" },
       { name: "Minimalist", primary: "#000000", secondary: "#404040", tertiary: "#737373" }
     ]
-    # Pre-compile default CSS so the landing page preview works
+    # @nanocss_css is compiled by ApplicationController#compile_default_nanocss.
+    # We alias it to @css so the landing page preview pane has it available if needed.
     @config = ThemeConfiguration.new
-    result = ScssCompilerService.call(@config)
-    @css = result[:css] || ""
+    @css = @nanocss_css
   end
 
   def show

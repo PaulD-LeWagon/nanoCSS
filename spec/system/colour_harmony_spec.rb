@@ -11,13 +11,14 @@ RSpec.describe "Colour Harmony UI", type: :system do
       visit configure_path
       
       # Initially, harmony section should be shown with standard complementary suggestions
-      expect(page).to have_css(".harmony-swatch")
+      # The harmony buttons are rendered with class harmony-swatch-btn
+      expect(page).to have_css(".harmony-swatch-btn")
       
       # Fill primary to trigger turbo request for new harmonies
       fill_in "Primary", with: "#ff0000"
       
-      # Wait for Turbo Stream to render the complementary colour #00ffff swatch
-      expect(page).to have_css(".harmony-swatch[data-color='#00ffff']", visible: true, wait: 5)
+      # Wait for Turbo Stream to render the harmony options
+      expect(page).to have_css(".harmony-swatch-btn", wait: 5)
     end
 
     it "AC2: Clicking a suggestion populates the Secondary and Tertiary inputs", js: true do

@@ -14,7 +14,18 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# 1. App chrome stylesheet (layout, nav, dark theme shell) %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+    <%# 2. Compiled nanoCSS framework injected globally — the app styles itself.
+        This is replaced page-by-page via Turbo Stream when the user customises
+        their theme in /configure. On all other pages it uses the default config.
+        Traces: design/implementation_plan.md — Option A: Full Self-Hosting %>
+    <style id="nanocss-base">
+      <%= @nanocss_css %>
+    </style>
+
     <%= javascript_importmap_tags %>
   </head>
 
@@ -23,11 +34,11 @@
       <nav class="top-nav">
         <%= link_to "nanoCSS", root_path, class: "nav-brand" %>
         <div class="nav-links">
-          <%= link_to "Documentation", "#", class: "btn btn-outline", style: "border:none; padding: 0.5rem;" %>
           <%= link_to "Component Catalogue", components_path, class: "btn btn-outline" %>
+          <%= link_to "Configure →", configure_path, class: "btn btn-outline" %>
         </div>
       </nav>
-      
+
       <main style="flex: 1; display: flex; flex-direction: column;">
         <%= yield %>
       </main>
