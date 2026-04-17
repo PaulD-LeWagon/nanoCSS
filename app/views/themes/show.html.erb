@@ -33,22 +33,24 @@
 
       <hr class="config-divider">
 
-      <%# Fonts — Basic Mode (AC1) %>
-      <div>
-        <%= f.label :font_heading, "Headings Font", class: "form-label" %>
-        <%= f.text_field :font_heading, class: "form-input", oninput: "this.form.requestSubmit()", placeholder: "Inter" %>
-      </div>
-      <div>
-        <%= f.label :font_subtitle, "Subtitle Font", class: "form-label" %>
-        <%= f.text_field :font_subtitle, class: "form-input", oninput: "this.form.requestSubmit()", placeholder: "Inter" %>
-      </div>
-      <div>
-        <%= f.label :font_body, "Body Font", class: "form-label" %>
-        <%= f.text_field :font_body, class: "form-input", oninput: "this.form.requestSubmit()", placeholder: "Roboto" %>
-      </div>
-      <div>
-        <%= f.label :font_code, "Code Font", class: "form-label" %>
-        <%= f.text_field :font_code, class: "form-input", oninput: "this.form.requestSubmit()", placeholder: "Fira Code" %>
+      <%# Fonts — Fetched via Stimulus from /fonts %>
+      <div data-controller="fonts">
+        <div>
+          <%= f.label :font_heading, "Headings Font", class: "form-label" %>
+          <%= f.select :font_heading, [], {}, class: "form-input", onchange: "this.form.requestSubmit()", data: { fonts_target: "select", fonts_selected_value: @config.font_heading } %>
+        </div>
+        <div style="margin-top: 0.5rem;">
+          <%= f.label :font_subtitle, "Subtitle Font", class: "form-label" %>
+          <%= f.select :font_subtitle, [], {}, class: "form-input", onchange: "this.form.requestSubmit()", data: { fonts_target: "select", fonts_selected_value: @config.font_subtitle } %>
+        </div>
+        <div style="margin-top: 0.5rem;">
+          <%= f.label :font_body, "Body Font", class: "form-label" %>
+          <%= f.select :font_body, [], {}, class: "form-input", onchange: "this.form.requestSubmit()", data: { fonts_target: "select", fonts_selected_value: @config.font_body } %>
+        </div>
+        <div style="margin-top: 0.5rem;">
+          <%= f.label :font_code, "Code Font", class: "form-label" %>
+          <%= f.select :font_code, [], {}, class: "form-input", onchange: "this.form.requestSubmit()", data: { fonts_target: "select", fonts_selected_value: @config.font_code } %>
+        </div>
       </div>
 
       <hr class="config-divider">
@@ -83,6 +85,13 @@
       </div>
 
       <div id="advanced-options" style="display:none;">
+        <div style="margin-bottom: 0.75rem;">
+          <label class="form-label" style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+            <%= f.check_box :wrap_in_layer, onchange: "this.form.requestSubmit()" %>
+            Wrap in CSS @layer
+          </label>
+          <small style="color: var(--chrome-text-muted); font-size: 0.75rem;">Encapsulates output to prevent specificity collisions.</small>
+        </div>
         <div>
           <%= f.label :base_margin, "Margin Base", class: "form-label" %>
           <%= f.text_field :base_margin, class: "form-input", oninput: "this.form.requestSubmit()" %>
@@ -98,6 +107,25 @@
         <div>
           <%= f.label :drop_shadow, "Drop Shadow", class: "form-label" %>
           <%= f.text_field :drop_shadow, class: "form-input", oninput: "this.form.requestSubmit()" %>
+        </div>
+
+        <hr class="config-divider">
+        <%# Excluded Components (AC1-UC010) %>
+        <div>
+          <label class="form-label">Omit Components</label>
+          <small style="display:block; margin-bottom:0.5rem; color: var(--chrome-text-muted); font-size: 0.75rem;">
+            Check a component to exclude it from the final CSS compilation and zip export.
+          </small>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; max-height:200px; overflow-y:auto; padding:0.5rem; border:1px solid var(--chrome-border); border-radius:0.5rem;">
+            <% ThemeConfiguration::VALID_COMPONENTS.each do |comp| %>
+              <label style="display:flex; align-items:center; gap:0.25rem; font-size:0.8rem; cursor:pointer;">
+                <%= check_box_tag "theme_configuration[excluded_components][]", comp, @config.excluded_components.include?(comp), onchange: "this.form.requestSubmit()", id: "omit_#{comp}" %>
+                <%= comp.capitalize %>
+              </label>
+            <% end %>
+          </div>
+          <%# Hidden field to ensure empty array is sent if all boxes are unchecked %>
+          <%= hidden_field_tag "theme_configuration[excluded_components][]", "" %>
         </div>
       </div>
 
