@@ -76,13 +76,16 @@ RSpec.describe "Theme Customization", type: :system do
     end
 
     it "AC2: switching modes retains previously entered values" do
-      fill_in "Headings Font", with: "Oswald"
+      # Wait for Stimulus to fetch and populate from /fonts API
+      expect(page).to have_select("Headings Font", with_options: ["Oswald"], wait: 5)
+      select "Oswald", from: "Headings Font"
+      
       check "Advanced Options"
       fill_in "Namespace Prefix", with: "mypref"
       uncheck "Advanced Options"
 
       # Headings Font should still contain "Oswald"
-      expect(page).to have_field("Headings Font", with: "Oswald")
+      expect(page).to have_select("Headings Font", selected: "Oswald")
 
       # Re-check to verify prefix survived the toggle
       check "Advanced Options"
@@ -148,8 +151,8 @@ RSpec.describe "Theme Customization", type: :system do
       visit configure_path(theme: encoded)
 
       expect(page).to have_field("Primary", with: "#00ff00")
-      expect(page).to have_field("Headings Font", with: "Oswald")
-      expect(page).to have_field("Code Font", with: "Source Code Pro")
+      expect(page).to have_select("Headings Font", selected: "Oswald")
+      expect(page).to have_select("Code Font", selected: "Source Code Pro")
       expect(page).to have_field("Spacing Base", with: "0.75rem")
 
       # Advanced fields require toggling to be visible

@@ -26,8 +26,9 @@ RSpec.describe "Colour Harmony UI", type: :system do
       
       fill_in "Primary", with: "#ff0000"
       
-      # Click on an analogous swatch button which holds [secondary, tertiary] data
-      # Assuming it renders an Analogous button
+      # Wait for Turbo Stream to return the new harmony calculation for #ff0000
+      expect(page).to have_selector(".swatch-box[style='background:#ff8000;']", wait: 5)
+      
       click_button "Analogous"
       
       # Secondary and tertiary should now contain the new hexes
