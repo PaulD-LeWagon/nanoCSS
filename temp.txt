@@ -33,7 +33,7 @@ The "expand to non-IT projects eventually" note just goes in CONCEPT.md Section 
 
 Yes, now, I want you to be running in askUserQuestions mode, or whatever it is, if you are not already? 
 
-A little more of my idea...
+A little more of my idea.
 
 Ideally, that is exactly what the app will do. I the interface you'd click new project and I suppose a chat would open up with a greeting of Hello [username] what's your big idea? or something! 
 Then it would would probe the user with every sharper questions to elicite the needed requirements to create the desired functionality. 

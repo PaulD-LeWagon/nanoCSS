@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'webmock/rspec'
 
 RSpec.describe GoogleFontsService, type: :model do
   describe '.catalogue' do
@@ -12,13 +11,15 @@ RSpec.describe GoogleFontsService, type: :model do
       }.to_json
     end
 
+    let(:mock_response) { instance_double(Net::HTTPSuccess, is_a?: true, body: mock_json) }
+    let(:error_response) { instance_double(Net::HTTPInternalServerError, is_a?: false) }
+
     before do
       Rails.cache.clear
     end
 
     it 'fetches and returns a list of font families from the Google Fonts API' do
-      stub_request(:get, GoogleFontsService::API_URL)
-        .to_return(status: 200, body: mock_json)
+      allow(Net::HTTP).to receive(:get_response).and_return(mock_response)
 
       fonts = described_class.catalogue
       expect(fonts).to include('Open Sans', 'Roboto')
@@ -26,20 +27,18 @@ RSpec.describe GoogleFontsService, type: :model do
     end
 
     it 'falls back to a default list if the API returns an error' do
-      stub_request(:get, GoogleFontsService::API_URL)
-        .to_return(status: 500)
+      allow(Net::HTTP).to receive(:get_response).and_return(error_response)
 
       fonts = described_class.catalogue
       expect(fonts).to include('Inter', 'Fira Code')
     end
 
     it 'uses live API for the final E2E test', :live do
-      WebMock.allow_net_connect!
+      # In the live test we call the actual remote network without mocks
       fonts = described_class.fetch_fonts
       expect(fonts).to be_an(Array)
       expect(fonts.size).to be > 100
       expect(fonts).to include('Roboto')
-      WebMock.disable_net_connect!(allow_localhost: true)
     end
   end
 end
