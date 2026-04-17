@@ -31,7 +31,8 @@ RSpec.describe ScssCompilerService do
       config.primary = '#ff0000'
       # We verify the compile succeeds and that the dynamic vars are prepended
       expect(Sass).to receive(:compile_string).with(
-        a_string_starting_with("$prefix: 'nanocss';")
+        a_string_starting_with("@use 'sass:color';")
+        .and(a_string_including("$prefix: 'nanocss';"))
         .and(a_string_including('$nanocss-primary: #ff0000;'))
       ).and_call_original
       result = described_class.call(config)
