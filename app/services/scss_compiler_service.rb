@@ -26,6 +26,17 @@ class ScssCompilerService
       # 1. Dynamic user overrides (prepended before !default declarations)
       dynamic_vars = @configuration.to_scss_variables_string
 
+      # 1b. Semantic Tints (UC-011)
+      if @configuration.primary.present?
+        semantic_tints = <<~SCSS
+          $nanocss-success: mix(#10b981, #{@configuration.primary}, 90%) !default;
+          $nanocss-info: mix(#0ea5e9, #{@configuration.primary}, 90%) !default;
+          $nanocss-warning: mix(#f59e0b, #{@configuration.primary}, 90%) !default;
+          $nanocss-danger: mix(#ef4444, #{@configuration.primary}, 90%) !default;
+        SCSS
+        dynamic_vars += "\n" + semantic_tints
+      end
+
       # 2. Framework partials — always included
       variables_scss = File.read(File.join(base_path, '_variables.scss'))
       mixins_scss    = File.read(File.join(base_path, '_mixins.scss'))
@@ -43,6 +54,23 @@ class ScssCompilerService
       components_scss = ""
       if [:standard, :full].include?(@tier)
         components_scss = File.read(File.join(base_path, '_components.scss'))
+        if @configuration.excluded_components.present?
+          @configuration.excluded_components.each do |c|
+            # Simple regex parser to strip out sections of the monolithic _components.scss based on header names
+            components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*#{Regexp.escape(c.capitalize)}\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
+            
+            # Special aliases due to file naming
+            if c == 'btn' || c == 'button'
+              components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*Buttons?\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
+            end
+            if c == 'nav' || c == 'navbar'
+              components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*Nav\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
+            end
+            if c == 'loader'
+              components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*Loading\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
+            end
+          end
+        end
       end
 
       # 6. Standard tier: utility classes
@@ -65,8 +93,26 @@ class ScssCompilerService
 
       # Execute Dart Sass in-memory compilation
       result = Sass.compile_string(full_scss)
+      
+      css_output = result.css
+      
+      # UC-012: CSS Layer block wrapping
+      if @configuration.wrap_in_layer
+        css_output = "@layer #{@configuration.prefix || 'nanocss'} {\n#{css_output}\n}"
+      end
+      
+      # UC-014: Google Fonts Injection at top level
+      font_imports = []
+      fonts = [@configuration.font_heading, @configuration.font_subtitle, @configuration.font_body, @configuration.font_code]
+      fonts.compact.reject(&:blank?).uniq.each do |font_name|
+        formatted_name = font_name.gsub(' ', '+')
+        font_imports << "@import url('https://fonts.googleapis.com/css2?family=#{formatted_name}:wght@300;400;500;700&display=swap');"
+      end
 
-      { css: result.css, error: nil }
+      # Prepend fonts
+      final_css = font_imports.empty? ? css_output : font_imports.join("\n") + "\n\n" + css_output
+
+      { css: final_css, error: nil }
     rescue Sass::CompileError => e
       { css: nil, error: e.message }
     rescue StandardError => e

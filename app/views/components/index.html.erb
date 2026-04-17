@@ -67,22 +67,50 @@
     <!-- 2. Carousel -->
     <section class="component-section" data-controller="clipboard">
       <div class="component-header"><h2>Carousel</h2></div>
-      <div class="component-preview">
-        <div class="<%= @prefix %>-carousel">
-          <div class="<%= @prefix %>-card" style="width: 250px; flex-shrink: 0;"><div class="card-body">Slide 1</div></div>
-          <div class="<%= @prefix %>-card" style="width: 250px; flex-shrink: 0;"><div class="card-body">Slide 2</div></div>
-          <div class="<%= @prefix %>-card" style="width: 250px; flex-shrink: 0;"><div class="card-body">Slide 3</div></div>
-          <div class="<%= @prefix %>-card" style="width: 250px; flex-shrink: 0;"><div class="card-body">Slide 4</div></div>
+      <div class="component-preview" style="background: #1e293b; padding: 0; border-radius: 0.5rem; overflow: hidden;">
+        <div class="<%= @prefix %>-carousel" id="demo-carousel" style="border-radius: 0;">
+          <div class="carousel-track" id="demo-carousel-track">
+            <div class="carousel-slide" style="height: 200px; background: linear-gradient(135deg,#6366f1,#a855f7); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.5rem; font-weight:700;">Slide 1</div>
+            <div class="carousel-slide" style="height: 200px; background: linear-gradient(135deg,#ec4899,#f59e0b); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.5rem; font-weight:700;">Slide 2</div>
+            <div class="carousel-slide" style="height: 200px; background: linear-gradient(135deg,#10b981,#0ea5e9); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.5rem; font-weight:700;">Slide 3</div>
+          </div>
+          <button class="carousel-btn carousel-prev" onclick="carouselScroll('demo-carousel-track', -1)" aria-label="Previous slide">‹</button>
+          <button class="carousel-btn carousel-next" onclick="carouselScroll('demo-carousel-track',  1)" aria-label="Next slide">›</button>
+          <ul class="carousel-dots" id="demo-carousel-dots">
+            <li class="active"></li><li></li><li></li>
+          </ul>
         </div>
       </div>
       <div class="component-code">
         <button class="copy-btn" data-action="clipboard#copy">Copy</button>
         <pre><code data-clipboard-target="source">&lt;div class="<%= @prefix %>-carousel"&gt;
-  &lt;div class="<%= @prefix %>-card" style="width: 250px;"&gt;...&lt;/div&gt;
-  &lt;div class="<%= @prefix %>-card" style="width: 250px;"&gt;...&lt;/div&gt;
+  &lt;div class="carousel-track"&gt;
+    &lt;div class="carousel-slide"&gt;Slide 1&lt;/div&gt;
+    &lt;div class="carousel-slide"&gt;Slide 2&lt;/div&gt;
+    &lt;div class="carousel-slide"&gt;Slide 3&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;button class="carousel-btn carousel-prev" onclick="..."›‹&lt;/button&gt;
+  &lt;button class="carousel-btn carousel-next" onclick="..."&gt;›&lt;/button&gt;
+  &lt;ul class="carousel-dots"&gt;&lt;li class="active"&gt;&lt;/li&gt;...&lt;/ul&gt;
 &lt;/div&gt;</code></pre>
       </div>
     </section>
+
+    <script>
+      function carouselScroll(trackId, direction) {
+        const track = document.getElementById(trackId);
+        const slideWidth = track.offsetWidth;
+        track.scrollBy({ left: direction * slideWidth, behavior: 'smooth' });
+        // Update dots after scroll settles
+        setTimeout(() => {
+          const index = Math.round(track.scrollLeft / slideWidth);
+          const carousel = track.closest('[id$="-carousel"]') || track.closest('.' + track.id.replace('-track', ''));
+          const dotsId = trackId.replace('-track', '-dots');
+          const dots = document.querySelectorAll('#' + dotsId + ' li');
+          dots.forEach((d, i) => d.classList.toggle('active', i === index));
+        }, 350);
+      }
+    </script>
 
     <!-- 3. Accordion -->
     <section class="component-section" data-controller="clipboard">
@@ -119,6 +147,52 @@
   &lt;div class="card-body"&gt;Content...&lt;/div&gt;
   &lt;footer&gt;&lt;button class="<%= @prefix %>-btn-primary"&gt;Action&lt;/button&gt;&lt;/footer&gt;
 &lt;/article&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 4a-d. Card Variants -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Card Variants</h2></div>
+      <div class="component-preview" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+
+        <article class="<%= @prefix %>-card-primary">
+          <header>Primary</header>
+          <div class="card-body">Header uses <code>--<%= @prefix %>-primary</code>.</div>
+          <footer><button class="<%= @prefix %>-btn-primary">Action</button></footer>
+        </article>
+
+        <article class="<%= @prefix %>-card-secondary">
+          <header>Secondary</header>
+          <div class="card-body">Header uses <code>--<%= @prefix %>-secondary</code>.</div>
+          <footer><button class="<%= @prefix %>-btn-secondary">Action</button></footer>
+        </article>
+
+        <article class="<%= @prefix %>-card-tertiary">
+          <header>Tertiary</header>
+          <div class="card-body">Header uses <code>--<%= @prefix %>-tertiary</code>.</div>
+          <footer><button class="<%= @prefix %>-btn-outline">Action</button></footer>
+        </article>
+
+        <article class="<%= @prefix %>-card-neutral">
+          <header>Neutral</header>
+          <div class="card-body">Header uses <code>--<%= @prefix %>-neutral-700</code> from the neutral shade scale.</div>
+          <footer>Info only</footer>
+        </article>
+
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;!-- Primary --&gt;
+&lt;article class="<%= @prefix %>-card-primary"&gt;...&lt;/article&gt;
+
+&lt;!-- Secondary --&gt;
+&lt;article class="<%= @prefix %>-card-secondary"&gt;...&lt;/article&gt;
+
+&lt;!-- Tertiary --&gt;
+&lt;article class="<%= @prefix %>-card-tertiary"&gt;...&lt;/article&gt;
+
+&lt;!-- Neutral --&gt;
+&lt;article class="<%= @prefix %>-card-neutral"&gt;...&lt;/article&gt;</code></pre>
       </div>
     </section>
 

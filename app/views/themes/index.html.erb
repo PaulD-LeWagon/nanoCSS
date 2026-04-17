@@ -94,31 +94,38 @@
           </ul>
         </nav>
 
-        <%# Cards with Badges %>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-          <article class="nanocss-card">
+        <%# Cards with Badges — showcasing card variants %>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+          <article class="nanocss-card-primary">
             <header>
-              Feature Card
-              <span class="nanocss-badge success" style="margin-left: 0.5rem;">New</span>
+              Primary Card
+              <span class="nanocss-badge" style="margin-left: 0.5rem; background: rgba(255,255,255,0.25); color: #fff;">New</span>
             </header>
             <div class="card-body">
-              <p style="font-size: 0.875rem; margin: 0;">Each card is a fully styled nanocss component.</p>
+              <p style="font-size: 0.875rem; margin: 0;">Header uses your <code>--nanocss-primary</code> brand colour.</p>
             </div>
             <footer>
               <button class="nanocss-btn-primary" style="font-size: 0.8125rem; padding: 0.375rem 0.875rem;">View →</button>
             </footer>
           </article>
-          <article class="nanocss-card">
+          <article class="nanocss-card-secondary">
             <header>
-              Another Card
+              Secondary Card
               <span class="nanocss-badge warning" style="margin-left: 0.5rem;">Beta</span>
             </header>
             <div class="card-body">
-              <p style="font-size: 0.875rem; margin: 0;">All colours, radii, and shadows come from your tokens.</p>
+              <p style="font-size: 0.875rem; margin: 0;">Header uses your <code>--nanocss-secondary</code> colour.</p>
             </div>
             <footer>
               <button class="nanocss-btn-secondary" style="font-size: 0.8125rem; padding: 0.375rem 0.875rem;">Details</button>
             </footer>
+          </article>
+          <article class="nanocss-card-neutral">
+            <header>Neutral Card</header>
+            <div class="card-body">
+              <p style="font-size: 0.875rem; margin: 0;">Muted header using the neutral shade scale — great for secondary content.</p>
+            </div>
+            <footer>Info only</footer>
           </article>
         </div>
 

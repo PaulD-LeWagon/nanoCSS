@@ -157,4 +157,40 @@ RSpec.describe ThemeConfiguration, type: :model do
       expect(decoded.primary).to eq('#3b82f6') # defaults applied
     end
   end
+
+  # --- UC-014: Font validation ---
+  describe 'Google Fonts whitelist validation' do
+    it 'accepts valid font from the allowed whitelist' do
+      config.font_heading = 'Roboto'
+      expect(config).to be_valid
+    end
+
+    it 'rejects unknown font to prevent injections' do
+      config.font_heading = 'eval()'
+      expect(config).not_to be_valid
+      expect(config.errors[:font_heading]).to include('is not a recognised Google Font')
+    end
+  end
+
+  # --- UC-010: Per-Component Toggling ---
+  describe 'Excluded Components' do
+    it 'accepts an array of valid component names to exclude' do
+      config.excluded_components = ['modal', 'carousel']
+      expect(config).to be_valid
+    end
+
+    it 'rejects unrecognised component names in exclusion list' do
+      config.excluded_components = ['modal', 'not-a-component']
+      expect(config).not_to be_valid
+      expect(config.errors[:excluded_components]).to include('contains invalid component names')
+    end
+  end
+
+  # --- UC-012: CSS Layer Flag ---
+  describe 'Layer Wrapping Flag' do
+    it 'can explicitly enable the wrap_in_layer flag' do
+      config.wrap_in_layer = true
+      expect(config.wrap_in_layer).to be true
+    end
+  end
 end

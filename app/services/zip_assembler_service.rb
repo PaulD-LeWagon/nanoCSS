@@ -42,6 +42,23 @@ class ZipAssemblerService
         
         content = File.read(file_path)
 
+        # UC-010: Filter excluded components from the zipped _components.scss
+        if relative_path.to_s == '_components.scss' && @configuration.respond_to?(:excluded_components) && @configuration.excluded_components.present?
+          @configuration.excluded_components.each do |c|
+            content.gsub!(/\/\*\s*\d+[a-z]?\.\s*#{Regexp.escape(c.capitalize)}\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
+            
+            if c == 'btn' || c == 'button'
+              content.gsub!(/\/\*\s*\d+[a-z]?\.\s*Buttons?\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
+            end
+            if c == 'nav' || c == 'navbar'
+              content.gsub!(/\/\*\s*\d+[a-z]?\.\s*Nav\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
+            end
+            if c == 'loader'
+              content.gsub!(/\/\*\s*\d+[a-z]?\.\s*Loading\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
+            end
+          end
+        end
+
         out.put_next_entry("scss/#{relative_path}")
         out.write(content)
       end

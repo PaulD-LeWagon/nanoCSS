@@ -6,13 +6,21 @@ class ThemeConfiguration
                 :base_typography, :base_space, :base_margin,
                 :base_radius, :base_border_width,
                 :text_shadow, :drop_shadow, :tier, :mode,
-                :margin_md, :space_md
+                :margin_md, :space_md,
+                :excluded_components, :wrap_in_layer
+
+  GOOGLE_FONTS_WHITELIST = ['Inter', 'Roboto', 'Oswald', 'Fira Code', 'Source Code Pro', 'JetBrains Mono', 'Merriweather'].freeze
+  VALID_COMPONENTS = ['modal', 'carousel', 'card', 'hero', 'dropdown', 'group', 'loader', 'nav', 'badge', 'tag', 'breadcrumb', 'pagination', 'tabs', 'btn', 'tooltip'].freeze
 
   validates :primary, :secondary, :tertiary, format: { with: /\A#[0-9a-fA-F]{6}\z/, message: "is invalid" }, allow_blank: true
   validates :prefix, format: { with: /\A[a-z][a-z0-9-]*[a-z0-9]\z/, message: "is invalid" }, allow_blank: true
+  validates :font_heading, :font_subtitle, :font_body, :font_code, inclusion: { in: GOOGLE_FONTS_WHITELIST, message: "is not a recognised Google Font" }, allow_blank: true
+  validate :validate_excluded_components
 
   def initialize(attributes = {})
     super
+    @excluded_components ||= []
+    @wrap_in_layer = false if @wrap_in_layer.nil?
     @prefix ||= 'nanocss'
     @primary ||= '#3b82f6'
     @secondary ||= '#8b5cf6'
@@ -85,6 +93,16 @@ class ThemeConfiguration
       new(attrs)
     rescue StandardError
       new # return default
+    end
+  end
+
+  private
+
+  def validate_excluded_components
+    if excluded_components.present? && !excluded_components.is_a?(Array)
+      errors.add(:excluded_components, "must be an array")
+    elsif excluded_components.present? && (excluded_components - VALID_COMPONENTS).any?
+      errors.add(:excluded_components, "contains invalid component names")
     end
   end
 end

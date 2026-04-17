@@ -16,21 +16,87 @@
   justify-content: center;
 }
 
-/* 2. Carousel */
+/* 2. Carousel
+   Pure CSS carousel: wrap slides in .{prefix}-carousel, each slide in
+   .carousel-slide, add .carousel-prev / .carousel-next buttons.
+   Scroll-snap drives snapping; JS is optional for button wiring.
+   ------------------------------------------------------------------ */
 .#{$prefix}-carousel {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: var(--#{$prefix}-space-md, 1rem);
-  padding-bottom: var(--#{$prefix}-space-sm, 0.5rem);
-  scroll-behavior: smooth;
-  & > * {
-    scroll-snap-align: center;
-    flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--#{$prefix}-radius-lg, 0.5rem);
+
+  /* ── Slide track ── */
+  .carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    gap: 0;
+    /* Hide scrollbar visually while keeping it functional */
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  /* ── Individual slides ── */
+  .carousel-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    position: relative;
+  }
+
+  /* ── Prev / Next controls ── */
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    &:hover { background: rgba(0, 0, 0, 0.7); }
+    &:focus-visible { outline: 2px solid var(--#{$prefix}-primary); outline-offset: 2px; }
+  }
+  .carousel-prev { left:  var(--#{$prefix}-space-md, 1rem); }
+  .carousel-next { right: var(--#{$prefix}-space-md, 1rem); }
+
+  /* ── Dots indicator strip ── */
+  .carousel-dots {
+    position: absolute;
+    bottom: var(--#{$prefix}-space-md, 1rem);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--#{$prefix}-space-sm, 0.5rem);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.45);
+      transition: background 0.2s ease, transform 0.2s ease;
+      &.active {
+        background: #fff;
+        transform: scale(1.3);
+      }
+    }
   }
 }
 
-/* 4. Card */
+/* 4. Card — Base
+   ------------------------------------------------------------------ */
 .#{$prefix}-card {
   background-color: var(--#{$prefix}-neutral-100, #f3f4f6);
   border: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
@@ -38,17 +104,107 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 
   header, footer, .card-body {
     padding: var(--#{$prefix}-space-md, 1rem);
   }
-  
+
   header {
     border-bottom: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
   }
+
   footer {
     border-top: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
-    margin-top: auto; /* Push to bottom if height is fixed */
+    margin-top: auto;
+  }
+
+  &:hover {
+    box-shadow: var(--#{$prefix}-shadow-md, 0 4px 6px -1px rgba(0,0,0,0.1));
+    transform: translateY(-2px);
+  }
+}
+
+/* 4a. Card Variant — Primary
+   Uses the brand primary colour for the header band and accents.
+   ------------------------------------------------------------------ */
+.#{$prefix}-card-primary {
+  @extend .#{$prefix}-card;
+  border-color: var(--#{$prefix}-primary, #3b82f6);
+
+  header {
+    background-color: var(--#{$prefix}-primary, #3b82f6);
+    color: #ffffff;
+    border-bottom-color: var(--#{$prefix}-primary, #3b82f6);
+    font-weight: var(--#{$prefix}-weight-bold, 700);
+  }
+
+  footer {
+    border-top-color: var(--#{$prefix}-primary, #3b82f6);
+    background-color: color-mix(in srgb, var(--#{$prefix}-primary, #3b82f6) 8%, transparent);
+  }
+}
+
+/* 4b. Card Variant — Secondary
+   Uses the brand secondary colour for the header band and accents.
+   ------------------------------------------------------------------ */
+.#{$prefix}-card-secondary {
+  @extend .#{$prefix}-card;
+  border-color: var(--#{$prefix}-secondary, #8b5cf6);
+
+  header {
+    background-color: var(--#{$prefix}-secondary, #8b5cf6);
+    color: #ffffff;
+    border-bottom-color: var(--#{$prefix}-secondary, #8b5cf6);
+    font-weight: var(--#{$prefix}-weight-bold, 700);
+  }
+
+  footer {
+    border-top-color: var(--#{$prefix}-secondary, #8b5cf6);
+    background-color: color-mix(in srgb, var(--#{$prefix}-secondary, #8b5cf6) 8%, transparent);
+  }
+}
+
+/* 4c. Card Variant — Tertiary
+   Uses the brand tertiary colour for the header band and accents.
+   ------------------------------------------------------------------ */
+.#{$prefix}-card-tertiary {
+  @extend .#{$prefix}-card;
+  border-color: var(--#{$prefix}-tertiary, #ec4899);
+
+  header {
+    background-color: var(--#{$prefix}-tertiary, #ec4899);
+    color: #ffffff;
+    border-bottom-color: var(--#{$prefix}-tertiary, #ec4899);
+    font-weight: var(--#{$prefix}-weight-bold, 700);
+  }
+
+  footer {
+    border-top-color: var(--#{$prefix}-tertiary, #ec4899);
+    background-color: color-mix(in srgb, var(--#{$prefix}-tertiary, #ec4899) 8%, transparent);
+  }
+}
+
+/* 4d. Card Variant — Neutral
+   A subtle, muted card using the predefined neutral shade scale.
+   Ideal for secondary content, sidebars, or informational blocks.
+   ------------------------------------------------------------------ */
+.#{$prefix}-card-neutral {
+  @extend .#{$prefix}-card;
+  background-color: var(--#{$prefix}-neutral-100, #f3f4f6);
+  border-color: var(--#{$prefix}-neutral-300, #d1d5db);
+
+  header {
+    background-color: var(--#{$prefix}-neutral-700, #374151);
+    color: var(--#{$prefix}-neutral-100, #f3f4f6);
+    border-bottom-color: var(--#{$prefix}-neutral-700, #374151);
+    font-weight: var(--#{$prefix}-weight-bold, 700);
+  }
+
+  footer {
+    background-color: var(--#{$prefix}-neutral-300, #d1d5db);
+    border-top-color: var(--#{$prefix}-neutral-300, #d1d5db);
+    color: var(--#{$prefix}-neutral-700, #374151);
   }
 }
 

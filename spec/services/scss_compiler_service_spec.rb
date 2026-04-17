@@ -116,5 +116,39 @@ RSpec.describe ScssCompilerService do
       expect(result[:css]).to be_nil
       expect(result[:error]).to be_a(String)
     end
+
+    # --- UC-014: Google Fonts Injection ---
+    it 'injects the proper @import url() when valid fonts are selected' do
+      config.font_heading = 'Roboto'
+      result = described_class.call(config)
+      expect(result[:css]).to include("@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');")
+    end
+
+    # --- UC-010: Per-Component Toggling Omission ---
+    it 'omits excluded components from the compiled CSS' do
+      config.excluded_components = ['modal', 'carousel']
+      result = described_class.call(config)
+      expect(result[:css]).not_to include('.nanocss-modal')
+      expect(result[:css]).not_to include('.nanocss-carousel')
+      # other components are still present
+      expect(result[:css]).to include('.nanocss-card')
+    end
+
+    # --- UC-011: Automated Semantic Colour Tinting ---
+    it 'automatically applies tinting to semantic utility classes using primary color' do
+      config.primary = '#ff0000'
+      # we assume the compiler uses color.mix() internally, so the output CSS should reflect primary-tinted success classes
+      result = described_class.call(config)
+      # Check that the CSS output contains the dynamically calculated semantic variables or output
+      expect(result[:css]).to match(/--nanocss-success:\s*#/)
+    end
+
+    # --- UC-012: CSS Layer (@layer) Support ---
+    it 'wraps the entire output in a CSS layer when requested' do
+      config.wrap_in_layer = true
+      result = described_class.call(config)
+      expect(result[:css]).to match(/@layer nanocss \{/)
+      expect(result[:css]).to match(/\}\s*\z/) # Ends with a closing brace
+    end
   end
 end

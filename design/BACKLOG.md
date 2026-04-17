@@ -183,13 +183,80 @@ The core framework SCSS files (`_variables.scss`, `_mixins.scss`, `_utilities.sc
 
 ---
 
-## Icebox _(Unscheduled / Future)_
+## Sprint 3 — Typography, Layering, & Granular Control
+
+> **Sprint Goal:** Fully integrate the Google Fonts API for dynamic typography, introduce granular per-component toggling, and implement auto-tinting for a polished v1.0 release.
+> **Estimated Capacity:** 16 story points
+
+---
+
+### UC-014 · Google Fonts API Integration (FR-008) · 🟧 Should Have · 5 pts
+
+**As an** indie developer,
+**I want to** search and select from the Google Fonts catalogue directly within the config sidebar,
+**so that** I can easily assign distinct typefaces to Headers, Subtitles, and Body Text without hunting for exact names.
+
+**Acceptance Criteria:**
+- AC1: `FontsController` fetches the font catalogue from the Google Fonts API, passing a JSON list to the frontend.
+- AC2: Stimulus controllers power search and select dropdowns for: Headers, Subtitles, and Body Text.
+- AC3: **Security (Strict):** The `ThemeConfiguration` backend model strictly validates that the selected font string exists in the known Google Fonts catalogue *before* interpolating it into an `@import url(...)` to prevent injection attacks or path traversal.
+- AC4: The SCSS compiler injects the valid Google Fonts `@import` rule at the top of the generated CSS and sets the corresponding `--nanocss-font-*` CSS custom properties.
+
+**Dependencies:** None
+**UI Components:** `<FontSelectorDropdown>`
+**Status:** ⚪ To Do
+
+---
 
 ### UC-010 · Per-Component Toggle Selection · 🟧 Should Have · 5 pts
 
 **As an** indie developer,
-**I want to** toggle individual components (e.g., exclude Modals),
-**so that** I can minimise my CSS payload further.
+**I want to** explicitly select or exclude individual components (e.g., exclude Modals and Carousels),
+**so that** I can minimise my CSS footprint to exactly what I need.
 
-**Notes:** Deferred to v1.0. MVP uses Tier selection (Nano/Standard/Full) instead.
-**Status:** 🧊 Icebox
+**Acceptance Criteria:**
+- AC1: Configuration UI displays a dynamic list of checkboxes for components when the Standard or Full tier is activated.
+- AC2: Deselected components are omitted from both the generated `nanocss.css` string and the compiled `scss/` ZIP folder.
+- AC3: The preview gracefully handles missing components.
+
+**Dependencies:** None
+**UI Components:** `<ComponentToggleList>`
+**Status:** ⚪ To Do
+
+---
+
+### UC-011 · Automated Semantic Colour Tinting (FR-007) · 🟧 Should Have · 3 pts
+
+**As an** indie developer,
+**I want** my semantic utility classes (success, info, warning, danger) to automatically harmonise with my primary brand colour,
+**so that** the framework feels visually cohesive without manual colour-picking.
+
+**Acceptance Criteria:**
+- AC1: The SCSS engine automatically applies `color.mix()` to blend the user's Primary hex into the four semantic defaults.
+- AC2: The resulting hex colours are calculated safely without breaking compilation.
+- AC3: The resulting tinted colours maintain passing WCAG 2.1 AA text contrast.
+
+**Dependencies:** None
+**Status:** ⚪ To Do
+
+---
+
+### UC-012 · CSS Layer (`@layer`) Support · 🟦 Nice to Have / Roadmap · 3 pts
+
+**As an** indie developer integrating nanoCSS into a legacy app,
+**I want** the framework's output to be wrapped in a specific CSS `@layer nanocss;`,
+**so that** I don't suffer specificity wars against my existing legacy stylesheets.
+
+**Acceptance Criteria:**
+- AC1: The Configuration Form provides an advanced toggle: "Wrap in CSS `@layer`".
+- AC2: The final output groups all rules into scoped layers (`@layer prefix.reset, prefix.components`, etc.).
+- AC3: The `.zip` export and downloaded CSS properly wrap the files.
+
+**Dependencies:** None
+**Status:** ⚪ To Do
+
+---
+
+## Icebox _(Unscheduled / Future)_
+
+_(Empty)_
