@@ -9,12 +9,11 @@ class ThemeConfiguration
                 :margin_md, :space_md,
                 :excluded_components, :wrap_in_layer
 
-  GOOGLE_FONTS_WHITELIST = ['Inter', 'Roboto', 'Oswald', 'Fira Code', 'Source Code Pro', 'JetBrains Mono', 'Merriweather'].freeze
   VALID_COMPONENTS = ['modal', 'carousel', 'card', 'hero', 'dropdown', 'group', 'loader', 'nav', 'badge', 'tag', 'breadcrumb', 'pagination', 'tabs', 'btn', 'tooltip'].freeze
 
   validates :primary, :secondary, :tertiary, format: { with: /\A#[0-9a-fA-F]{6}\z/, message: "is invalid" }, allow_blank: true
   validates :prefix, format: { with: /\A[a-z][a-z0-9-]*[a-z0-9]\z/, message: "is invalid" }, allow_blank: true
-  validates :font_heading, :font_subtitle, :font_body, :font_code, inclusion: { in: GOOGLE_FONTS_WHITELIST, message: "is not a recognised Google Font" }, allow_blank: true
+  validate :validate_google_fonts
   validate :validate_excluded_components
 
   def initialize(attributes = {})
@@ -97,6 +96,16 @@ class ThemeConfiguration
   end
 
   private
+
+  def validate_google_fonts
+    catalogue = GoogleFontsService.catalogue
+    [:font_heading, :font_subtitle, :font_body, :font_code].each do |attr|
+      val = send(attr)
+      if val.present? && !catalogue.include?(val)
+        errors.add(attr, "is not a recognised Google Font")
+      end
+    end
+  end
 
   def validate_excluded_components
     if excluded_components.present? && !excluded_components.is_a?(Array)
