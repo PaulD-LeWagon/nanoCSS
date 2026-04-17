@@ -140,7 +140,7 @@ RSpec.describe ScssCompilerService do
       # we assume the compiler uses color.mix() internally, so the output CSS should reflect primary-tinted success classes
       result = described_class.call(config)
       # Check that the CSS output contains the dynamically calculated semantic variables or output
-      expect(result[:css]).to match(/--nanocss-success:\s*#/)
+      expect(result[:css]).to match(/--nanocss-success:\s*(#|rgb)/)
     end
 
     # --- UC-012: CSS Layer (@layer) Support ---

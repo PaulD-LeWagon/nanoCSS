@@ -24,15 +24,15 @@ class ScssCompilerService
 
     begin
       # 1. Dynamic user overrides (prepended before !default declarations)
-      dynamic_vars = @configuration.to_scss_variables_string
+      dynamic_vars = "@use 'sass:color';\n" + @configuration.to_scss_variables_string
 
       # 1b. Semantic Tints (UC-011)
       if @configuration.primary.present?
         semantic_tints = <<~SCSS
-          $nanocss-success: mix(#10b981, #{@configuration.primary}, 90%) !default;
-          $nanocss-info: mix(#0ea5e9, #{@configuration.primary}, 90%) !default;
-          $nanocss-warning: mix(#f59e0b, #{@configuration.primary}, 90%) !default;
-          $nanocss-danger: mix(#ef4444, #{@configuration.primary}, 90%) !default;
+          $nanocss-success: color.mix(#10b981, #{@configuration.primary}, 90%) !default;
+          $nanocss-info: color.mix(#0ea5e9, #{@configuration.primary}, 90%) !default;
+          $nanocss-warning: color.mix(#f59e0b, #{@configuration.primary}, 90%) !default;
+          $nanocss-danger: color.mix(#ef4444, #{@configuration.primary}, 90%) !default;
         SCSS
         dynamic_vars += "\n" + semantic_tints
       end
