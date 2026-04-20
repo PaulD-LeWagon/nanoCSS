@@ -50,6 +50,7 @@
     $slope: (
         $max-size-rem - $min-size-rem) / (($max-vw / 16px) - ($min-vw / 16px)
     );
+
 $y-axis-intersect: -1 * (($min-vw / 16px) * $slope) + $min-size-rem;
 
 font-size: clamp(#{$min-size}, #{$y-axis-intersect}rem + #{$slope * 100}vw, #{$max-size});
@@ -61,7 +62,8 @@ font-size: clamp(#{$min-size}, #{$y-axis-intersect}rem + #{$slope * 100}vw, #{$m
 @mixin generate-utility($css-property, $class-prefix, $values-map) {
     @each $key, $value in $values-map {
         $suffix: "";
-        @if $key != 'md' {
+
+        @if $key !='md' {
             $suffix: "-#{$key}";
         }
 

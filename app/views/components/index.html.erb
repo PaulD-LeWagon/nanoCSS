@@ -1,30 +1,101 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Component Catalogue - nanoCSS</title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
-  <%= javascript_importmap_tags %>
-  <style><%= @css %></style>
+<% content_for :title, "Component Catalogue - nanoCSS" %>
+<% content_for :head do %>
+  <% if @css.present? %>
+    <style id="nanocss-catalogue-styles">
+      <%= @css.html_safe %>
+    </style>
+  <% end %>
+<% end %>
+
+<div class="catalogue-container">
+  <header class="catalogue-header">
+    <h1>Component Catalogue</h1>
+    <p>A visual reference and code repository for all <%= @prefix %> components.</p>
+  </header>
+
   <style>
-    /* Styling for the catalogue page wrapper itself */
-    body { background: #f9fafb; margin: 0; padding: 2rem; color: #111827; }
-    .component-section { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 2rem; overflow: hidden; }
-    .component-header { padding: 1.5rem; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
-    .component-header h2 { margin: 0; font-size: 1.25rem; font-weight: 600; font-family: sans-serif; }
-    .component-preview { padding: 2rem; background: #f3f4f6; }
-    .component-code { background: #1f2937; color: #f3f4f6; padding: 1.5rem; position: relative; }
-    .component-code pre { margin: 0; overflow-x: auto; font-family: monospace; font-size: 0.875rem; }
-    .copy-btn { position: absolute; top: 1rem; right: 1rem; background: #4b5563; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
-    .copy-btn:hover { background: #6b7280; }
+    .catalogue-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+    .catalogue-header {
+      margin-bottom: 4rem;
+      text-align: center;
+    }
+    .catalogue-header h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--chrome-text), var(--chrome-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.03em;
+    }
+    .catalogue-header p {
+      font-size: 1.25rem;
+      color: var(--chrome-muted);
+      max-width: 60ch;
+      margin: 0 auto;
+    }
+    .component-section { 
+      background: var(--chrome-glass); 
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--chrome-border);
+      border-radius: 1rem; 
+      margin-bottom: 3rem; 
+      overflow: hidden; 
+      color: var(--chrome-text);
+      box-shadow: 0 4px 24px -12px rgba(0,0,0,0.5);
+    }
+    .component-header { 
+      padding: 1.5rem 2rem; 
+      border-bottom: 1px solid var(--chrome-border); 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      background: rgba(255,255,255,0.03);
+    }
+    .component-header h2 { 
+      margin: 0; 
+      font-size: 1.25rem; 
+      font-weight: 600; 
+      font-family: sans-serif; 
+    }
+    .component-preview { 
+      padding: 2rem; 
+      background: #f8fafc; /* Keep light background so nanoCSS styles are visible */
+      color: #111827;
+    }
+    .component-code { 
+      background: #0f172a; 
+      color: #f3f4f6; 
+      padding: 1.5rem; 
+      position: relative; 
+      border-top: 1px solid var(--chrome-border);
+    }
+    .component-code pre { 
+      margin: 0; 
+      overflow-x: auto; 
+      font-family: monospace; 
+      font-size: 0.875rem; 
+    }
+    .copy-btn { 
+      position: absolute; 
+      top: 1rem; 
+      right: 1rem; 
+      background: var(--chrome-border); 
+      color: white; 
+      border: none; 
+      padding: 0.5rem 1rem; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      transition: background 0.2s; 
+    }
+    .copy-btn:hover { 
+      background: var(--chrome-muted); 
+    }
   </style>
-</head>
-<body style="font-family: system-ui, sans-serif;">
-  <div style="max-width: 1200px; margin: 0 auto;">
-    <div style="margin-bottom: 3rem;">
-      <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">Component Catalogue</h1>
-      <p style="font-size: 1.125rem; color: #4b5563;">A visual reference and code repository for all <%= @prefix %> components.</p>
-    </div>
 
     <!-- 0. Text Banner -->
     <section class="component-section" data-controller="clipboard">
@@ -46,16 +117,22 @@
 
     <!-- 1. Hero Banner -->
     <section class="component-section" data-controller="clipboard">
-      <div class="component-header"><h2>Hero Banner</h2></div>
+
+      <div class="component-header">
+        <h2>The Hero Banner</h2>
+      </div>      
       <div class="component-preview">
+        
         <section class="<%= @prefix %>-hero">
           <h1>Big Hero Headline</h1>
           <p>Supporting value prop goes here, expanding upon the headline.</p>
           <button class="<%= @prefix %>-btn-primary">Get Started</button>
         </section>
+
       </div>
       <div class="component-code">
         <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+
         <pre><code data-clipboard-target="source">&lt;section class="<%= @prefix %>-hero"&gt;
   &lt;h1&gt;Big Hero Headline&lt;/h1&gt;
   &lt;p&gt;Supporting value prop goes here, expanding upon the headline.&lt;/p&gt;
@@ -450,6 +527,4 @@
       </div>
     </section>
 
-  </div>
-</body>
-</html>
+</div>

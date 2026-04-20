@@ -1,7 +1,7 @@
 class ThemesController < ApplicationController
   # Download is a stateless read operation — no server mutation occurs.
   # The CSRF token can fail when formaction overrides the original form target.
-  skip_forgery_protection only: :download
+  skip_forgery_protection only: [:download, :css]
   def index
     @presets = [
       { name: "Corporate", primary: "#1e40af", secondary: "#6366f1", tertiary: "#06b6d4", default: true },
@@ -22,7 +22,7 @@ class ThemesController < ApplicationController
     end
 
     # Pre-compile the CSS for the initial page render
-    result = ScssCompilerService.call(@config)
+    result = ScssCompilerService.call(@config, scope: '#preview-canvas')
     @css = result[:css] || ""
     
     @complementary = ColourHarmonyService.call(@config.primary, harmony_type: :complementary)
@@ -31,8 +31,13 @@ class ThemesController < ApplicationController
   end
 
   def preview
+    @is_preview = request.referer&.include?('/configure')
     @config = ThemeConfiguration.new(theme_params)
-    result = ScssCompilerService.call(@config)
+    
+    # We scope if it's the config page preview to prevent bleed.
+    # On the landing page, we WANT global dogfooding as per PRD.
+    scope = @is_preview ? '#preview-canvas' : nil
+    result = ScssCompilerService.call(@config, scope: scope)
     @css = result[:css] || ""
     
     @complementary = ColourHarmonyService.call(@config.primary, harmony_type: :complementary)
@@ -51,11 +56,32 @@ class ThemesController < ApplicationController
       return
     end
 
-    zip_data = ZipAssemblerService.call(config, result[:css])
+    format = params[:download_format] || 'all'
 
-    send_data zip_data,
-              type: 'application/zip',
-              disposition: "attachment; filename=\"#{config.prefix.presence || 'nanocss'}.zip\""
+    if format == 'css'
+      send_data result[:css],
+                type: 'text/css',
+                disposition: "attachment; filename=\"#{config.prefix.presence || 'nanocss'}.css\""
+    else
+      zip_data = ZipAssemblerService.call(config, result[:css], format)
+      send_data zip_data,
+                type: 'application/zip',
+                disposition: "attachment; filename=\"#{config.prefix.presence || 'nanocss'}.zip\""
+    end
+  end
+
+  def css
+    if params[:theme].present?
+      config = ThemeConfiguration.from_base64(params[:theme])
+    else
+      config = ThemeConfiguration.new(theme_params.presence || {})
+    end
+    
+    scope = params[:preview] == 'true' ? '#preview-canvas' : nil
+    result = ScssCompilerService.call(config, scope: scope)
+    css = result[:css] || ""
+    
+    render plain: css, content_type: "text/css"
   end
 
   private
@@ -68,7 +94,7 @@ class ThemesController < ApplicationController
       :base_typography, :base_space, :base_margin,
       :base_radius, :base_border_width,
       :text_shadow, :drop_shadow, :tier, :mode,
-      :margin_md, :space_md
+      :margin_md, :space_md, :wrap_in_layer, excluded_components: []
     )
   end
 end

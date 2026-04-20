@@ -1,0 +1,1443 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap');
+
+:root {
+  --nanocss-primary: #1e40af;
+  --nanocss-secondary: #6366f1;
+  --nanocss-tertiary: #06b6d4;
+  --nanocss-success: rgb(17.4, 172.9, 133.6);
+  --nanocss-info: rgb(15.6, 154.9, 227.2);
+  --nanocss-warning: rgb(223.5, 148.6, 27.4);
+  --nanocss-danger: rgb(218.1, 67.6, 78.7);
+  --nanocss-neutral-100: #f3f4f6;
+  --nanocss-neutral-300: #d1d5db;
+  --nanocss-neutral-500: #6b7280;
+  --nanocss-neutral-700: #374151;
+  --nanocss-neutral-900: #111827;
+  --nanocss-font-heading: Inter;
+  --nanocss-font-subtitle: Inter;
+  --nanocss-font-body: Roboto;
+  --nanocss-font-code: Fira Code;
+  --nanocss-text-xs: 0.8rem;
+  --nanocss-text-sm: 1rem;
+  --nanocss-text-md: 1.25rem;
+  --nanocss-text-lg: 1.56rem;
+  --nanocss-text-xl: 1.95rem;
+  --nanocss-text-xxl: 2.44rem;
+  --nanocss-space-xs: 0.125rem;
+  --nanocss-space-sm: 0.25rem;
+  --nanocss-space-md: 0.5rem;
+  --nanocss-space-lg: 0.75rem;
+  --nanocss-space-xl: 1rem;
+  --nanocss-space-xxl: 1.5rem;
+  --nanocss-margin-xs: 0.3125rem;
+  --nanocss-margin-sm: 0.625rem;
+  --nanocss-margin-md: 1.25rem;
+  --nanocss-margin-lg: 1.875rem;
+  --nanocss-margin-xl: 2.5rem;
+  --nanocss-margin-xxl: 3.75rem;
+  --nanocss-radius-sm: 0.125rem;
+  --nanocss-radius-md: 0.25rem;
+  --nanocss-radius-lg: 0.5rem;
+  --nanocss-radius-pill: 9999px;
+  --nanocss-border-width-sm: 0.5px;
+  --nanocss-border-width-md: 1px;
+  --nanocss-border-width-lg: 2px;
+  --nanocss-text-shadow: 0.25rem 0.25rem 0.5rem rgba(5, 5, 5, 0.5);
+  --nanocss-drop-shadow: 0.5rem 0.5rem 1rem rgba(1, 1, 1, 0.25);
+  --nanocss-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --nanocss-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --nanocss-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --nanocss-weight-light: 300;
+  --nanocss-weight-normal: 400;
+  --nanocss-weight-medium: 500;
+  --nanocss-weight-bold: 700;
+  --nanocss-line-height: 1.5;
+  --nanocss-line-height-body: 1.5;
+  --nanocss-line-height-heading: 1.2;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre,
+dl, dd, ol, ul,
+figure, figcaption,
+fieldset, legend,
+hr {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+body {
+  font-family: var(--nanocss-font-body);
+  font-size: var(--nanocss-text-sm);
+  font-weight: var(--nanocss-weight-normal);
+  line-height: var(--nanocss-line-height-body);
+  color: var(--nanocss-neutral-900);
+  background-color: var(--nanocss-neutral-100);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--nanocss-font-heading);
+  font-weight: var(--nanocss-weight-bold);
+  line-height: var(--nanocss-line-height-heading);
+  color: var(--nanocss-neutral-900);
+  margin-bottom: var(--nanocss-margin-sm);
+}
+
+h1 {
+  font-size: var(--nanocss-text-xxl);
+  margin-bottom: var(--nanocss-margin-md);
+}
+
+h2 {
+  font-size: var(--nanocss-text-xl);
+}
+
+h3 {
+  font-size: var(--nanocss-text-lg);
+}
+
+h4 {
+  font-size: var(--nanocss-text-md);
+}
+
+h5 {
+  font-size: var(--nanocss-text-sm);
+  font-weight: var(--nanocss-weight-medium);
+}
+
+h6 {
+  font-size: var(--nanocss-text-xs);
+  font-weight: var(--nanocss-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+p {
+  margin-bottom: var(--nanocss-margin-sm);
+  max-width: 70ch;
+}
+
+strong,
+b {
+  font-weight: var(--nanocss-weight-bold);
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+small {
+  font-size: var(--nanocss-text-xs);
+}
+
+a {
+  color: var(--nanocss-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+a:hover {
+  color: var(--nanocss-secondary);
+  text-decoration-color: var(--nanocss-secondary);
+}
+a:visited {
+  color: var(--nanocss-tertiary);
+}
+
+blockquote {
+  border-left: var(--nanocss-border-width-lg) solid var(--nanocss-primary);
+  padding: var(--nanocss-space-md) var(--nanocss-space-lg);
+  margin: var(--nanocss-margin-md) 0;
+  font-style: italic;
+  color: var(--nanocss-neutral-700);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 0 var(--nanocss-radius-sm) var(--nanocss-radius-sm) 0;
+}
+
+code,
+kbd,
+samp {
+  font-family: var(--nanocss-font-code);
+  font-size: 0.875em;
+  background: var(--nanocss-neutral-100);
+  border: var(--nanocss-border-width-sm) solid var(--nanocss-neutral-300);
+  border-radius: var(--nanocss-radius-sm);
+  padding: 0.125em 0.375em;
+}
+
+pre {
+  font-family: var(--nanocss-font-code);
+  font-size: var(--nanocss-text-xs);
+  background: var(--nanocss-neutral-900);
+  color: var(--nanocss-neutral-100);
+  border-radius: var(--nanocss-radius-md);
+  padding: var(--nanocss-space-lg);
+  margin: var(--nanocss-margin-md) 0;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+kbd {
+  background: var(--nanocss-neutral-700);
+  color: var(--nanocss-neutral-100);
+  border-color: var(--nanocss-neutral-500);
+  font-size: 0.8em;
+  padding: 0.15em 0.4em;
+}
+
+hr {
+  border: none;
+  border-top: var(--nanocss-border-width-sm) solid var(--nanocss-neutral-300);
+  margin: var(--nanocss-margin-lg) 0;
+}
+
+ol,
+ul {
+  padding-left: var(--nanocss-space-xl);
+  margin-bottom: var(--nanocss-margin-sm);
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+li {
+  margin-bottom: var(--nanocss-space-xs);
+}
+
+li > ul,
+li > ol {
+  margin-top: var(--nanocss-space-xs);
+  margin-bottom: 0;
+}
+
+table {
+  width: 100%;
+  margin: var(--nanocss-margin-md) 0;
+  font-size: var(--nanocss-text-sm);
+}
+
+thead {
+  border-bottom: var(--nanocss-border-width-md) solid var(--nanocss-neutral-500);
+}
+
+th {
+  text-align: left;
+  font-weight: var(--nanocss-weight-bold);
+  padding: var(--nanocss-space-sm) var(--nanocss-space-md);
+  color: var(--nanocss-neutral-700);
+}
+
+td {
+  padding: var(--nanocss-space-sm) var(--nanocss-space-md);
+  border-bottom: var(--nanocss-border-width-sm) solid var(--nanocss-neutral-300);
+}
+
+tbody tr:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+label {
+  display: block;
+  font-weight: var(--nanocss-weight-medium);
+  margin-bottom: var(--nanocss-space-xs);
+  font-size: var(--nanocss-text-sm);
+}
+
+input[type=text],
+input[type=email],
+input[type=password],
+input[type=number],
+input[type=search],
+input[type=url],
+input[type=tel],
+input[type=date],
+input[type=datetime-local],
+input[type=month],
+input[type=week],
+input[type=time],
+textarea,
+select {
+  display: block;
+  width: 100%;
+  padding: var(--nanocss-space-sm) var(--nanocss-space-md);
+  font-family: var(--nanocss-font-body);
+  font-size: var(--nanocss-text-sm);
+  line-height: var(--nanocss-line-height);
+  color: var(--nanocss-neutral-900);
+  background-color: white;
+  border: var(--nanocss-border-width-md) solid var(--nanocss-neutral-300);
+  border-radius: var(--nanocss-radius-md);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=password]:focus,
+input[type=number]:focus,
+input[type=search]:focus,
+input[type=url]:focus,
+input[type=tel]:focus,
+input[type=date]:focus,
+input[type=datetime-local]:focus,
+input[type=month]:focus,
+input[type=week]:focus,
+input[type=time]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--nanocss-primary);
+  box-shadow: 0 0 0 3px rgba(var(--nanocss-primary), 0.15);
+}
+input[type=text]::placeholder,
+input[type=email]::placeholder,
+input[type=password]::placeholder,
+input[type=number]::placeholder,
+input[type=search]::placeholder,
+input[type=url]::placeholder,
+input[type=tel]::placeholder,
+input[type=date]::placeholder,
+input[type=datetime-local]::placeholder,
+input[type=month]::placeholder,
+input[type=week]::placeholder,
+input[type=time]::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: var(--nanocss-neutral-500);
+}
+
+fieldset {
+  border: var(--nanocss-border-width-md) solid var(--nanocss-neutral-300);
+  border-radius: var(--nanocss-radius-md);
+  padding: var(--nanocss-space-lg);
+  margin: var(--nanocss-margin-md) 0;
+}
+
+legend {
+  font-weight: var(--nanocss-weight-bold);
+  padding: 0 var(--nanocss-space-sm);
+}
+
+button,
+input[type=submit],
+input[type=reset],
+input[type=button] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--nanocss-space-sm) var(--nanocss-space-lg);
+  font-family: var(--nanocss-font-body);
+  font-size: var(--nanocss-text-sm);
+  font-weight: var(--nanocss-weight-medium);
+  line-height: var(--nanocss-line-height);
+  color: white;
+  background-color: var(--nanocss-primary);
+  border: var(--nanocss-border-width-md) solid transparent;
+  border-radius: var(--nanocss-radius-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+}
+button:hover,
+input[type=submit]:hover,
+input[type=reset]:hover,
+input[type=button]:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--nanocss-shadow-sm);
+}
+button:active,
+input[type=submit]:active,
+input[type=reset]:active,
+input[type=button]:active {
+  transform: scale(0.98);
+}
+button:focus-visible,
+input[type=submit]:focus-visible,
+input[type=reset]:focus-visible,
+input[type=button]:focus-visible {
+  outline: 2px solid var(--nanocss-primary);
+  outline-offset: 2px;
+}
+
+figure {
+  margin: var(--nanocss-margin-md) 0;
+}
+
+figcaption {
+  font-size: var(--nanocss-text-xs);
+  color: var(--nanocss-neutral-500);
+  margin-top: var(--nanocss-space-xs);
+  font-style: italic;
+}
+
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+mark {
+  background: rgba(245, 158, 11, 0.3);
+  padding: 0.1em 0.25em;
+  border-radius: var(--nanocss-radius-sm);
+}
+
+details {
+  border: var(--nanocss-border-width-md) solid var(--nanocss-neutral-300);
+  border-radius: var(--nanocss-radius-md);
+  padding: var(--nanocss-space-md);
+  margin: var(--nanocss-margin-sm) 0;
+}
+details[open] summary {
+  margin-bottom: var(--nanocss-space-md);
+  border-bottom: var(--nanocss-border-width-sm) solid var(--nanocss-neutral-300);
+  padding-bottom: var(--nanocss-space-sm);
+}
+
+summary {
+  cursor: pointer;
+  font-weight: var(--nanocss-weight-medium);
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+summary::before {
+  content: "▶";
+  display: inline-block;
+  margin-right: var(--nanocss-space-sm);
+  font-size: 0.75em;
+  transition: transform 0.2s ease;
+}
+details[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+progress {
+  width: 100%;
+  height: 0.5rem;
+  border: none;
+  border-radius: var(--nanocss-radius-pill);
+  margin: var(--nanocss-margin-sm) 0;
+  appearance: none;
+}
+progress::-webkit-progress-bar {
+  background: var(--nanocss-neutral-300);
+  border-radius: var(--nanocss-radius-pill);
+}
+progress::-webkit-progress-value {
+  background: var(--nanocss-primary);
+  border-radius: var(--nanocss-radius-pill);
+}
+progress::-moz-progress-bar {
+  background: var(--nanocss-primary);
+  border-radius: var(--nanocss-radius-pill);
+}
+
+dialog {
+  border: none;
+  border-radius: var(--nanocss-radius-lg);
+  padding: var(--nanocss-space-xl);
+  box-shadow: var(--nanocss-shadow-lg);
+  max-width: 32rem;
+  width: 90%;
+}
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+/* ==========================================================================
+   nanoCSS: Components
+   18 Core framework components mapped dynamically to semantic variables
+   Reference: design/UI_COMPONENTS.md
+   ========================================================================== */
+/* 0. Text Banner */
+hgroup :first-child {
+  font-size: var(--nanocss-text-xl, 2rem);
+  margin-bottom: 0 !important;
+}
+hgroup :last-child {
+  font-size: var(--nanocss-text-md, 1rem);
+  font-family: var(--nanocss-font-subtitle);
+  font-weight: var(--nanocss-weight-bold);
+  color: var(--nanocss-neutral-500);
+  font-style: italic;
+  margin-top: 0 !important;
+}
+
+/* 1. Hero Banner */
+.nanocss-hero {
+  background-color: var(--nanocss-neutral-100, #f3f4f6);
+  padding: var(--nanocss-space-xxl, 4rem) var(--nanocss-space-lg, 1.5rem);
+  text-align: center;
+  border-radius: var(--nanocss-radius-lg, 0.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 2. Carousel
+   Pure CSS carousel: wrap slides in .{prefix}-carousel, each slide in
+   .carousel-slide, add .carousel-prev / .carousel-next buttons.
+   Scroll-snap drives snapping; JS is optional for button wiring.
+   ------------------------------------------------------------------ */
+.nanocss-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--nanocss-radius-lg, 0.5rem);
+  /* ── Slide track ── */
+}
+.nanocss-carousel .carousel-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  gap: 0;
+  /* Hide scrollbar visually while keeping it functional */
+  scrollbar-width: none;
+}
+.nanocss-carousel .carousel-track::-webkit-scrollbar {
+  display: none;
+}
+.nanocss-carousel {
+  /* ── Individual slides ── */
+}
+.nanocss-carousel .carousel-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  position: relative;
+}
+.nanocss-carousel {
+  /* ── Prev / Next controls ── */
+}
+.nanocss-carousel .carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.nanocss-carousel .carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+.nanocss-carousel .carousel-btn:focus-visible {
+  outline: 2px solid var(--nanocss-primary);
+  outline-offset: 2px;
+}
+.nanocss-carousel .carousel-prev {
+  left: var(--nanocss-space-md, 1rem);
+}
+.nanocss-carousel .carousel-next {
+  right: var(--nanocss-space-md, 1rem);
+}
+.nanocss-carousel {
+  /* ── Dots indicator strip ── */
+}
+.nanocss-carousel .carousel-dots {
+  position: absolute;
+  bottom: var(--nanocss-space-md, 1rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--nanocss-space-sm, 0.5rem);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.nanocss-carousel .carousel-dots li {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.nanocss-carousel .carousel-dots li.active {
+  background: #fff;
+  transform: scale(1.3);
+}
+
+/* 4. Card — Base
+   ------------------------------------------------------------------ */
+.nanocss-card, .nanocss-card-neutral, .nanocss-card-tertiary, .nanocss-card-secondary, .nanocss-card-primary {
+  background-color: var(--nanocss-neutral-100, #f3f4f6);
+  border: var(--nanocss-border-width-sm, 1px) solid var(--nanocss-neutral-300, #d1d5db);
+  border-radius: var(--nanocss-radius-md, 0.25rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.nanocss-card header, .nanocss-card-neutral header, .nanocss-card-tertiary header, .nanocss-card-secondary header, .nanocss-card-primary header,
+.nanocss-card footer,
+.nanocss-card-neutral footer,
+.nanocss-card-tertiary footer,
+.nanocss-card-secondary footer,
+.nanocss-card-primary footer,
+.nanocss-card .card-body,
+.nanocss-card-neutral .card-body,
+.nanocss-card-tertiary .card-body,
+.nanocss-card-secondary .card-body,
+.nanocss-card-primary .card-body {
+  padding: var(--nanocss-space-md, 1rem);
+}
+.nanocss-card header, .nanocss-card-neutral header, .nanocss-card-tertiary header, .nanocss-card-secondary header, .nanocss-card-primary header {
+  border-bottom: var(--nanocss-border-width-sm, 1px) solid var(--nanocss-neutral-300, #d1d5db);
+}
+.nanocss-card footer, .nanocss-card-neutral footer, .nanocss-card-tertiary footer, .nanocss-card-secondary footer, .nanocss-card-primary footer {
+  border-top: var(--nanocss-border-width-sm, 1px) solid var(--nanocss-neutral-300, #d1d5db);
+  margin-top: auto;
+}
+.nanocss-card:hover, .nanocss-card-neutral:hover, .nanocss-card-tertiary:hover, .nanocss-card-secondary:hover, .nanocss-card-primary:hover {
+  box-shadow: var(--nanocss-shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+  transform: translateY(-2px);
+}
+
+/* 4a. Card Variant — Primary
+   Uses the brand primary colour for the header band and accents.
+   ------------------------------------------------------------------ */
+.nanocss-card-primary {
+  border-color: var(--nanocss-primary, #3b82f6);
+}
+.nanocss-card-primary header {
+  background-color: var(--nanocss-primary, #3b82f6);
+  color: #ffffff;
+  border-bottom-color: var(--nanocss-primary, #3b82f6);
+  font-weight: var(--nanocss-weight-bold, 700);
+}
+.nanocss-card-primary footer {
+  border-top-color: var(--nanocss-primary, #3b82f6);
+  background-color: color-mix(in srgb, var(--nanocss-primary, #3b82f6) 8%, transparent);
+}
+
+/* 4b. Card Variant — Secondary
+   Uses the brand secondary colour for the header band and accents.
+   ------------------------------------------------------------------ */
+.nanocss-card-secondary {
+  border-color: var(--nanocss-secondary, #8b5cf6);
+}
+.nanocss-card-secondary header {
+  background-color: var(--nanocss-secondary, #8b5cf6);
+  color: #ffffff;
+  border-bottom-color: var(--nanocss-secondary, #8b5cf6);
+  font-weight: var(--nanocss-weight-bold, 700);
+}
+.nanocss-card-secondary footer {
+  border-top-color: var(--nanocss-secondary, #8b5cf6);
+  background-color: color-mix(in srgb, var(--nanocss-secondary, #8b5cf6) 8%, transparent);
+}
+
+/* 4c. Card Variant — Tertiary
+   Uses the brand tertiary colour for the header band and accents.
+   ------------------------------------------------------------------ */
+.nanocss-card-tertiary {
+  border-color: var(--nanocss-tertiary, #ec4899);
+}
+.nanocss-card-tertiary header {
+  background-color: var(--nanocss-tertiary, #ec4899);
+  color: #ffffff;
+  border-bottom-color: var(--nanocss-tertiary, #ec4899);
+  font-weight: var(--nanocss-weight-bold, 700);
+}
+.nanocss-card-tertiary footer {
+  border-top-color: var(--nanocss-tertiary, #ec4899);
+  background-color: color-mix(in srgb, var(--nanocss-tertiary, #ec4899) 8%, transparent);
+}
+
+/* 4d. Card Variant — Neutral
+   A subtle, muted card using the predefined neutral shade scale.
+   Ideal for secondary content, sidebars, or informational blocks.
+   ------------------------------------------------------------------ */
+.nanocss-card-neutral {
+  background-color: var(--nanocss-neutral-100, #f3f4f6);
+  border-color: var(--nanocss-neutral-300, #d1d5db);
+}
+.nanocss-card-neutral header {
+  background-color: var(--nanocss-neutral-700, #374151);
+  color: var(--nanocss-neutral-100, #f3f4f6);
+  border-bottom-color: var(--nanocss-neutral-700, #374151);
+  font-weight: var(--nanocss-weight-bold, 700);
+}
+.nanocss-card-neutral footer {
+  background-color: var(--nanocss-neutral-300, #d1d5db);
+  border-top-color: var(--nanocss-neutral-300, #d1d5db);
+  color: var(--nanocss-neutral-700, #374151);
+}
+
+/* 5. Dropdown */
+.nanocss-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.nanocss-dropdown ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background-color: var(--nanocss-neutral-50, #f9fafb);
+  border: var(--nanocss-border-width-sm, 1px) solid var(--nanocss-neutral-300, #d1d5db);
+  border-radius: var(--nanocss-radius-sm, 0.125rem);
+  box-shadow: var(--nanocss-shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+  list-style: none;
+  margin: var(--nanocss-space-xs, 0.25rem) 0 0 0;
+  padding: 0;
+  min-width: 10rem;
+}
+.nanocss-dropdown ul li {
+  padding: var(--nanocss-space-sm, 0.5rem) var(--nanocss-space-md, 1rem);
+  cursor: pointer;
+}
+.nanocss-dropdown ul li:hover {
+  background-color: var(--nanocss-neutral-200, #e5e7eb);
+}
+.nanocss-dropdown {
+  /* Reveal logic: when wrapping a details or simple focus-within block */
+}
+.nanocss-dropdown:focus-within ul, .nanocss-dropdown.open ul {
+  display: block;
+}
+
+/* 6. Group (Input / Button groups joining elements) */
+.nanocss-group {
+  display: flex;
+  align-items: stretch;
+}
+.nanocss-group > * {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  position: relative;
+}
+.nanocss-group > *:focus-within {
+  z-index: 10;
+}
+.nanocss-group > *:first-child {
+  border-top-left-radius: var(--nanocss-radius-md, 0.25rem) !important;
+  border-bottom-left-radius: var(--nanocss-radius-md, 0.25rem) !important;
+}
+.nanocss-group > *:last-child {
+  border-top-right-radius: var(--nanocss-radius-md, 0.25rem) !important;
+  border-bottom-right-radius: var(--nanocss-radius-md, 0.25rem) !important;
+}
+
+/* 7. Loading Indicator */
+.nanocss-loader {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--nanocss-primary, #3b82f6);
+  animation: nanocss-spin 1s linear infinite;
+}
+
+@keyframes nanocss-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* 8. Modal */
+dialog.nanocss-modal {
+  padding: var(--nanocss-space-lg, 1.5rem);
+  border: none;
+  border-radius: var(--nanocss-radius-lg, 0.5rem);
+  box-shadow: var(--nanocss-shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1));
+  max-width: 32rem;
+  width: 100%;
+}
+dialog.nanocss-modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* 9. Nav / NavBar */
+.nanocss-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--nanocss-space-md, 1rem);
+  background: var(--nanocss-neutral-50, #f9fafb);
+  border-bottom: var(--nanocss-border-width-sm, 1px) solid var(--nanocss-neutral-300, #d1d5db);
+}
+.nanocss-nav .nav-menu {
+  display: flex;
+  gap: var(--nanocss-space-md, 1rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+@media (max-width: 768px) {
+  .nanocss-nav {
+    flex-wrap: wrap;
+  }
+  .nanocss-nav .nav-menu {
+    display: none;
+    /* Mobile logic applied externally via class toggle */
+    flex-direction: column;
+    width: 100%;
+    margin-top: var(--nanocss-space-md, 1rem);
+  }
+  .nanocss-nav .nav-menu.open {
+    display: flex;
+  }
+}
+
+/* 11. Tooltip */
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+[data-tooltip]::before, [data-tooltip]::after {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 100;
+}
+[data-tooltip] {
+  /* Triangle */
+}
+[data-tooltip]::before {
+  content: "";
+  border: 5px solid transparent;
+  border-top-color: #333;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+[data-tooltip] {
+  /* Bubble */
+}
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  background: #333;
+  color: #fff;
+  padding: var(--nanocss-space-xs, 0.25rem) var(--nanocss-space-sm, 0.5rem);
+  border-radius: var(--nanocss-radius-sm, 0.125rem);
+  font-size: var(--nanocss-text-xs, 0.75rem);
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-5px);
+  white-space: nowrap;
+}
+[data-tooltip]:hover::before, [data-tooltip]:hover::after, [data-tooltip]:focus::before, [data-tooltip]:focus::after {
+  opacity: 1;
+}
+
+/* 12. Buttons */
+.nanocss-btn-primary {
+  background-color: var(--nanocss-primary, #3b82f6);
+  color: #fff;
+  border: 1px solid var(--nanocss-primary, #3b82f6);
+}
+
+.nanocss-btn-secondary {
+  background-color: var(--nanocss-secondary, #8b5cf6);
+  color: #fff;
+  border: 1px solid var(--nanocss-secondary, #8b5cf6);
+}
+
+.nanocss-btn-outline {
+  background-color: transparent;
+  color: var(--nanocss-primary, #3b82f6);
+  border: 1px solid var(--nanocss-primary, #3b82f6);
+}
+.nanocss-btn-outline:hover {
+  background-color: var(--nanocss-primary, #3b82f6);
+  color: #fff;
+}
+
+/* 13. Badges */
+.nanocss-badge {
+  display: inline-block;
+  padding: 0.125rem var(--nanocss-space-sm, 0.5rem);
+  font-size: var(--nanocss-text-xs, 0.75rem);
+  font-weight: var(--nanocss-weight-bold, 700);
+  border-radius: 9999px;
+  /* Pill */
+  background-color: var(--nanocss-info, #3b82f6);
+  color: #fff;
+}
+.nanocss-badge.success {
+  background-color: var(--nanocss-success, #10b981);
+}
+.nanocss-badge.warning {
+  background-color: var(--nanocss-warning, #f59e0b);
+}
+.nanocss-badge.danger {
+  background-color: var(--nanocss-danger, #ef4444);
+}
+
+/* 14. Tags */
+.nanocss-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--nanocss-neutral-200, #e5e7eb);
+  color: var(--nanocss-neutral-800, #1f2937);
+  padding: var(--nanocss-space-xs, 0.25rem) var(--nanocss-space-sm, 0.5rem);
+  border-radius: var(--nanocss-radius-sm, 0.125rem);
+  font-size: var(--nanocss-text-sm, 0.875rem);
+}
+.nanocss-tag button {
+  background: transparent;
+  border: none;
+  color: currentColor;
+  margin-left: var(--nanocss-space-sm, 0.5rem);
+  padding: 0;
+  cursor: pointer;
+  font-weight: bold;
+  opacity: 0.6;
+}
+.nanocss-tag button:hover {
+  opacity: 1;
+}
+
+/* 15. Breadcrumbs */
+nav[aria-label=breadcrumb] ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nanocss-space-sm, 0.5rem);
+}
+nav[aria-label=breadcrumb] li:not(:last-child)::after {
+  content: "/";
+  margin-left: var(--nanocss-space-sm, 0.5rem);
+  color: var(--nanocss-neutral-400, #9ca3af);
+}
+nav[aria-label=breadcrumb] li:last-child {
+  color: var(--nanocss-neutral-600, #4b5563);
+  pointer-events: none;
+}
+
+/* 16. Pagination */
+.nanocss-pagination {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: var(--nanocss-space-xs, 0.25rem);
+}
+.nanocss-pagination li a,
+.nanocss-pagination li span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: var(--nanocss-border-width-sm, 1px) solid var(--nanocss-neutral-300, #d1d5db);
+  border-radius: var(--nanocss-radius-sm, 0.125rem);
+  text-decoration: none;
+  color: var(--nanocss-primary, #3b82f6);
+}
+.nanocss-pagination li.active span,
+.nanocss-pagination li a:hover {
+  background-color: var(--nanocss-primary, #3b82f6);
+  color: #fff;
+  border-color: var(--nanocss-primary, #3b82f6);
+}
+.nanocss-pagination li.disabled span {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--nanocss-neutral-100, #f3f4f6);
+}
+
+/* 17. Tabs */
+.nanocss-tabs {
+  display: flex;
+  flex-wrap: wrap;
+}
+.nanocss-tabs > input[type=radio] {
+  display: none;
+}
+.nanocss-tabs > label {
+  padding: var(--nanocss-space-sm, 0.5rem) var(--nanocss-space-md, 1rem);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  font-weight: var(--nanocss-weight-medium, 500);
+  order: 1;
+  color: var(--nanocss-neutral-600, #4b5563);
+}
+.nanocss-tabs > label:hover {
+  color: var(--nanocss-primary, #3b82f6);
+}
+.nanocss-tabs > .panel {
+  display: none;
+  width: 100%;
+  order: 2;
+  padding: var(--nanocss-space-md, 1rem);
+  border-top: var(--nanocss-border-width-sm, 1px) solid var(--nanocss-neutral-300, #d1d5db);
+}
+.nanocss-tabs {
+  /* When radio is checked, highly active UI logic triggers */
+}
+.nanocss-tabs > input[type=radio]:checked + label {
+  color: var(--nanocss-primary, #3b82f6);
+  border-bottom-color: var(--nanocss-primary, #3b82f6);
+}
+.nanocss-tabs > input[id^=tab1]:checked ~ #panel1, .nanocss-tabs > input[id^=tab2]:checked ~ #panel2, .nanocss-tabs > input[id^=tab3]:checked ~ #panel3 {
+  display: block;
+  /* Requires IDs to strictly match, or we could use generic sibling logic if structural order is tight */
+}
+.nanocss-tabs {
+  /* Cleaner :has() approach if supported, though the ID fallback above is safer */
+}
+.nanocss-tabs:has(> input[type=radio]:nth-of-type(1):checked) > .panel:nth-of-type(1), .nanocss-tabs:has(> input[type=radio]:nth-of-type(2):checked) > .panel:nth-of-type(2), .nanocss-tabs:has(> input[type=radio]:nth-of-type(3):checked) > .panel:nth-of-type(3) {
+  display: block;
+}
+
+.nanocss-p-xs {
+  padding: 0.125rem !important;
+}
+
+.nanocss-p-sm {
+  padding: 0.25rem !important;
+}
+
+.nanocss-p {
+  padding: 0.5rem !important;
+}
+
+.nanocss-p-lg {
+  padding: 0.75rem !important;
+}
+
+.nanocss-p-xl {
+  padding: 1rem !important;
+}
+
+.nanocss-p-xxl {
+  padding: 1.5rem !important;
+}
+
+.nanocss-pt-xs {
+  padding-top: 0.125rem !important;
+}
+
+.nanocss-pt-sm {
+  padding-top: 0.25rem !important;
+}
+
+.nanocss-pt {
+  padding-top: 0.5rem !important;
+}
+
+.nanocss-pt-lg {
+  padding-top: 0.75rem !important;
+}
+
+.nanocss-pt-xl {
+  padding-top: 1rem !important;
+}
+
+.nanocss-pt-xxl {
+  padding-top: 1.5rem !important;
+}
+
+.nanocss-pb-xs {
+  padding-bottom: 0.125rem !important;
+}
+
+.nanocss-pb-sm {
+  padding-bottom: 0.25rem !important;
+}
+
+.nanocss-pb {
+  padding-bottom: 0.5rem !important;
+}
+
+.nanocss-pb-lg {
+  padding-bottom: 0.75rem !important;
+}
+
+.nanocss-pb-xl {
+  padding-bottom: 1rem !important;
+}
+
+.nanocss-pb-xxl {
+  padding-bottom: 1.5rem !important;
+}
+
+.nanocss-pl-xs {
+  padding-left: 0.125rem !important;
+}
+
+.nanocss-pl-sm {
+  padding-left: 0.25rem !important;
+}
+
+.nanocss-pl {
+  padding-left: 0.5rem !important;
+}
+
+.nanocss-pl-lg {
+  padding-left: 0.75rem !important;
+}
+
+.nanocss-pl-xl {
+  padding-left: 1rem !important;
+}
+
+.nanocss-pl-xxl {
+  padding-left: 1.5rem !important;
+}
+
+.nanocss-pr-xs {
+  padding-right: 0.125rem !important;
+}
+
+.nanocss-pr-sm {
+  padding-right: 0.25rem !important;
+}
+
+.nanocss-pr {
+  padding-right: 0.5rem !important;
+}
+
+.nanocss-pr-lg {
+  padding-right: 0.75rem !important;
+}
+
+.nanocss-pr-xl {
+  padding-right: 1rem !important;
+}
+
+.nanocss-pr-xxl {
+  padding-right: 1.5rem !important;
+}
+
+.nanocss-px {
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+}
+
+.nanocss-py {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.nanocss-m-xs {
+  margin: 0.3125rem !important;
+}
+
+.nanocss-m-sm {
+  margin: 0.625rem !important;
+}
+
+.nanocss-m {
+  margin: 1.25rem !important;
+}
+
+.nanocss-m-lg {
+  margin: 1.875rem !important;
+}
+
+.nanocss-m-xl {
+  margin: 2.5rem !important;
+}
+
+.nanocss-m-xxl {
+  margin: 3.75rem !important;
+}
+
+.nanocss-m-auto {
+  margin: auto !important;
+}
+
+.nanocss-mt-xs {
+  margin-top: 0.3125rem !important;
+}
+
+.nanocss-mt-sm {
+  margin-top: 0.625rem !important;
+}
+
+.nanocss-mt {
+  margin-top: 1.25rem !important;
+}
+
+.nanocss-mt-lg {
+  margin-top: 1.875rem !important;
+}
+
+.nanocss-mt-xl {
+  margin-top: 2.5rem !important;
+}
+
+.nanocss-mt-xxl {
+  margin-top: 3.75rem !important;
+}
+
+.nanocss-mt-auto {
+  margin-top: auto !important;
+}
+
+.nanocss-mb-xs {
+  margin-bottom: 0.3125rem !important;
+}
+
+.nanocss-mb-sm {
+  margin-bottom: 0.625rem !important;
+}
+
+.nanocss-mb {
+  margin-bottom: 1.25rem !important;
+}
+
+.nanocss-mb-lg {
+  margin-bottom: 1.875rem !important;
+}
+
+.nanocss-mb-xl {
+  margin-bottom: 2.5rem !important;
+}
+
+.nanocss-mb-xxl {
+  margin-bottom: 3.75rem !important;
+}
+
+.nanocss-mb-auto {
+  margin-bottom: auto !important;
+}
+
+.nanocss-ml-xs {
+  margin-left: 0.3125rem !important;
+}
+
+.nanocss-ml-sm {
+  margin-left: 0.625rem !important;
+}
+
+.nanocss-ml {
+  margin-left: 1.25rem !important;
+}
+
+.nanocss-ml-lg {
+  margin-left: 1.875rem !important;
+}
+
+.nanocss-ml-xl {
+  margin-left: 2.5rem !important;
+}
+
+.nanocss-ml-xxl {
+  margin-left: 3.75rem !important;
+}
+
+.nanocss-ml-auto {
+  margin-left: auto !important;
+}
+
+.nanocss-mr-xs {
+  margin-right: 0.3125rem !important;
+}
+
+.nanocss-mr-sm {
+  margin-right: 0.625rem !important;
+}
+
+.nanocss-mr {
+  margin-right: 1.25rem !important;
+}
+
+.nanocss-mr-lg {
+  margin-right: 1.875rem !important;
+}
+
+.nanocss-mr-xl {
+  margin-right: 2.5rem !important;
+}
+
+.nanocss-mr-xxl {
+  margin-right: 3.75rem !important;
+}
+
+.nanocss-mr-auto {
+  margin-right: auto !important;
+}
+
+.nanocss-mx-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.nanocss-flex {
+  display: flex !important;
+}
+
+.nanocss-flex-col {
+  flex-direction: column !important;
+}
+
+.nanocss-flex-wrap {
+  flex-wrap: wrap !important;
+}
+
+.nanocss-items-center {
+  align-items: center !important;
+}
+
+.nanocss-justify-between {
+  justify-content: space-between !important;
+}
+
+.nanocss-justify-center {
+  justify-content: center !important;
+}
+
+.nanocss-grid {
+  display: grid !important;
+}
+
+.nanocss-grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.nanocss-grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.nanocss-grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+.nanocss-hidden {
+  display: none !important;
+}
+
+.nanocss-block {
+  display: block !important;
+}
+
+.nanocss-inline-block {
+  display: inline-block !important;
+}
+
+.nanocss-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.nanocss-text-center {
+  text-align: center !important;
+}
+
+.nanocss-text-right {
+  text-align: right !important;
+}
+
+.nanocss-font-bold {
+  font-weight: 700 !important;
+}
+
+.nanocss-font-light {
+  font-weight: 300 !important;
+}

@@ -21,10 +21,11 @@ class ThemeConfiguration
     @excluded_components ||= []
     @wrap_in_layer = false if @wrap_in_layer.nil?
     @prefix ||= 'nanocss'
-    @primary ||= '#3b82f6'
-    @secondary ||= '#8b5cf6'
-    @tertiary ||= '#ec4899'
+    @primary ||= '#1e40af'
+    @secondary ||= '#6366f1'
+    @tertiary ||= '#06b6d4'
     @mode ||= 'basic'
+    @tier ||= 'full'
     @font_heading ||= 'Inter'
     @font_subtitle ||= 'Inter'
     @font_body ||= 'Roboto'
@@ -80,17 +81,29 @@ class ThemeConfiguration
   def to_base64
     require 'base64'
     require 'json'
-    Base64.urlsafe_encode64(self.as_json.to_json)
+    
+    # Only serialize attributes that differ from their default values
+    defaults = ThemeConfiguration.new.as_json
+    modified_attrs = self.as_json.reject do |key, value|
+      defaults[key] == value
+    end
+    
+    Base64.urlsafe_encode64(modified_attrs.to_json, padding: false)
   end
 
   def self.from_base64(encoded_string)
     require 'base64'
     require 'json'
     begin
-      json = Base64.urlsafe_decode64(encoded_string)
+      # Add padding back if missing
+      padded_string = encoded_string
+      padded_string += "=" * (4 - padded_string.length % 4) if padded_string.length % 4 != 0
+      
+      json = Base64.urlsafe_decode64(padded_string)
       attrs = JSON.parse(json)
       new(attrs)
-    rescue StandardError
+    rescue StandardError => e
+      Rails.logger.error "Base64 decode error: #{e.message}"
       new # return default
     end
   end

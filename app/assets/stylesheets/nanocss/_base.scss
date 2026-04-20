@@ -19,7 +19,12 @@ body {
 
 // 2. Headings (h1–h6)
 // ---------------------------------------------------------
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--#{$prefix}-font-heading);
   font-weight: var(--#{$prefix}-weight-bold);
   line-height: var(--#{$prefix}-line-height-heading);
@@ -27,12 +32,34 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--#{$prefix}-margin-sm);
 }
 
-h1 { font-size: var(--#{$prefix}-text-xxl); margin-bottom: var(--#{$prefix}-margin-md); }
-h2 { font-size: var(--#{$prefix}-text-xl); }
-h3 { font-size: var(--#{$prefix}-text-lg); }
-h4 { font-size: var(--#{$prefix}-text-md); }
-h5 { font-size: var(--#{$prefix}-text-sm); font-weight: var(--#{$prefix}-weight-medium); }
-h6 { font-size: var(--#{$prefix}-text-xs); font-weight: var(--#{$prefix}-weight-medium); text-transform: uppercase; letter-spacing: 0.05em; }
+h1 {
+  font-size: var(--#{$prefix}-text-xxl);
+  margin-bottom: var(--#{$prefix}-margin-md);
+}
+
+h2 {
+  font-size: var(--#{$prefix}-text-xl);
+}
+
+h3 {
+  font-size: var(--#{$prefix}-text-lg);
+}
+
+h4 {
+  font-size: var(--#{$prefix}-text-md);
+}
+
+h5 {
+  font-size: var(--#{$prefix}-text-sm);
+  font-weight: var(--#{$prefix}-weight-medium);
+}
+
+h6 {
+  font-size: var(--#{$prefix}-text-xs);
+  font-weight: var(--#{$prefix}-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
 
 // 3. Body Text
 // ---------------------------------------------------------
@@ -41,9 +68,19 @@ p {
   max-width: 70ch; // Optimal reading width
 }
 
-strong, b { font-weight: var(--#{$prefix}-weight-bold); }
-em, i { font-style: italic; }
-small { font-size: var(--#{$prefix}-text-xs); }
+strong,
+b {
+  font-weight: var(--#{$prefix}-weight-bold);
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+small {
+  font-size: var(--#{$prefix}-text-xs);
+}
 
 // 4. Links
 // ---------------------------------------------------------
@@ -77,7 +114,9 @@ blockquote {
 
 // 6. Code & Pre
 // ---------------------------------------------------------
-code, kbd, samp {
+code,
+kbd,
+samp {
   font-family: var(--#{$prefix}-font-code);
   font-size: 0.875em;
   background: var(--#{$prefix}-neutral-100);
@@ -124,19 +163,26 @@ hr {
 
 // 8. Lists
 // ---------------------------------------------------------
-ol, ul {
+ol,
+ul {
   padding-left: var(--#{$prefix}-space-xl);
   margin-bottom: var(--#{$prefix}-margin-sm);
 }
 
-ul { list-style-type: disc; }
-ol { list-style-type: decimal; }
+ul {
+  list-style-type: disc;
+}
+
+ol {
+  list-style-type: decimal;
+}
 
 li {
   margin-bottom: var(--#{$prefix}-space-xs);
 }
 
-li > ul, li > ol {
+li>ul,
+li>ol {
   margin-top: var(--#{$prefix}-space-xs);
   margin-bottom: 0;
 }
@@ -312,7 +358,9 @@ summary {
   font-weight: var(--#{$prefix}-weight-medium);
   list-style: none;
 
-  &::-webkit-details-marker { display: none; }
+  &::-webkit-details-marker {
+    display: none;
+  }
 
   &::before {
     content: '▶';
@@ -322,7 +370,7 @@ summary {
     transition: transform 0.2s ease;
   }
 
-  details[open] > &::before {
+  details[open]>&::before {
     transform: rotate(90deg);
   }
 }

@@ -1,40 +1,49 @@
 /*
  *= require_self
  */
-@layer framework, config, app;
+/*
+  application.css — LAYOUT CHROME ONLY
+  =====================================
+  This file contains ONLY the structural chrome for the nanoCSS generator app
+  (the dark glassmorphism nav, sidebar, and page skeleton).
+
+  ALL component styling (buttons, inputs, badges, type scale, cards, modals etc.)
+  comes from the dynamically compiled nanoCSS output injected in <head> by
+  ApplicationController#compile_default_nanocss.
+
+  Do NOT add component styles here — that defeats the purpose of the product.
+  Traces: design/implementation_plan.md — Option A: Full Self-Hosting
+*/
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Outfit:wght@400;600;800&family=Fira+Code&display=swap');
 
-/* Import compiled nanoCSS into the framework layer */
-@layer framework {
-  @import './nanocss-compiled/nanocss.css';
+/* ─ App-Level Tokens ────────────────────────────────────────────────────── */
+:root {
+  --chrome-base:    #0f172a;
+  --chrome-surface: #1e293b;
+  --chrome-border:  #334155;
+  --chrome-text:    #f8fafc;
+  --chrome-muted:   #94a3b8;
+  --chrome-glass:   rgba(30, 41, 59, 0.85);
+  --chrome-brand-a: #a855f7;
+  --chrome-brand-b: #ec4899;
+
+  /* Override nanocss body defaults for the dark theme chrome */
+  --nanocss-neutral-900: #f8fafc;    /* body text → light on dark */
+  --nanocss-neutral-100: transparent; /* body bg  → transparent, chrome handles it */
 }
 
-@layer app {
-  /* ─ App-Level Tokens ────────────────────────────────────────────────────── */
-  :root {
-    --chrome-base:    #0f172a;
-    --chrome-surface: #1e293b;
-    --chrome-border:  #334155;
-    --chrome-text:    #f8fafc;
-    --chrome-muted:   #94a3b8;
-    --chrome-glass:   rgba(30, 41, 59, 0.85);
-    --chrome-brand-a: #a855f7;
-    --chrome-brand-b: #ec4899;
-  }
+/* ─ Global reset integration ─────────────────────────────────────────────── */
+* { box-sizing: border-box; }
 
-  /* ─ Global reset integration ─────────────────────────────────────────────── */
-  * { box-sizing: border-box; }
-
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background: radial-gradient(circle at top right, #312e81, #0f172a 40%);
-    background-attachment: fixed;
-    min-height: 100vh;
-    color: #f8fafc;
-    overflow-x: hidden;
-  }
-
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: radial-gradient(circle at top right, #312e81, #0f172a 40%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: #f8fafc;
+  overflow-x: hidden;
+}
 
 /* ─ App Shell ────────────────────────────────────────────────────────────── */
 .app-container {
@@ -114,52 +123,41 @@
 }
 
 .config-sidebar {
-  width: 420px;
+  width: 400px;
   flex-shrink: 0;
   background: var(--chrome-glass);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px);
   border-right: 1px solid var(--chrome-border);
   overflow-y: auto;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 .config-sidebar h2 {
   font-family: 'Outfit', system-ui, sans-serif;
   color: var(--chrome-text);
-  margin-bottom: 2rem;
-  font-size: 1.75rem;
-  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
 }
 
+/* Within the sidebar, override nanocss inputs to suit the dark chrome */
 .config-sidebar label {
   color: var(--chrome-muted);
-  font-size: 0.875rem;
-  margin-bottom: 0.6rem;
-  font-weight: 500;
-  display: block;
+  font-size: 0.8125rem;
 }
 
 .config-sidebar input[type="text"],
 .config-sidebar input[type="number"],
 .config-sidebar select,
 .config-sidebar textarea {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: rgba(15, 23, 42, 0.7) !important;
+  border-color: var(--chrome-border) !important;
   color: var(--chrome-text) !important;
-  font-size: 0.9375rem !important;
-  padding: 0.75rem 1rem !important;
-  border-radius: 0.75rem !important;
-  transition: all 0.2s ease !important;
-  box-shadow: none !important;
 }
 
 .config-sidebar input[type="text"]:focus,
 .config-sidebar input[type="number"]:focus,
 .config-sidebar select:focus {
   border-color: var(--chrome-brand-a) !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  outline: none !important;
-  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15) !important;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2) !important;
 }
 
 .config-sidebar button[type="submit"],
@@ -186,71 +184,6 @@
   border-color: var(--chrome-muted) !important;
   color: var(--chrome-text) !important;
   background: rgba(255,255,255,0.05) !important;
-}
-
-/* ─ Premium Form Controls ────────────────────────────────────────────────── */
-.config-sidebar input[type="checkbox"],
-.config-sidebar input[type="radio"] {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 1.15rem;
-  height: 1.15rem;
-  border: 1px solid var(--chrome-border);
-  border-radius: 0.3rem;
-  background: rgba(15, 23, 42, 0.7);
-  cursor: pointer;
-  position: relative;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  display: inline-grid;
-  place-content: center;
-  vertical-align: middle;
-  margin: 0;
-}
-
-.config-sidebar input[type="radio"] {
-  border-radius: 50%;
-}
-
-.config-sidebar input[type="checkbox"]::before,
-.config-sidebar input[type="radio"]::before {
-  content: "";
-  width: 0.65rem;
-  height: 0.65rem;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em var(--chrome-brand-a);
-  background-color: CanvasText;
-}
-
-.config-sidebar input[type="checkbox"]::before {
-  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-}
-
-.config-sidebar input[type="radio"]::before {
-  border-radius: 50%;
-}
-
-.config-sidebar input[type="checkbox"]:checked,
-.config-sidebar input[type="radio"]:checked {
-  border-color: var(--chrome-brand-a);
-  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
-  background: rgba(168, 85, 247, 0.1);
-}
-
-.config-sidebar input[type="checkbox"]:checked::before,
-.config-sidebar input[type="radio"]:checked::before {
-  transform: scale(1);
-}
-
-.config-sidebar input[type="checkbox"]:hover,
-.config-sidebar input[type="radio"]:hover {
-  border-color: var(--chrome-muted);
-  transform: scale(1.05);
-}
-
-.config-sidebar label:hover input[type="checkbox"],
-.config-sidebar label:hover input[type="radio"] {
-  border-color: var(--chrome-muted);
 }
 
 /* Section dividers */
@@ -544,5 +477,3 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
-} /* End of @layer app */

@@ -257,6 +257,99 @@ The core framework SCSS files (`_variables.scss`, `_mixins.scss`, `_utilities.sc
 
 ---
 
+## Sprint 4 — UI Fixes, NanoCSS Integration & Refinement
+
+> **Sprint Goal:** Address all newly discovered snags, UI/UX issues, and complete the self-hosting nanoCSS transition.
+> **Estimated Capacity:** 20 story points
+
+---
+
+### UC-013 · Corporate Preset Default & Live Preview Migration · 🟥 Must Have · 3 pts
+
+**As an** indie developer,
+**I want** the "Corporate" preset to be the default and the live preview positioned on the config page,
+**so that** the app landing page focuses on a Hero Banner and configuration happens in context.
+
+**Acceptance Criteria:**
+- AC1: Use "Corporate" preset as the default configuration form values.
+- AC2: Remove Live Preview block from Landing page, use it on Config page.
+- AC3: First element on the Landing page must be a Hero Banner.
+
+---
+
+### UC-015 · Complete NanoCSS Self-Hosting (Remove Custom Chrome) · 🟥 Must Have · 5 pts
+
+**As an** indie developer,
+**I want** the app to use its own generated nanoCSS framework for all interface styling,
+**so that** we rely purely on our framework without custom chrome or inline styles.
+
+**Acceptance Criteria:**
+- AC1: Remove all inline styles from the app.
+- AC2: Use the compiled `nanocss.css` from `app/assets/stylesheets/nanocss-compiled/`.
+- AC3: Use nanoCSS components for the app interface (no custom ones).
+- AC4: Allow minimal tweaks in `application.css/scss` *only after* importing/compiling nanoCSS.
+- AC5: Separate config page styling from Live Preview styling using the `@layer` directive.
+
+---
+
+### UC-016 · Quick Update Stylesheet Reload · 🟧 Should Have · 3 pts
+
+**As an** indie developer,
+**I want** the QuickUpdate function to change/reload the site's stylesheet file,
+**so that** it doesn't just replace the contents of an inline `<style>` tag.
+
+**Acceptance Criteria:**
+- AC1: Clicking QuickUpdate updates a `<link rel="stylesheet">` or dynamically replaces it rather than editing a `<style>` block.
+
+---
+
+### UC-017 · Fix Live Preview Contrast Bug · 🟥 Must Have · 2 pts
+
+**As a** user,
+**I want** the text in the live preview to remain visible,
+**so that** changing a config variable doesn't make text blend into the background.
+
+**Acceptance Criteria:**
+- AC1: Fix the issue where text changes to background colour when config is updated.
+- AC2: Remove or adjust the hardcoded overrides in App-level Tokens inside the `:root` selector of `application.css`.
+
+---
+
+### UC-018 · Fix Copy/Share Link · 🟥 Must Have · 2 pts
+
+**As a** user,
+**I want** the copy/share link to correctly encode and decode theme settings,
+**so that** I can share my themes reliably.
+
+**Acceptance Criteria:**
+- AC1: Fix the copy/share link feature so that it works as originally intended.
+
+---
+
+### UC-019 · Component Catalogue Enhancements & Responsive Test Page · 🟧 Should Have · 5 pts
+
+**As an** indie developer,
+**I want** a consistent, responsive component catalogue and a dedicated test page,
+**so that** I can verify all components in a natural layout.
+
+**Acceptance Criteria:**
+- AC1: Fix visual nightmare on component catalogue (text/bg contrast, navbar spanning issue, consistent header/footer).
+- AC2: Ensure all nanoCSS components are responsive.
+- AC3: Create a test page with all components in their natural place with dummy copy (Lorem Ipsum) and image placeholders.
+
+---
+
+### UC-020 · Dynamic Font Rendering in Google Fonts API · 🟦 Nice to Have · 3 pts
+
+**As a** user,
+**I want** each font name in the selection list to display in its own font style,
+**so that** I can preview the font visually before selecting it.
+
+**Acceptance Criteria:**
+- AC1: Wrap each font name in a span or custom component and dynamically apply its own `font-family` style in the dropdown/list.
+
+---
+
 ## Icebox _(Unscheduled / Future)_
 
 _(Empty)_
