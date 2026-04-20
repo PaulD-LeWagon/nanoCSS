@@ -527,4 +527,21 @@
       </div>
     </section>
 
+    <!-- 18. Icons -->
+    <section class="component-section" data-controller="clipboard">
+      <div class="component-header"><h2>Icons</h2></div>
+      <div class="component-preview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1.5rem; text-align: center;">
+        <% ["menu", "close", "chevron-up", "chevron-down", "chevron-left", "chevron-right", "check", "alert", "info", "search", "user", "home", "settings", "star", "heart", "download", "copy", "link", "external-link", "moon", "sun"].each do |icon| %>
+          <div class="icon-item" style="padding: 1rem; border-radius: 0.5rem; border: 1px solid #e5e7eb; background: #fff;">
+            <div style="margin-bottom: 0.5rem; color: var(--<%= @prefix %>-primary);"><%= nano_icon(icon, size: 32) %></div>
+            <div style="font-size: 0.75rem; font-family: monospace; color: #6b7280;"><%= icon %></div>
+          </div>
+        <% end %>
+      </div>
+      <div class="component-code">
+        <button class="copy-btn" data-action="clipboard#copy">Copy</button>
+        <pre><code data-clipboard-target="source">&lt;%= nano_icon("menu", size: 24, class: "custom-class") %&gt;</code></pre>
+      </div>
+    </section>
+
 </div>
