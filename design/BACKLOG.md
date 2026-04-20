@@ -350,6 +350,45 @@ The core framework SCSS files (`_variables.scss`, `_mixins.scss`, `_utilities.sc
 
 ---
 
+## Sprint 5 — Extensibility & Theming 
+
+> **Sprint Goal:** Introduce default SVG icons and a floating theme-switcher component to allow users to toggle themes/modes on the fly.
+> **Estimated Capacity:** TBD
+
+---
+
+### UC-021 · Default Icon Set (nanoCSS Icons) · 🟧 Should Have · 5 pts
+
+**As an** indie developer,
+**I want** a default set of lightweight SVG icons built into the framework,
+**so that** I don't have to hunt for third-party icon libraries for common UI needs (menus, close buttons, arrows, etc.).
+
+**Acceptance Criteria:**
+- AC1: Use an AI (like Gemini 3.1 Pro) to generate a cohesive set of ~20 minimal SVG icons.
+- AC2: Expose these as pure CSS icons or simple SVG templates that integrate seamlessly with the framework's typography and color variables.
+- AC3: Add an "Icons" section to the Component Catalogue.
+
+**Dependencies:** None
+**Status:** ⚪ To Do
+
+---
+
+### UC-022 · Floating Theme Switcher Component · 🟧 Should Have · 3 pts
+
+**As a** user,
+**I want** a floating, expandable/collapsible menu component,
+**so that** I can easily toggle between Light/Dark mode and switch between preset themes natively on the test page and in my own projects.
+
+**Acceptance Criteria:**
+- AC1: Create a `<prefix>-theme-switcher` component that fixes to the bottom right of the viewport.
+- AC2: It must be collapsible/expandable without relying on complex JS (using semantic details/summary or a simple toggle class).
+- AC3: It should allow toggling `data-theme="dark"` on the `html` root and switching the active preset variables dynamically.
+
+**Dependencies:** None
+**Status:** ⚪ To Do
+
+---
+
 ## Icebox _(Unscheduled / Future)_
 
 _(Empty)_

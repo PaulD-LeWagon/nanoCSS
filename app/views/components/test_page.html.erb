@@ -1,0 +1,170 @@
+<% content_for :title, "Responsive Test Page - nanoCSS" %>
+<% content_for :head do %>
+  <% if @css.present? %>
+    <style id="nanocss-test-styles">
+      <%= @css.html_safe %>
+    </style>
+  <% end %>
+<% end %>
+
+<div style="background-color: var(--nanocss-bg-body, #f8fafc); min-height: 100vh; font-family: var(--nanocss-font-body, system-ui);">
+  <!-- Navbar -->
+  <nav class="<%= @prefix %>-nav">
+    <div class="nav-brand">TestLogo</div>
+    <button class="nav-toggle" aria-label="Toggle Navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    <ul class="nav-menu <%= @prefix %>-ml-auto">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Features</a></li>
+      <li>
+        <div class="<%= @prefix %>-dropdown">
+          <a href="#" style="display:inline-block;">Products ▼</a>
+          <ul>
+            <li>Software</li>
+            <li>Hardware</li>
+            <li>Services</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="<%= @prefix %>-group" style="margin: 0 0.5rem;">
+          <input type="search" placeholder="Search..." style="border: 1px solid #d1d5db; padding: 0.25rem 0.5rem; width: 120px;" />
+          <button class="<%= @prefix %>-btn-primary" style="padding: 0.25rem 0.5rem;">Go</button>
+        </div>
+      </li>
+      <li><a href="#" class="<%= @prefix %>-btn-primary" style="color: white;">Sign In</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="<%= @prefix %>-hero">
+    <h1>The Responsive Test Layout</h1>
+    <p>Ensuring all nanoCSS components flex, stack, and scale gracefully across every breakpoint imaginable. This dummy text expands on the value proposition.</p>
+    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+      <button class="<%= @prefix %>-btn-primary">Get Started</button>
+      <button class="<%= @prefix %>-btn-outline">Documentation</button>
+    </div>
+  </section>
+
+  <!-- Main Content Container -->
+  <div style="max-width: 1200px; margin: 0 auto; padding: 4rem 2rem;">
+    
+    <!-- Grid System for Cards -->
+    <h2 style="margin-bottom: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem;">Component Grid</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
+      
+      <article class="<%= @prefix %>-card-primary">
+        <header>Feature One</header>
+        <div class="card-body">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem.</p>
+          <div style="margin-top: 1rem;">
+            <span class="<%= @prefix %>-badge success">Active</span>
+            <span class="<%= @prefix %>-tag">Design <button type="button" aria-label="Remove">×</button></span>
+          </div>
+        </div>
+        <footer><button class="<%= @prefix %>-btn-primary" style="width: 100%;">Learn More</button></footer>
+      </article>
+
+      <article class="<%= @prefix %>-card-secondary">
+        <header>Feature Two</header>
+        <div class="card-body">
+          <p>Suspendisse potenti. In non ullamcorper enim, id elementum nisl. Mauris sit amet.</p>
+          <progress value="75" max="100" style="width: 100%; margin-top: 1rem;">75%</progress>
+        </div>
+        <footer><button class="<%= @prefix %>-btn-secondary" style="width: 100%;">View Details</button></footer>
+      </article>
+
+      <article class="<%= @prefix %>-card-tertiary">
+        <header>Feature Three</header>
+        <div class="card-body">
+          <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis.</p>
+          <div style="margin-top: 1rem;">
+            <span class="<%= @prefix %>-loader"></span> Loading data...
+          </div>
+        </div>
+        <footer><button class="<%= @prefix %>-btn-outline" style="width: 100%;">Refresh</button></footer>
+      </article>
+
+    </div>
+
+    <!-- Forms and Data -->
+    <h2 style="margin-bottom: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem;">Interactive Elements</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; margin-bottom: 4rem;">
+      
+      <!-- Forms/Inputs -->
+      <article class="<%= @prefix %>-card">
+        <header>Newsletter Signup</header>
+        <div class="card-body">
+          <p style="margin-bottom: 1rem;">Subscribe to our updates.</p>
+          <div class="<%= @prefix %>-group" style="margin-bottom: 1rem;">
+            <input type="email" placeholder="Email address..." style="border: 1px solid #d1d5db; padding: 0.5rem; flex: 1;" />
+            <button class="<%= @prefix %>-btn-primary">Subscribe</button>
+          </div>
+          <div class="<%= @prefix %>-dropdown" style="width: 100%;">
+            <button class="<%= @prefix %>-btn-outline" style="width: 100%;">Select Frequency ▼</button>
+            <ul>
+              <li>Daily</li>
+              <li>Weekly</li>
+              <li>Monthly</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tabs Component -->
+      <div class="<%= @prefix %>-tabs">
+        <input type="radio" id="test_tab1" name="test_tabs" checked />
+        <label for="test_tab1">Overview</label>
+        <div class="panel" id="test_panel1">
+          <p>This is a demonstration of the tabs component integrating nicely within a grid layout.</p>
+          <span tabindex="0" data-tooltip="More information available here">Hover for info</span>
+        </div>
+
+        <input type="radio" id="test_tab2" name="test_tabs" />
+        <label for="test_tab2">Details</label>
+        <div class="panel" id="test_panel2">
+          <p>Vivamus suscipit tortor eget felis porttitor volutpat. Nulla quis lorem ut libero malesuada.</p>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- Carousel Component -->
+    <h2 style="margin-bottom: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem;">Media Carousel</h2>
+    <div style="margin-bottom: 4rem; border-radius: 0.5rem; overflow: hidden; max-width: 800px; margin-left: auto; margin-right: auto;">
+      <div class="<%= @prefix %>-carousel" id="test-carousel">
+        <div class="carousel-track" id="test-carousel-track">
+          <div class="carousel-slide" style="height: 300px; background: linear-gradient(135deg,#6366f1,#a855f7); display:flex; align-items:center; justify-content:center; color:#fff; font-size:2rem; font-weight:700;">Image Placeholder 1</div>
+          <div class="carousel-slide" style="height: 300px; background: linear-gradient(135deg,#ec4899,#f59e0b); display:flex; align-items:center; justify-content:center; color:#fff; font-size:2rem; font-weight:700;">Image Placeholder 2</div>
+          <div class="carousel-slide" style="height: 300px; background: linear-gradient(135deg,#10b981,#0ea5e9); display:flex; align-items:center; justify-content:center; color:#fff; font-size:2rem; font-weight:700;">Image Placeholder 3</div>
+        </div>
+        <button class="carousel-btn carousel-prev" onclick="carouselScroll('test-carousel-track', -1)" aria-label="Previous slide">‹</button>
+        <button class="carousel-btn carousel-next" onclick="carouselScroll('test-carousel-track',  1)" aria-label="Next slide">›</button>
+        <ul class="carousel-dots" id="test-carousel-dots">
+          <li class="active"></li><li></li><li></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function carouselScroll(trackId, direction) {
+      const track = document.getElementById(trackId);
+      if(!track) return;
+      const slideWidth = track.offsetWidth;
+      track.scrollBy({ left: direction * slideWidth, behavior: 'smooth' });
+      setTimeout(() => {
+        const index = Math.round(track.scrollLeft / slideWidth);
+        const dotsId = trackId.replace('-track', '-dots');
+        const dots = document.querySelectorAll('#' + dotsId + ' li');
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+      }, 350);
+    }
+  </script>
+</div>
