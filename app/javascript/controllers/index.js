@@ -15,3 +15,6 @@ application.register("hello", HelloController)
 
 import PreviewController from "./preview_controller"
 application.register("preview", PreviewController)
+
+import ThemeController from "./theme_controller"
+application.register("theme", ThemeController)

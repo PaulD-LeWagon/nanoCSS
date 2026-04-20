@@ -45,5 +45,35 @@
         <%= yield %>
       </main>
     </div>
+
+    <%# UC-022: Floating Theme Switcher %>
+    <div class="<%= @prefix || "nanocss" %>-theme-switcher" data-controller="theme">
+      <details>
+        <summary>
+          <div class="switcher-icon">
+            <%= nano_icon("settings", size: 20) %>
+            <span>Theme Controls</span>
+          </div>
+        </summary>
+        <div class="switcher-content">
+          <h4>Appearance</h4>
+          <div class="theme-options">
+            <button class="<%= @prefix || "nanocss" %>-btn-outline" data-action="click->theme#toggleDark" style="display: flex; align-items: center; gap: 0.5rem; justify-content: center; width: 100%;">
+              <%= nano_icon("moon", size: 16) %>
+              <span>Toggle Dark Mode</span>
+            </button>
+          </div>
+          
+          <h4>Presets</h4>
+          <div class="theme-options">
+            <% [["Corporate", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjMGI1ZWRmIiwiY29sb3VyX3NlY29uZGFyeSI6IiM0NzU1NjkiLCJjb2xvdXJfdGVydGlhcnkiOiIjOTRhM2I4IiwicmFkaXVzX2Jhc2UiOiIwLjVyZW0iLCJzcGFjaW5nX2Jhc2UiOiIxcmVtIn0="], ["Playful", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjZmM2YTljIiwiY29sb3VyX3NlY29uZGFyeSI6IiNmZGU2OGEiLCJjb2xvdXJfdGVydGlhcnkiOiIjODBlN2ZmIiwicmFkaXVzX2Jhc2UiOiIxLjVyZW0iLCJzcGFjaW5nX2Jhc2UiOiIxLjJyZW0ifQ=="], ["Minimalist", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjMTExODI3IiwiY29sb3VyX3NlY29uZGFyeSI6IiM2YjcyODAiLCJjb2xvdXJfdGVydGlhcnkiOiIjZTVlN2ViIiwicmFkaXVzX2Jhc2UiOiIwcmVtIiwic3BhY2luZ19iYXNlIjoiMC43NXJlbSJ9"]].each do |name, params| %>
+              <button class="<%= @prefix || "nanocss" %>-btn-outline" data-action="click->theme#applyPreset" data-theme-params="<%= params %>" style="width: 100%; text-align: left; padding: 0.5rem;">
+                <%= name %>
+              </button>
+            <% end %>
+          </div>
+        </div>
+      </details>
+    </div>
   </body>
 </html>

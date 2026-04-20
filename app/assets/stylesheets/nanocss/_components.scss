@@ -653,3 +653,90 @@ nav[aria-label="breadcrumb"] {
     display: block;
   }
 }
+
+/* 19. Theme Switcher (Floating Widget)
+   UC-022: Expandable widget pinned to bottom-right.
+   ------------------------------------------------------------------ */
+.#{$prefix}-theme-switcher {
+  position: fixed;
+  bottom: var(--#{$prefix}-space-lg, 1.5rem);
+  right: var(--#{$prefix}-space-lg, 1.5rem);
+  z-index: 9999;
+
+  details {
+    background: var(--chrome-glass, rgba(255, 255, 255, 0.8));
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--chrome-border, #e5e7eb);
+    border-radius: var(--#{$prefix}-radius-lg, 0.5rem);
+    box-shadow: var(--#{$prefix}-shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+    overflow: hidden;
+    min-width: 200px;
+    transition: all 0.3s ease;
+
+    summary {
+      list-style: none;
+      padding: var(--#{$prefix}-space-sm, 0.5rem);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--#{$prefix}-primary, #3b82f6);
+      color: #fff;
+      font-weight: bold;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+      
+      .switcher-icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    }
+    
+    .switcher-content {
+      padding: var(--#{$prefix}-space-md, 1rem);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      
+      h4 {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--chrome-text, #111827);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      
+      .theme-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  }
+}
+
+/* 20. Dark Mode Support (Draft)
+   AC3: Apply dark mode variables when data-theme="dark" is present.
+   ------------------------------------------------------------------ */
+[data-theme="dark"] {
+  --#{$prefix}-bg-body: #0f172a;
+  --#{$prefix}-text-body: #f1f5f9;
+  --#{$prefix}-neutral-50: #1e293b;
+  --#{$prefix}-neutral-100: #334155;
+  --#{$prefix}-neutral-200: #475569;
+  --#{$prefix}-neutral-300: #64748b;
+  --#{$prefix}-neutral-400: #94a3b8;
+  --#{$prefix}-neutral-500: #cbd5e1;
+  --#{$prefix}-neutral-600: #e2e8f0;
+  --#{$prefix}-neutral-700: #f1f5f9;
+  --#{$prefix}-neutral-800: #f8fafc;
+  --#{$prefix}-neutral-900: #ffffff;
+  
+  /* Update glass tokens for dark mode if they exist in chrome */
+  --chrome-glass: rgba(15, 23, 42, 0.8);
+  --chrome-border: rgba(255, 255, 255, 0.1);
+  --chrome-text: #f1f5f9;
+}
