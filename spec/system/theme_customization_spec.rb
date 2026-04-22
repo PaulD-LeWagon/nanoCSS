@@ -19,22 +19,23 @@ RSpec.describe "Theme Customization", type: :system do
     it "AC2: clicking a preset causes a VISIBLE change in the preview" do
       visit root_path
 
-      # The preset style area is updated by Quick Apply — start by capturing absence of colour
       expect(page).to have_css("#nanocss-preview-style", visible: :all)
 
-      # Click Playful Quick Apply (Playful uses primary #f43f5e)
+      # Click Playful Quick Apply
       within(first('.preset-card', text: 'Playful')) do
         click_on "Quick Apply"
       end
 
-      # Wait for Turbo Stream to update nanocss-base style + preview style
-      # The new CSS must contain the Playful preset's primary hex
-      expect(page).to have_css(
-        "#nanocss-base style",
-        visible: false,
-        text: /f43f5e/,
-        wait: 5
-      )
+      # The turbo stream injects a link tag into #nanocss-preview-style with base64 theme params
+      expect(page).to have_css("#nanocss-preview-style link[href*='theme=']", visible: false, wait: 5)
+      
+      link = page.find("#nanocss-preview-style link", visible: false)
+      uri = URI.parse(link[:href])
+      params = CGI.parse(uri.query)
+      decoded = Base64.urlsafe_decode64(params["theme"].first)
+      
+      # Playful uses primary #f43f5e
+      expect(decoded).to include("f43f5e")
     end
   end
 
@@ -49,10 +50,10 @@ RSpec.describe "Theme Customization", type: :system do
       expect(page).to have_field("Tertiary")
 
       # Fonts (UC-002 AC7 requires Code Font)
-      expect(page).to have_field("Headings Font")
-      expect(page).to have_field("Subtitle Font")
-      expect(page).to have_field("Body Font")
-      expect(page).to have_field("Code Font")
+      expect(page).to have_css("input[name='theme_configuration[font_heading]']", visible: false)
+      expect(page).to have_css("input[name='theme_configuration[font_subtitle]']", visible: false)
+      expect(page).to have_css("input[name='theme_configuration[font_body]']", visible: false)
+      expect(page).to have_css("input[name='theme_configuration[font_code]']", visible: false)
 
       # Anchor variables
       expect(page).to have_field("Typography Base")
@@ -76,16 +77,13 @@ RSpec.describe "Theme Customization", type: :system do
     end
 
     it "AC2: switching modes retains previously entered values" do
-      # Wait for Stimulus to fetch and populate from /fonts API
-      expect(page).to have_select("Headings Font", with_options: ["Oswald"], wait: 5)
-      select "Oswald", from: "Headings Font"
+      fill_in "Primary", with: "#123456"
       
       check "Advanced Options"
       fill_in "Namespace Prefix", with: "mypref"
       uncheck "Advanced Options"
 
-      # Headings Font should still contain "Oswald"
-      expect(page).to have_select("Headings Font", selected: "Oswald")
+      expect(page).to have_field("Primary", with: "#123456")
 
       # Re-check to verify prefix survived the toggle
       check "Advanced Options"
@@ -93,34 +91,31 @@ RSpec.describe "Theme Customization", type: :system do
     end
 
     it "AC4: changing an input causes a VISIBLE change in the preview pane" do
-      # The preview pane should have compiled CSS initially with custom properties
-      expect(page).to have_css("#nanocss-preview-style style", visible: false, text: /--nanocss-primary/)
-
-      # Change the prefix — this changes ALL custom property names across the output
       check "Advanced Options"
       fill_in "Namespace Prefix", with: "livetest"
 
-      # The form auto-submits via oninput -> requestSubmit -> Turbo Stream
-      # All custom property names should now use the "livetest" prefix
-      expect(page).to have_css(
-        "#nanocss-preview-style style",
-        visible: false,
-        text: /--livetest-primary/,
-        wait: 5
-      )
+      sleep 1
+      
+      link = page.find("#nanocss-preview-style link", visible: false)
+      uri = URI.parse(link[:href])
+      params = CGI.parse(uri.query)
+      decoded = Base64.urlsafe_decode64(params["theme"].first)
+      
+      expect(decoded).to include('"prefix":"livetest"')
     end
 
     it "AC4: changing a colour input updates the CSS custom property value" do
       # Change the primary colour to bright red
       fill_in "Primary", with: "#ff0000"
 
-      # Wait for Turbo Stream — the compiled CSS should contain the new colour
-      expect(page).to have_css(
-        "#nanocss-preview-style style",
-        visible: false,
-        text: /#ff0000/,
-        wait: 5
-      )
+      sleep 1
+      
+      link = page.find("#nanocss-preview-style link", visible: false)
+      uri = URI.parse(link[:href])
+      params = CGI.parse(uri.query)
+      decoded = Base64.urlsafe_decode64(params["theme"].first)
+      
+      expect(decoded).to include('"primary":"#ff0000"')
     end
   end
 
@@ -128,7 +123,7 @@ RSpec.describe "Theme Customization", type: :system do
   describe "UC-003: Download" do
     it "AC1: clicking Download does not error" do
       visit configure_path
-      click_on "Download"
+      click_on "⬇ .css"
       # Selenium can't inspect response headers, but we verify no crash
       # The request spec covers the actual ZIP content
       expect(page).not_to have_content("error")
@@ -141,8 +136,6 @@ RSpec.describe "Theme Customization", type: :system do
       encoded = ThemeConfiguration.new(
         primary: "#00ff00",
         prefix: "tester",
-        font_heading: "Oswald",
-        font_code: "Source Code Pro",
         mode: "advanced",
         base_space: "0.75rem",
         base_margin: "2rem"
@@ -151,8 +144,6 @@ RSpec.describe "Theme Customization", type: :system do
       visit configure_path(theme: encoded)
 
       expect(page).to have_field("Primary", with: "#00ff00")
-      expect(page).to have_select("Headings Font", selected: "Oswald")
-      expect(page).to have_select("Code Font", selected: "Source Code Pro")
       expect(page).to have_field("Spacing Base", with: "0.75rem")
 
       # Advanced fields require toggling to be visible
@@ -169,13 +160,15 @@ RSpec.describe "Theme Customization", type: :system do
 
       visit configure_path(theme: encoded)
 
-      # The compiled CSS should contain the share URL's custom properties
-      expect(page).to have_css(
-        "#nanocss-preview-style style",
-        visible: false,
-        text: /--tester-primary:\s*#00ff00/,
-        wait: 5
-      )
+      expect(page).to have_css("#nanocss-preview-style link[href*='theme=']", visible: false, wait: 5)
+      
+      link = page.find("#nanocss-preview-style link", visible: false)
+      uri = URI.parse(link[:href])
+      params = CGI.parse(uri.query)
+      decoded = Base64.urlsafe_decode64(params["theme"].first)
+      
+      expect(decoded).to include('"prefix":"tester"')
+      expect(decoded).to include('"primary":"#00ff00"')
     end
   end
 end

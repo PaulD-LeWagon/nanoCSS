@@ -78,6 +78,18 @@ class ThemeConfiguration
     vars.join("\n")
   end
 
+  def as_json(options = nil)
+    {
+      "primary" => primary, "secondary" => secondary, "tertiary" => tertiary, "prefix" => prefix,
+      "font_heading" => font_heading, "font_subtitle" => font_subtitle, "font_body" => font_body, "font_code" => font_code,
+      "base_typography" => base_typography, "base_space" => base_space, "base_margin" => base_margin,
+      "base_radius" => base_radius, "base_border_width" => base_border_width,
+      "text_shadow" => text_shadow, "drop_shadow" => drop_shadow, "tier" => tier, "mode" => mode,
+      "margin_md" => margin_md, "space_md" => space_md,
+      "excluded_components" => excluded_components, "wrap_in_layer" => wrap_in_layer
+    }
+  end
+
   def to_base64
     require 'base64'
     require 'json'
