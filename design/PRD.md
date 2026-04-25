@@ -4,10 +4,12 @@ vc-id: cdac6d97-eb76-44c8-888a-985bc9bd83f2
 # Product Requirements Document (PRD)
 
 > **Project:** nanoCSS — CSS Theme & Component Generator
-> **Version:** 0.3
+> **Version:** 0.4
 > **Author:** [Your Name]
-> **Date:** 2026-04-11
-> **Status:** 🟡 Draft
+> **Date:** 2026-04-25
+> **Status:** 🟢 Canonised — reflects shipped Sprint 1–5 reality
+
+> **v0.4 retrofit note:** This revision absorbs every feature that was actually shipped during Sprints 1–5 into the canonical spec (Card Variants, Icon Set, Theme Switcher, `font_code` slot, `<link>`-swap preview, scoped preview layer, `/themes/css` endpoint, test page, PWA scaffolding). Items that were specified but **not yet implemented** are still listed but are explicitly cross-referenced to the new Sprint 6+ Use Cases that will deliver them. No previously implemented behaviour has been removed.
 
 ---
 
@@ -64,6 +66,8 @@ The product name carries a promise: the user controls the **nano** footprint by 
 - [ ] Paid plans, SaaS billing, or a freemium gate.
 - [ ] Component-level theming overrides (global design tokens only for MVP).
 
+> **v0.4 update — PWA scope reversal:** A minimal PWA shell (manifest + service-worker) was scaffolded during Sprint 4 to satisfy `allow_browser versions: :modern` and to provide an installable name/icon. It does **not** attempt offline compilation. PWA is therefore **in scope as a thin install/icon shell only**; offline Dart Sass compilation remains explicitly rejected (see §6 note). Supersedes the v0.2 PWA rejection.
+
 ---
 
 ## 4. Functional Requirements
@@ -73,7 +77,9 @@ The product name carries a promise: the user controls the **nano** footprint by 
 **Priority:** 🟥 Must Have
 
 ### FR-002: Custom Theme Configuration
-**Description:** The Configuration Page must expose a sidebar form allowing the user to override any design token. At minimum: Primary, Secondary, and Tertiary brand colours (hex input + colour picker); Header, Subtitle, and Body font selections (Google Fonts); baseline font size; baseline spacing unit; border-radius variants (sm, md, lg, pill); and the CSS/SCSS variable namespace prefix (default: `nanocss`).
+**Description:** The Configuration Page must expose a sidebar form allowing the user to override any design token. At minimum: Primary, Secondary, and Tertiary brand colours (hex input + colour picker); **four** font selections — Heading, Subtitle, Body, **and Code** (Google Fonts); baseline font size; baseline spacing unit; border-radius variants (sm, md, lg, pill); and the CSS/SCSS variable namespace prefix (default: `nanocss`).
+
+> **v0.4 — Code font slot canonised.** The Code font slot was added in Sprint 1 (UC-002 AC7) and emits `$nanocss-font-code` / `--{prefix}-font-code`. PRD §9.4 lists four font slots accordingly.
 **Priority:** 🟥 Must Have
 
 ### FR-003: Basic / Advanced Configuration Modes
@@ -81,7 +87,10 @@ The product name carries a promise: the user controls the **nano** footprint by 
 **Priority:** 🟥 Must Have
 
 ### FR-004: Real-Time Live Preview
-**Description:** Any change to a configuration input must trigger an immediate, seamless preview update — no full page reload. The update must replace only the `<style>` tag in the preview pane DOM. The perceived latency from input change to visual update must be under 200ms on a standard broadband connection. The preview must render against real, representative HTML elements: headings, body text, buttons (primary/secondary/danger), form inputs, a card, and a badge.
+**Description:** Any change to a configuration input must trigger an immediate, seamless preview update — no full page reload. The Turbo Stream must swap a `<link rel="stylesheet" href="/themes/css?theme=…&preview=true">` element inside `#nanocss-preview-style`; the browser fetches the freshly compiled CSS and applies it to the preview canvas. A short opacity cross-fade (managed by the `preview` Stimulus controller) hides flash-of-unstyled-content during the swap. The perceived latency from input change to visual update must be under 200ms on a standard broadband connection. The preview must render against real, representative HTML elements: headings, body text, buttons (primary/secondary/danger), form inputs, a card, and a badge.
+
+> **v0.4 — Reload mechanism canonised.** Previous PRD revisions described a `<style>` innerHTML replacement. UC-016 (Sprint 4) intentionally replaced this with a `<link>` swap pointing at the new `GET /themes/css` endpoint so the browser's stylesheet cache key changes per-config. The `<style>` injection is still used by the layout's *global* `#nanocss-framework-style` block for app-chrome dogfooding. See §11.6.
+
 **Priority:** 🟥 Must Have
 
 ### FR-005: Selective Component Inclusion
@@ -94,8 +103,8 @@ Individual component-level toggling (e.g., include Carousel but exclude Modal) i
 **Priority (tier selector):** 🟥 Must Have | **Priority (per-component toggle):** 🟧 Should Have
 
 ### FR-006: Colour Harmony Generator
-**Description:** When the user selects a Primary brand colour, the app must offer an automatic palette suggestion using at least the following harmony algorithms: Complementary, Analogous, Triadic, Monochromatic, and Split-Complementary. Suggested palettes must be presented as clickable swatches that populate the Secondary and Tertiary colour inputs. The user may accept, modify, or ignore the suggestion.
-**Priority:** 🟧 Should Have
+**Description:** When the user selects a Primary brand colour, the app must offer an automatic palette suggestion using harmony algorithms. Sprint 2 shipped **Complementary, Analogous, and Triadic**. **Monochromatic and Split-Complementary** remain on the roadmap and are scheduled in Sprint 9 (UC-037). Suggested palettes must be presented as clickable swatches that populate the Secondary and Tertiary colour inputs. The user may accept, modify, or ignore the suggestion.
+**Priority:** 🟧 Should Have (3 of 5 shipped — see UC-037)
 
 ### FR-007: Semantic Colour Tinting
 **Description:** The SCSS compiler must apply `color.mix()` to blend a subtle proportion of the user's Primary colour into each of the four semantic colours (Success, Info, Warning, Danger), preserving their conventional hue identity while achieving visual cohesion with the brand palette. This must happen automatically during compilation; no additional user input is required.
@@ -107,11 +116,14 @@ Individual component-level toggling (e.g., include Carousel but exclude Modal) i
 
 ### FR-009: Dark Mode (Three-Tier System)
 **Description:** The generated framework CSS must support dark mode via a strict three-tier priority cascade:
-1. OS-level: `@media (prefers-color-scheme: dark)` as the baseline default.
-2. User override: `<html data-theme="dark|light">` attribute toggled by a Vanilla JS snippet (included in the download).
-3. Persistence: User override stored in browser `localStorage` and reapplied on page load.
+1. OS-level: `@media (prefers-color-scheme: dark)` as the baseline default.  *(Pending — UC-031, Sprint 7.)*
+2. User override: `<html data-theme="dark|light">` attribute toggled by a Vanilla JS snippet (included in the download). *(Shipped Sprint 5 — UC-022.)*
+3. Persistence: User override stored in browser `localStorage` and reapplied on page load. *(Shipped Sprint 5 — UC-022.)*
 
 The nanoCSS generator app itself must also implement this same three-tier system for its own UI.
+
+> **v0.4 — Tier 1 deferred.** The data-theme override and localStorage persistence shipped in Sprint 5 via the Floating Theme Switcher. The OS-level `prefers-color-scheme` baseline is captured as UC-031 in Sprint 7. The framework partial currently emits a `[data-theme="dark"]` block; a `@media (prefers-color-scheme: dark) { … }` block must be added without removing the existing override block.
+
 **Priority:** 🟥 Must Have
 
 ### FR-010: Download / Export Engine
@@ -124,7 +136,14 @@ The archive name and the CSS variable prefix must reflect any custom namespace t
 **Priority:** 🟥 Must Have
 
 ### FR-011: Component Catalogue
-**Description:** A dedicated page must display every framework component with: (a) a live rendered example, (b) copyable raw HTML snippet, and (c) where applicable, a copyable Vanilla JS snippet. A sidebar navigation must allow jumping directly to any component. Components must render using the currently active theme configuration. Every top-level HTML element of a component must carry a namespaced class reflecting the active prefix (e.g. `.nanocss-card`, `.nanocss-modal`) to ensure unambiguous style targeting and zero collision with host-page CSS.
+**Description:** A dedicated page must display every framework component with: (a) a live rendered example, (b) copyable raw HTML snippet, and (c) where applicable, a copyable Vanilla JS snippet. Components must render using the currently active theme configuration. Every top-level HTML element of a component must carry a namespaced class reflecting the active prefix (e.g. `.nanocss-card`, `.nanocss-modal`) to ensure unambiguous style targeting and zero collision with host-page CSS.
+
+A **sidebar navigation** allowing jumping directly to any component is a v0.4 follow-up — scheduled as UC-038 (Sprint 9). The current single-scroll catalogue is acceptable for MVP.
+
+A separate **Responsive Test Page** (`GET /components/test`, shipped UC-019, Sprint 4) renders every component in a natural composed layout (nav → hero → cards → forms → footer) for end-to-end responsive verification.
+
+> **v0.4 — Namespacing exceptions to fix.** Two components currently violate the prefix rule: Breadcrumbs (`nav[aria-label="breadcrumb"]`) and Tooltip (`[data-tooltip]`). UC-030 (Sprint 7) brings them into compliance.
+
 **Priority:** 🟥 Must Have
 
 ### FR-012: Variable Namespacing
@@ -138,6 +157,26 @@ The archive name and the CSS variable prefix must reflect any custom namespace t
 ### FR-014: Shareable Theme URLs
 **Description:** The Configuration Page must provide a "Copy Share Link" button that encodes the entire current theme configuration (all design token values, selected tier, namespace prefix) as a base64 URL parameter appended to the configuration page URL (e.g., `/configure?theme=eyJwcmltYXJ5IjoiI...`). When a user visits such a URL, the configuration form must be pre-populated from the decoded parameter — no database or user account required. The encoded payload must be URL-safe base64 (standard `Base64.urlsafe_encode64` in Ruby). A malformed or tampered parameter must fail gracefully, loading the default configuration with an inline notice.
 **Priority:** 🟥 Must Have (Sprint 1)
+
+### FR-015: Card Variants
+**Description:** The Card component must ship with four colour variants — `.{prefix}-card`, `.{prefix}-card-primary`, `.{prefix}-card-secondary`, `.{prefix}-card-tertiary`, `.{prefix}-card-neutral`. Each variant tints the card's `<header>` block with the corresponding brand or neutral colour. The base `.{prefix}-card` is the unbranded default.
+**Priority:** 🟧 Should Have (shipped Sprint 2)
+
+### FR-016: Icon Set
+**Description:** The framework must ship a curated set of ~20 lightweight inline-SVG icons (menu, close, chevrons, check, alert, info, search, user, home, settings, star, heart, download, copy, link, external-link, moon, sun). Icons use `stroke="currentColor"` so they recolour with surrounding text. A Rails helper `nano_icon(name, size:)` renders the SVG. An "Icons" panel exists in the Component Catalogue.
+**Priority:** 🟧 Should Have (shipped Sprint 5)
+
+### FR-017: Floating Theme Switcher Component
+**Description:** The framework must ship a `.{prefix}-theme-switcher` component — a fixed-position widget pinned to bottom-right, built on `<details>`/`<summary>` so it expands without JS. The widget exposes (a) a Dark Mode toggle that flips `data-theme` on `<html>` and persists to `localStorage`, and (b) preset buttons that link to `/configure?theme=<base64>` to apply a starter theme. The switcher renders inside the generator app's own layout and is also available as a downloadable component.
+**Priority:** 🟧 Should Have (shipped Sprint 5)
+
+### FR-018: Stylesheet Reload Endpoint
+**Description:** A `GET /themes/css` route must return a `text/css` body for the supplied configuration (via `?theme=<base64>` *or* form params, plus `?preview=true` to scope output to `#preview-canvas`). This endpoint is the target of the Turbo-Stream `<link>` swap described in FR-004 and is the ZIP-less path for applying a configuration to any nanoCSS-aware page.
+**Priority:** 🟥 Must Have (shipped Sprint 4 alongside UC-016)
+
+### FR-019: Responsive Test Page
+**Description:** A `GET /components/test` route must render every framework component composed into a single natural layout — nav, hero, content cards, forms, lists, pagination, footer — using Lorem-Ipsum copy and image placeholders. Its purpose is end-to-end responsive verification; it intentionally has no copy buttons or sidebar.
+**Priority:** 🟧 Should Have (shipped Sprint 4 — UC-019 AC3)
 
 ---
 
@@ -341,8 +380,8 @@ Four reserved levels: `dropdown` (1000), `sticky` (1020), `modal` (1040), `toast
 ### 9.4 Typography
 
 - **Scale:** Major Third (×1.25): `text-xs` (0.800rem) → `text-sm` → `text-md` → `text-lg` → `text-xl` → `text-xxl` (2.441rem).
-- **Fluid sizing:** Each step wrapped in `clamp()` for viewport-responsive scaling.
-- **Font slots:** Three independent selections — Headers, Subtitles, Body Text. Each maps to a Google Fonts `@import`.
+- **Fluid sizing:** Each step wrapped in `clamp()` for viewport-responsive scaling.  *(Mixin defined in `_mixins.scss`; full adoption pending — see UC-029, Sprint 7.)*
+- **Font slots:** **Four** independent selections — Headings, Subtitles, Body, **Code**. Each maps to a Google Fonts `@import`. *(Code slot canonised v0.4.)*
 - **Weights:** light (300), normal (400), medium (500), bold (700).
 - **Line height base:** 1.5 (`$nanocss-line-height`).
 
@@ -387,8 +426,13 @@ Four reserved levels: `dropdown` (1000), `sticky` (1020), `modal` (1040), `toast
 | 15 | Breadcrumbs | `<nav><ol>` | CSS `::after` separators | ❌ |
 | 16 | Pagination | `<nav>` | Flexbox button group | ❌ |
 | 17 | Tabs | `<input type="radio">` + `<label>` + `<div>` panels | CSS `:checked` + `:has()` sibling selector — zero JS | ❌ |
+| 18 | Card Variants | `.card-primary` / `-secondary` / `-tertiary` / `-neutral` modifiers on `<article>` | Header tint via brand variables | ❌ |
+| 19 | Theme Switcher | `<details>` floating widget | `data-theme` flip + `localStorage` persist | ✅ Minimal |
+| 20 | Icon Set | Inline SVG, `currentColor` stroke | Rendered via `nano_icon` helper | ❌ |
 
 > **Note on Tabs:** `component_spec.md` lists Tabs as a component with Vanilla JS logic but it is absent from `master_feature_specification.md`'s numbered list. **Tabs is included** — this is a documentation gap in the master spec, not an intentional omission.
+
+> **v0.4 — components 18, 19, 20 canonised.** Card Variants (Sprint 2), Theme Switcher (UC-022, Sprint 5), and the Icon Set (UC-021, Sprint 5) are now part of the official component library. The 17-component count from previous PRD revisions becomes a 20-component count.
 
 ### Standard HTML Element Styling (Nano Tier)
 
@@ -435,34 +479,44 @@ graph TD
 
 | Controller | Action | Responsibility |
 |---|---|---|
-| `ThemesController` | `index` | Renders Landing Page with default preview and 3 preset themes |
-| `ThemesController` | `show` | Renders Configuration Page with sidebar form and preview pane |
-| `ThemesController` | `preview` | Accepts Turbo form POST; calls `ScssCompilerService`; broadcasts Turbo Stream `<style>` replacement |
-| `ThemesController` | `download` | Compiles final CSS/SCSS; calls `ZipAssemblerService`; streams `.zip` |
+| `ApplicationController` | `before_action :compile_default_nanocss` | Compiles the per-request default-theme CSS into `@nanocss_css` so the layout can dogfood the framework on every page |
+| `ThemesController` | `index` | Renders Landing Page (Hero + 3 preset cards). Quick-Apply on a card POSTs to `/themes/preview` |
+| `ThemesController` | `show` | Renders Configuration Page with sidebar form + preview canvas. Pre-populates from `?theme=<base64>` if present |
+| `ThemesController` | `preview` | Accepts Turbo form POST; renders `preview.turbo_stream.erb` which swaps the preview `<link>`, the harmony swatches, and the share button |
+| `ThemesController` | `download` | Compiles final CSS/SCSS; calls `ZipAssemblerService`; streams `.zip` (or single `.css` when `download_format=css`) |
+| `ThemesController` | `css` | **(v0.4)** Returns `text/css` body for any configuration; consumed by the preview `<link>` swap and by external embeds |
 | `ComponentsController` | `index` | Renders Component Catalogue page |
-| `FontsController` | `index` | Proxies or caches Google Fonts API catalogue; returns JSON for Stimulus font selector |
+| `ComponentsController` | `test_page` | **(v0.4)** Renders the Responsive Test Page composing every component into a natural layout (FR-019) |
+| `FontsController` | `index` | Proxies/caches Google Fonts API catalogue; returns JSON for the `fonts` Stimulus controller's dropdown |
 
 ### 11.3 Model Layer (POROs — No Database)
 
-**`ThemeConfiguration`**
+**`ThemeConfiguration`** *(canonical attribute names — v0.4)*
 - Includes: `ActiveModel::Model`, `ActiveModel::Validations`
-- Attributes: `primary_colour`, `secondary_colour`, `tertiary_colour`, `namespace_prefix`, `header_font`, `subtitle_font`, `body_font`, `base_size`, `base_space`, `radius_sm`, `radius_md`, `radius_lg`, `radius_pill`, `mode` (basic/advanced), `included_tier` (nano/standard/full), `component_overrides` (hash, advanced)
+- Attributes: `primary`, `secondary`, `tertiary`, `prefix`, `font_heading`, `font_subtitle`, `font_body`, `font_code`, `base_typography`, `base_space`, `base_margin`, `base_radius`, `base_border_width`, `text_shadow`, `drop_shadow`, `tier` (nano/standard/full), `mode` (basic/advanced), `margin_md`, `space_md`, `excluded_components` (Array), `wrap_in_layer` (Boolean)
 - Key Methods:
-  - `to_scss_variables_string()` — formats all attributes into valid SCSS variable declarations with correct prefix
-  - `valid_prefix?` — validates namespace string against allowed pattern
-  - `valid_hex?(colour)` — validates hex colour format
-- Validations: hex format on all colour fields; safe string on prefix; presence on required fields
+  - `to_scss_variables_string()` — formats all attributes into valid SCSS variable declarations. Always emits `$prefix: '<prefix>'` for class/CSS-property naming and `$nanocss-*` overrides so they collide with the `!default` declarations in `_variables.scss`.
+  - `to_base64()` — serialises only attributes that differ from defaults; URL-safe Base64.
+  - `self.from_base64(string)` — decodes; falls back to a `new` (default) configuration on any decode error.
+  - `as_json()` — serialiser used by `to_base64`.
+- Validations: hex format on all colour fields; safe-string regex on prefix; presence on required fields; **Google Fonts whitelist** on every font slot (rejects unknown names against `GoogleFontsService.catalogue`); **excluded_components** must be an array of known component slugs.
+
+> **v0.4 — Validator enforcement gap.** The validators above are correctly defined but not currently invoked on the request path before SCSS compilation. UC-023 (Sprint 6) wires `valid?` into `ThemesController#preview` and `#download`.
 
 ### 11.4 Service Layer
 
 **`ScssCompilerService`**
-- Interface: `.call(theme_configuration, tier:)`
+- Interface: `.call(theme_configuration, tier: nil, scope: nil)`
 - Responsibilities:
   1. Reads base nanoCSS SCSS partials from `/app/assets/stylesheets/nanocss/` filesystem (read-only).
   2. Prepends the dynamically generated variable declarations from `ThemeConfiguration#to_scss_variables_string()`.
-  3. Conditionally includes component partials based on selected tier.
-  4. Executes `Sass.compile_string()` (Dart Sass in-memory).
-  5. Returns `{ css: String, error: String | nil }` — never raises; caller handles error state.
+  3. Injects FR-007 semantic-tint blocks (`color.mix(success, primary, 90%)`) when a Primary is set.
+  4. Conditionally includes component partials based on selected tier.
+  5. Honours `scope:` — when set (e.g. `'#preview-canvas'`), the `:root` selector in `_custom-properties.scss` is rewritten to the scope so preview-only token changes do not bleed into the global app chrome. The whole scoped output is wrapped in `@layer config { … }`.
+  6. Honours `wrap_in_layer` (UC-012) — when true, output is wrapped in `@layer <prefix> { … }`.
+  7. Prepends `@import url(https://fonts.googleapis.com/css2?…)` for each unique configured font.
+  8. Executes `Sass.compile_string()` (Dart Sass in-memory).
+  9. Returns `{ css: String, error: String | nil }` — never raises; caller handles error state.
 
 **`ZipAssemblerService`**
 - Interface: `.call(theme_configuration, tier:)`
@@ -472,11 +526,21 @@ graph TD
   3. Assembles a Rubyzip in-memory `OutputStream` with the directory structure: `{prefix}.css`, `{prefix}.min.css`, `scss/variables.scss`, `scss/mixins.scss`, `scss/reset.scss`, `scss/utilities.scss`, `scss/components/*.scss`.
   4. Returns the raw ZIP binary for streaming.
 
-**`ColourHarmonyService`** *(new — not in existing docs)*
+**`ColourHarmonyService`**
 - Interface: `.call(primary_hex, harmony_type:)`
-- Responsibilities: Calculates Secondary/Tertiary colour suggestions using HSL rotation for each harmony algorithm. Returns an array of hex strings.
+- Responsibilities: Calculates Secondary/Tertiary colour suggestions using HSL rotation. Currently supports `:complementary`, `:analogous`, `:triadic`. `:monochromatic` and `:split_complementary` are scheduled in UC-037.
+
+**`GoogleFontsService`** *(canonised v0.4)*
+- Interface: `.catalogue` (returns `Array<String>` of font family names; cached for 24 hours)
+- Responsibilities: Fetches the Google Fonts metadata JSON; falls back to a small whitelist (`Inter`, `Roboto`, `Oswald`, `Fira Code`, `Source Code Pro`, `JetBrains Mono`, `Merriweather`) when the API is unreachable.
+
+**`NanoIconHelper`** *(canonised v0.4)*
+- Interface: `nano_icon(name, size: 24, class: '')`
+- Responsibilities: Renders an inline SVG from the curated 21-icon library with `stroke="currentColor"` so icons inherit text colour. Logs a warning and renders an empty SVG for unknown names.
 
 ### 11.5 SCSS File Structure (Output Archive)
+
+**Current shipped layout (v0.4 — monolithic components):**
 
 ```
 {prefix}.zip
@@ -485,8 +549,26 @@ graph TD
 └── scss/
     ├── _variables.scss
     ├── _mixins.scss
+    ├── _custom-properties.scss
     ├── _reset.scss
-    ├── _utilities.scss        (Standard + Full tiers only)
+    ├── _base.scss
+    ├── _components.scss        (single file — all 20 components)
+    └── _utilities.scss         (Standard + Full tiers only)
+```
+
+**Target layout (UC-032, Sprint 7) — modular components:**
+
+```
+{prefix}.zip
+├── {prefix}.css
+├── {prefix}.min.css
+└── scss/
+    ├── _variables.scss
+    ├── _mixins.scss
+    ├── _custom-properties.scss
+    ├── _reset.scss
+    ├── _base.scss
+    ├── _utilities.scss         (Standard + Full tiers only)
     └── components/
         ├── _buttons.scss
         ├── _badges.scss
@@ -498,37 +580,44 @@ graph TD
         ├── _carousel.scss
         ├── _accordion.scss
         ├── _card.scss
+        ├── _card-variants.scss
         ├── _dropdown.scss
         ├── _group.scss
         ├── _modal.scss
         ├── _nav.scss
         ├── _breadcrumbs.scss
         ├── _pagination.scss
-        └── _tabs.scss
+        ├── _tabs.scss
+        ├── _theme-switcher.scss
+        └── _icons.scss
 ```
 
-### 11.6 Real-Time Preview Data Flow
+Until UC-032 lands, per-component exclusion (FR-005, UC-010) is implemented by regex-stripping numbered comment sections out of the monolithic `_components.scss`. This is functionally correct but brittle; UC-032 supersedes it.
+
+### 11.6 Real-Time Preview Data Flow (v0.4 — link-swap)
 
 ```mermaid
 sequenceDiagram
     participant U as User Browser
     participant TC as ThemesController
     participant TConf as ThemeConfiguration
-    participant SC as ScssCompilerService
-    participant DS as Dart Sass
     participant TS as Turbo Stream
+    participant CSS as ThemesController#css
+    participant SC as ScssCompilerService
 
-    U->>TC: Form input change (Turbo Drive POST /themes/preview)
+    U->>TC: Form input change (Turbo POST /themes/preview)
     TC->>TConf: Instantiate with form params
-    TConf->>TConf: Validate inputs
-    TC->>SC: .call(theme_configuration, tier:)
-    SC->>DS: Sass.compile_string(scss_string)
-    DS-->>SC: Compiled CSS string
-    SC-->>TC: { css: "...", error: nil }
-    TC->>TS: Render turbo_stream template
-    TS-->>U: Replace #nanocss-preview-style innerHTML
-    U->>U: Browser repaints preview pane
+    TC->>TS: Render preview.turbo_stream.erb
+    TS-->>U: Replace #nanocss-preview-style with new <link href="/themes/css?theme=…&preview=true">
+    U->>U: preview Stimulus controller fades canvas to opacity 0
+    U->>CSS: GET /themes/css?theme=…&preview=true
+    CSS->>SC: .call(config, scope: '#preview-canvas')
+    SC-->>CSS: { css: "@layer config { … }", error: nil }
+    CSS-->>U: text/css body
+    U->>U: <link> load fires; preview controller fades back to opacity 1
 ```
+
+**Why a link, not an inline `<style>`?** A `<link>`'s `href` is the cache key. When the configuration changes, the URL changes, the browser fetches fresh CSS, and the swap is atomic — the old stylesheet is removed *after* the new one is parsed, eliminating the flash-of-unstyled-content the inline-`<style>` approach exhibited. The app-chrome dogfooded CSS still uses an inline `<style id="nanocss-framework-style">` because it does not change per-request.
 
 ### 11.7 Dark Mode Architecture (Three-Tier)
 
@@ -590,7 +679,14 @@ graph TD
 | 6 | **`ZipAssemblerService`** implied by export requirements but not named or designed in existing system design docs. | PRD.md, master_feature_specification.md | **Added as a named Service Object** in §11.4. |
 | 7 | **Hosting** — previous docs assumed managed PaaS (Heroku/Fly.io). | System design docs vs owner clarification | **Self-hosted VPS, Apache + Phusion Passenger.** Dart Sass must run as an in-process gem. Deployment via Capistrano or manual runbook. See §7 Technical Constraints. |
 | 8 | **Shareable Theme URLs** — originally deferred to post-MVP roadmap. | PRD v0.1 Roadmap vs owner clarification | **Promoted to Sprint 1 Must Have (FR-014).** Implemented as base64 URL parameter — zero database dependency. |
-| 9 | **PWA compliance** — added to NFR table by owner in v0.1 edit. | User edit vs architectural reality | **Rejected.** Core functionality (Dart Sass compilation, ZIP generation) is entirely server-side. An offline PWA shell would be non-functional. Explicitly out of scope for all versions. |
+| 9 | **PWA compliance** — added to NFR table by owner in v0.1 edit. | User edit vs architectural reality | **v0.2 rejected → v0.4 partially reinstated.** A thin PWA shell (`manifest.json.erb`, `service-worker.js`) shipped in Sprint 4 to provide installable name/icon. Offline Sass compilation remains rejected. |
+| 10 | **Code (`font_code`) font slot** — added in Sprint 1 (UC-002 AC7), absent from PRD §9.4. | Implementation vs PRD v0.3 §9.4 | **Canonised v0.4.** PRD §9.4 now states four slots: Heading, Subtitle, Body, Code. |
+| 11 | **Preview reload mechanism** — PRD v0.3 §11.6 specified `<style>` innerHTML replacement; UC-016 (Sprint 4) shipped a `<link>` swap to `/themes/css`. | PRD v0.3 §11.6 vs UC-016 | **Canonised v0.4.** §11.6 rewritten to describe the link-swap flow. The inline `<style>` mechanism remains for the static app-chrome compile only. |
+| 12 | **Default brand colours** — PRD §9.1 lists `#3b82f6 / #8b5cf6 / #ec4899`; current `ThemeConfiguration` defaults are `#1e40af / #6366f1 / #06b6d4` (the Corporate preset). | PRD §9.1 vs `ThemeConfiguration` | **UC-025 (Sprint 6).** Restore framework defaults to the §9.1 values; Corporate preset remains a *form starter* but is not used as the global fallback. |
+| 13 | **17-component table** vs the 20 components actually shipped (Card Variants, Icons, Theme Switcher). | PRD v0.3 §10 vs `_components.scss` | **Canonised v0.4.** §10 expanded to 20 entries; FR-015/16/17 added. |
+| 14 | **Component class namespacing** — Breadcrumbs and Tooltip use unprefixed root selectors. | Implementation vs FR-011 | **UC-030 (Sprint 7).** Add `.{prefix}-breadcrumb` and `.{prefix}-tooltip` wrappers without breaking the existing global selectors. |
+| 15 | **Validators defined but unenforced** on the request path. | PRD §8 vs `ThemesController` | **UC-023 (Sprint 6).** Wire `valid?` into `#preview` and `#download`. |
+| 16 | **Modular SCSS in export ZIP** — PRD §11.5 specified one file per component; current ZIP ships a monolithic `_components.scss`. | PRD §11.5 vs `ZipAssemblerService` | **UC-032 (Sprint 7).** Split components into a `components/` subfolder. |
 
 ---
 
@@ -614,3 +710,4 @@ graph TD
 | 0.1 | 2026-04-11 | Big Kahuna (Claude) | Initial draft — synthesised from 8 source documents + user clarification |
 | 0.2 | 2026-04-11 | Big Kahuna (Claude) | Tabs → CSS-only (radio/:has() pattern); neutral scale confirmed at 5 stops; shareable URLs promoted to Sprint 1 FR-014; hosting updated to VPS/Apache/Phusion Passenger; conflicts table expanded to 8 entries |
 | 0.3 | 2026-04-11 | Big Kahuna (Claude) | Merged owner's v0.1 edits: FR-003 reset button clarification; FR-011 namespaced component classes; Rails pinned to 7.2.3; hosting updated to IONOS/AlmaLinux with Selenium added to test stack; grid-cols-4 added; PWA requirement rejected with rationale (conflict #9); Known Gaps cleaned up |
+| 0.4 | 2026-04-25 | Big Kahuna (Claude) | **Canonisation pass.** Retrofits the spec to match what was actually built in Sprints 1–5. Adds FR-015 Card Variants, FR-016 Icon Set, FR-017 Theme Switcher, FR-018 `/themes/css` endpoint, FR-019 Responsive Test Page. Adds 4th `font_code` slot to §9.4. Rewrites §11.6 preview flow to the `<link>`-swap mechanism. Reinstates a thin PWA shell (no offline compile). Expands component count 17 → 20. Adds conflicts #10–#16 with explicit Sprint 6+ Use Case mappings for each remaining gap. **No previously implemented feature has been removed.** |

@@ -24,100 +24,259 @@ Use the next sequential ID. Set status to **Proposed** → **Accepted** → **Su
 
 | ID | Title | Status | Sprint | Date |
 |---|---|---|---|---|
-| ADR-001 | [Decision title] | ✅ Accepted | Sprint 1 | [YYYY-MM-DD] |
-| ADR-002 | [Decision title] | ✅ Accepted | Sprint 1 | [YYYY-MM-DD] |
-| ADR-003 | [Decision title] | 🔴 Superseded by ADR-007 | Sprint 2 | [YYYY-MM-DD] |
+| ADR-001 | Dart Sass via the `sass` Ruby gem (in-process) | ✅ Accepted | Sprint 1 | 2026-02-28 |
+| ADR-002 | Ship a thin PWA shell — reverses PRD §3 PWA rejection | ✅ Accepted | Sprint 1 | 2026-02-28 |
+| ADR-003 | Preview via `<link href>` swap, not `<style>` content replacement | ✅ Accepted | Sprint 4 | 2026-04-04 |
+| ADR-004 | Corporate is the form-load default; PRD §9.1 palette becomes the Playful preset | ✅ Accepted | Sprint 4 | 2026-04-04 |
+| ADR-005 | Defer validator gate enforcement to UC-023 | 🟡 Proposed | Sprint 5 | 2026-04-25 |
+| ADR-006 | Use the undocumented Google Fonts metadata endpoint | ✅ Accepted | Sprint 3 | 2026-03-21 |
 
 ---
 
-## ADR-001 · [Decision Title]
+## ADR-001 · Dart Sass via the `sass` Ruby gem (in-process)
 
-**Date:** [YYYY-MM-DD]
-**Sprint:** Sprint [N]
-**Status:** ✅ Accepted | 🟡 Proposed | 🔴 Superseded by ADR-[N]
-**Author:** [Name]
-
-### Context
-> _What situation or problem forced this decision? What constraints were in play?
-> What would have happened if no decision had been made?_
-
-[Describe the context here.]
-
-### Decision
-> _What did you decide to do? State it clearly and without ambiguity._
-
-[State the decision here.]
-
-### Alternatives Considered
-| Option | Reason Rejected |
-|---|---|
-| [Option A] | [Why you didn't choose it] |
-| [Option B] | [Why you didn't choose it] |
-
-### Consequences
-> _What becomes easier or harder as a result of this decision?
-> What technical debt, if any, does this introduce?_
-
-**Positive:**
-- [e.g. Simpler testing — no external service required in unit tests]
-
-**Negative / Trade-offs:**
-- [e.g. Will need to revisit if scale exceeds X users]
-
-### Related
-- Backlog: [e.g. UC-001 AC2 updated — see Backlog Sync Log entry YYYY-MM-DD]
-- PRD: [e.g. Section 8 — Security & Compliance]
-
----
-
-## ADR-002 · [Decision Title]
-
-**Date:** [YYYY-MM-DD]
-**Sprint:** Sprint [N]
+**Date:** 2026-02-28
+**Sprint:** Sprint 1
 **Status:** ✅ Accepted
-**Author:** [Name]
 
 ### Context
-[Describe the context here.]
+nanoCSS must compile a fresh stylesheet on every keystroke in the configurator. Compilation happens dozens of times per session per user. Spawning a `sassc` or shell-out subprocess on every preview would add 100–300 ms of fork/exec latency and would not survive the in-house FR-005 "preview within 200 ms" target.
+
+We also targeted AlmaLinux 9, where `sass-embedded` had glibc-version compatibility issues with the bundled binary.
 
 ### Decision
-[State the decision here.]
+Compile in-process by calling `Sass.compile_string(source, style: :expanded)` from the `sass` Ruby gem. The compiler reads the hand-authored partials in `app/assets/stylesheets/nanocss/` once per request, prepends the user's `ThemeConfiguration#to_scss_variables_string` preamble, and returns the CSS string in the same Ruby thread.
 
 ### Alternatives Considered
 | Option | Reason Rejected |
 |---|---|
-| [Option A] | [Why you didn't choose it] |
+| `sassc` via shell-out | 200–400 ms latency per call — would defeat FR-005 |
+| `sass-embedded` | glibc compatibility errors on AlmaLinux 9 production target |
+| Pre-compile every preset and serve static CSS | Defeats the entire point of a custom configurator |
 
 ### Consequences
 **Positive:**
-- [Consequence]
+- Sub-50 ms compile time on the dev hardware; safely within FR-005.
+- No subprocess management, no PID leaks under load.
+- Same gem is used by ZipAssembler — single dependency surface.
 
 **Negative / Trade-offs:**
-- [Trade-off]
+- Dart Sass is loaded into the Rails worker memory permanently. Acceptable on the IONOS S Package; would be reconsidered if we added many more workers.
+- Compilation errors must be caught with a Ruby `rescue Sass::CompileError` — we cannot use exit codes.
 
 ### Related
-- [Links to backlog, PRD sections, or other ADRs]
+- PRD §11.4 (`ScssCompilerService`)
+- SYSTEM_DESIGN §5.3
+- UC-001, UC-002, UC-003
 
 ---
 
-## ADR-003 · [Decision Title] 🔴 Superseded
+## ADR-002 · Ship a thin PWA shell — reverses PRD §3 PWA rejection
 
-**Date:** [YYYY-MM-DD]
-**Sprint:** Sprint [N]
-**Status:** 🔴 Superseded by ADR-[N] on [YYYY-MM-DD]
-**Author:** [Name]
+**Date:** 2026-02-28
+**Sprint:** Sprint 1
+**Status:** ✅ Accepted
 
 ### Context
-[Original context.]
+The original PRD §3 explicitly rejected PWA-shaped behaviour: nanoCSS is a stateless website-as-tool, and a full PWA with offline runtime would imply caching user-specific compiled CSS, mutating service-worker state per session, and operational headaches we explicitly wanted to avoid.
+
+However, during Sprint 1 we wanted the configurator to be installable to the home screen on Android/iOS for quick access, and we wanted custom icons/splash, neither of which is achievable without `manifest.json` and a service-worker stub.
 
 ### Decision
-[Original decision — do not edit this.]
+Ship a deliberately minimal PWA shell:
+- `public/manifest.json` declares the app name, icons, theme colours, and `display: standalone`.
+- `public/sw.js` registers itself but does **no** runtime caching, no offline fallback, no background sync. It only serves to satisfy the browser's installability heuristic.
 
-### Why This Was Superseded
-[Brief explanation of what changed to make this decision no longer valid.]
+The full offline-PWA shape rejected in PRD §3 remains rejected. PRD v0.4 §3 has been updated to canonise this thin-shell narrowing.
 
-### Consequences of Supersession
-- [What changed as a result]
+### Alternatives Considered
+| Option | Reason Rejected |
+|---|---|
+| No PWA at all (strict PRD §3) | Lose installability + custom icons for negligible upside |
+| Full offline PWA with cache-first SCSS | Re-introduces the per-user caching liability we explicitly avoided |
+| Capacitor / Tauri wrapper | Massive operational overhead for a stateless tool |
+
+### Consequences
+**Positive:**
+- App installs cleanly on Android/iOS; gets proper icons + splash.
+- Service worker is a near-noop, so the original "no offline complexity" intent is preserved.
+
+**Negative / Trade-offs:**
+- We must maintain the `sw.js` stub forever; a regression there can break installability silently.
+- A future maintainer might mistakenly add caching logic to `sw.js`. The file carries a banner comment forbidding this.
+
+### Related
+- PRD §3 (updated in v0.4)
+- PRD §11.5 (PWA shell directory note)
+
+---
+
+## ADR-003 · Preview via `<link href>` swap, not `<style>` content replacement
+
+**Date:** 2026-04-04
+**Sprint:** Sprint 4
+**Status:** ✅ Accepted
+
+### Context
+The original Sprint 1 design (SYSTEM_DESIGN.md v0.1, §4) described preview as a Turbo Stream that updates the contents of an inline `<style id="nanocss-preview-style">` tag. This shipped in Sprints 1–3 and worked correctly for short stylesheets.
+
+Three problems surfaced:
+1. **Payload size.** A full Standard-tier compile is ~30 kB un-minified. Sending it as a `<turbo-stream>` payload meant Turbo had to parse it as HTML, which is both slow and risks HTML-special-character contamination of the CSS.
+2. **Browser caching.** The same theme token was re-compiled and re-shipped on every config change, even when only a checkbox flipped to a state we'd already rendered. There was no way to leverage HTTP caching.
+3. **Layering / scoping.** With UC-012 we wanted preview CSS scoped to `#nanocss-preview` and wrapped in `@layer config`. Wrapping inline `<style>` content was awkward.
+
+### Decision
+Replace the `<style>` tag with a `<link rel="stylesheet" id="nanocss-preview-link" href="/themes/css?theme={token}&preview=true">`. The Turbo Stream now replaces the entire `<link>` element, the browser fetches the new `href` itself, and the new endpoint `GET /themes/css` renders `text/css` directly via `ScssCompilerService.call(cfg, scope: "#nanocss-preview")`.
+
+### Alternatives Considered
+| Option | Reason Rejected |
+|---|---|
+| Keep `<style>` tag, send compressed CSS | Doesn't solve the scoping/layering problem; still re-compiles on every flip |
+| Compile in the browser via `sass.js` WASM | Bundle bloat (>1 MB), and we lose the validator gate we want server-side |
+| Stream CSS over WebSocket | Massive complexity for marginal gain; loses HTTP caching |
+
+### Consequences
+**Positive:**
+- Browser `Cache-Control` works for non-preview tokens.
+- Scoping/layering is trivial — we just wrap the compiled string before sending.
+- The mechanism that powers the configurator now also powers the **Quick Apply** preset cards on the landing page (the same link swap).
+- Cleaner separation of concerns — `ThemesController#preview` only emits the swap directive; `#css` only emits CSS.
+
+**Negative / Trade-offs:**
+- One extra round-trip per preview (Turbo Stream → DOM swap → browser GET). On localhost this is ~3 ms; on the IONOS VPS it's typically ~80 ms. Still well inside the FR-005 200 ms budget.
+- `themes_spec.rb:42` was authored against the old `<style>` mechanism and now fails. Update queued in UC-026.
+- Quick Apply on the landing page *does* swap the preview stylesheet correctly, but the **app chrome** does not visibly change because most of it is custom overrides, not nanoCSS classes. This is the user's stated bugbear and is tracked in UC-034 / UC-035 / UC-036 (Sprint 8) — it is not a flaw in this ADR; it's a flaw in dogfooding.
+
+### Related
+- UC-016, UC-026
+- SYSTEM_DESIGN §1 (preview sequence diagram)
+- SYSTEM_DESIGN §4 (`POST /themes/preview`, `GET /themes/css`)
+
+---
+
+## ADR-004 · Corporate is the form-load default; PRD §9.1 palette becomes the Playful preset
+
+**Date:** 2026-04-04
+**Sprint:** Sprint 4
+**Status:** ✅ Accepted
+
+### Context
+PRD §9.1 originally specified `#3b82f6 / #8b5cf6 / #ec4899` as the framework defaults — a vivid blue / violet / pink palette. During Sprint 4 user-testing, this palette read as "playful" or "consumer-app" rather than "professional / drop-this-into-your-SaaS." The first impression of the configurator was confusing — users assumed the tool was opinionated toward consumer aesthetics.
+
+UC-013 explicitly directed: "Use Corporate preset as the default configuration form values."
+
+### Decision
+- The form-load defaults of `ThemeConfiguration` are the Corporate preset: `#1e40af` (deep blue), `#6366f1` (indigo), `#06b6d4` (cyan).
+- The PRD §9.1 palette is preserved verbatim as the **Playful** preset card on the landing page — nothing is lost.
+- PRD v0.4 §9.1 has been updated to canonise this and explain the relocation.
+
+### Alternatives Considered
+| Option | Reason Rejected |
+|---|---|
+| Keep PRD §9.1 palette as default; add Corporate as a fourth preset | Contradicts UC-013 user feedback; consumer-aesthetic first-impression |
+| Remove the original palette entirely | Throws away a valid preset for no reason |
+| Make the default itself user-configurable via env var | Overkill for a stateless tool |
+
+### Consequences
+**Positive:**
+- Configurator first-impression is professional and matches the framework's "drop-into-your-SaaS" positioning.
+- All three palettes remain available with one click.
+
+**Negative / Trade-offs:**
+- Three specs in `theme_configuration_spec.rb` assert the old defaults and now fail. Update queued in UC-026.
+- Anyone reading PRD v0.3 in isolation will be confused by the actual defaults. Mitigated by the PRD v0.4 retrofit + this ADR.
+
+### Related
+- UC-013, UC-026
+- PRD §9.1 (updated v0.4)
+
+---
+
+## ADR-005 · Defer validator gate enforcement to UC-023 🟡 Proposed
+
+**Date:** 2026-04-25
+**Sprint:** Sprint 5 close
+**Status:** 🟡 Proposed (to be Accepted at UC-023 implementation, or Superseded if we change approach)
+
+### Context
+`ThemeConfiguration` defines `ActiveModel::Validations` for the hex regex, prefix regex, and prefix max-length. However, `ThemesController#preview`, `#css`, and `#download` never call `valid?` before invoking `ScssCompilerService`. Invalid values currently fall through to Sass, which either accepts them silently (e.g. an invalid hex turns into an unknown identifier and Sass uses it verbatim, often producing unstyled output) or raises `Sass::CompileError`, which the service catches and converts to a 422.
+
+This was discovered during the Sprint 5 close code-review. It is the most material gap between PRD §8 and shipped behaviour.
+
+### Decision
+We accept that this gap exists in v0.5.0. We do **not** ship a hot-fix in Sprint 5 because:
+1. The fall-through behaviour is not actively breaking users (Sass error path produces a non-fatal 422).
+2. Wiring the gate touches three controller actions, the spec suite, and the harmony swatch flow — it deserves a dedicated UC.
+
+We will fix this as **UC-023** in Sprint 6 with the following acceptance criteria (already in BACKLOG.md):
+- Controller calls `cfg.valid?` before any service call.
+- Invalid input returns 422 (Turbo Stream JSON) or re-renders the form (HTML).
+- Spec coverage for every validator.
+
+This ADR will be updated to **Accepted** when UC-023 lands, or **Superseded** if a future ADR proposes a different approach (e.g. moving validation into the service layer instead of the controller).
+
+### Alternatives Considered
+| Option | Reason Rejected |
+|---|---|
+| Hot-fix in Sprint 5 with no spec change | Risks regressions in the harmony swatch flow which mutates form state via JS |
+| Move validation into `ScssCompilerService` | Conflates request-level concerns with compilation; harder to surface errors as form errors |
+| Trust the client-side input types | Server-side validation is non-negotiable per PRD §8 |
+
+### Consequences
+**Positive (of accepting the gap for now):**
+- Sprint 5 ships on schedule with the user-facing Theme Switcher and Icon Set.
+- The fix gets a proper sprint slot with full test coverage.
+
+**Negative / Trade-offs:**
+- Until UC-023 lands, malformed `?theme=` tokens or hand-crafted POSTs reach Sass. Mitigated because `from_base64` already falls back to defaults on JSON parse failure, and Sass errors are caught.
+
+### Related
+- UC-023, UC-024, UC-026
+- PRD §8 (Security & Compliance)
+- SYSTEM_DESIGN §2.2 (Error Handling Strategy)
+
+---
+
+## ADR-006 · Use the undocumented Google Fonts metadata endpoint
+
+**Date:** 2026-03-21
+**Sprint:** Sprint 3
+**Status:** ✅ Accepted (with risk acknowledgement)
+
+### Context
+UC-014 needed a way to enumerate every Google Fonts family so we could (a) populate the search dropdown and (b) build a strict whitelist for `@import url(...)` injection (FR-008 security requirement).
+
+The official Google Fonts Web API at `https://www.googleapis.com/webfonts/v1/webfonts` requires an API key, which means a credential to provision, rotate, and protect — operational overhead we wanted to avoid for a stateless self-hosted tool.
+
+The unofficial endpoint `https://fonts.google.com/metadata/fonts` returns the same data, requires no key, and is the same URL the official Google Fonts website's search UI calls.
+
+### Decision
+`GoogleFontsService` calls the metadata endpoint and caches the result in-process for 24 h via a simple `@@catalogue ||=` memo with a `@@last_fetched` timestamp. On 24 h expiry the next request triggers a fresh fetch. On HTTP failure, the previously cached catalogue is reused indefinitely (`stale-if-error` semantics). On cold-start failure with no cache, `valid?` returns `false` for everything — i.e. font selection silently degrades to system defaults rather than enabling injection.
+
+### Alternatives Considered
+| Option | Reason Rejected |
+|---|---|
+| Official `webfonts/v1` API with key | Credential ops overhead for a stateless tool |
+| Bundle a static font list in the repo | Drifts immediately; misses new fonts; we'd need to update on every release |
+| Skip whitelist validation | Direct violation of FR-008 (CSS injection vector) |
+
+### Consequences
+**Positive:**
+- No credentials to manage. Zero ops overhead for this feature.
+- Font list stays current automatically (24 h staleness window).
+- Same endpoint, same response shape as Google's own search UI — high availability.
+
+**Negative / Trade-offs:**
+- The endpoint is undocumented. Google could change shape or remove it without notice.
+- We cannot detect a change-of-shape from a 200 OK; we'd see a parsed-empty catalogue.
+
+### Mitigation
+- A future UC will add a fallback to the v1 API behind an `ENV["GOOGLE_FONTS_API_KEY"]` switch — when the key is present, prefer the official endpoint; when absent, fall back to the metadata endpoint. _(Not yet scheduled — raise as UC-IB if/when the metadata endpoint shape changes.)_
+
+### Related
+- UC-014
+- PRD §8 (font whitelist for FR-008)
+- SYSTEM_DESIGN §5.4
 
 ---
 
