@@ -18,3 +18,6 @@ application.register("preview", PreviewController)
 
 import ThemeController from "./theme_controller"
 application.register("theme", ThemeController)
+
+import HarmonyController from "./harmony_controller"
+application.register("harmony", HarmonyController)

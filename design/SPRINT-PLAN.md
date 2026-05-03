@@ -1,8 +1,9 @@
 # Sprint Plan — nanoCSS Configurator
 
 > **Project:** nanoCSS
-> **Last Updated:** 2026-04-25
-> **Sprint Cadence:** 2 weeks
+> **Last Updated:** 2026-05-02
+> **Sprint Cadence:** AI-assisted — 2–3 sprints per day (each sprint is a focused 1–3 hr session, not a two-week cycle)
+> **Story Point Scale (recalibrated):** 1 pt ≈ 10–20 min · 2 pt ≈ 30–45 min · 3 pt ≈ 60–90 min · 5 pt ≈ 2–3 hr · 8 pt = must split
 > **Velocity Reference:** Established at Sprint 5 close (see Retrospective below)
 
 ---
@@ -40,25 +41,22 @@
 
 ---
 
-## 🔵 Sprint 6 — Validation Enforcement & Spec Compliance · ACTIVE
+## ✅ Sprint 6 — Validation Enforcement & Spec Compliance · CLOSED 2026-05-03
 
 > **Goal:** Close the gap between validators we *defined* and validators we *enforce*. Bring CI back to green. Harden the harmony swatch XSS surface.
-> **Dates:** 2026-04-25 → 2026-05-09
-> **Capacity:** 10 pts
+> **Delivered:** 10/10 pts · All 5 stories shipped
 
 | ID | Story | Points | Status |
 |---|---|---|---|
-| UC-023 | Wire validator gate into `ThemesController#preview` + `#download` | 3 | todo |
-| UC-024 | Strict 32-char prefix length validator | 1 | todo |
-| UC-025 | Externalise preset definitions to `config/presets.yml` | 2 | todo |
-| UC-026 | Repair 4 failing specs to match shipped reality | 2 | todo |
-| UC-027 | Harmony swatch XSS hardening (Stimulus, replace inline onclick) | 2 | todo |
+| UC-023 | Wire validator gate into `ThemesController#preview` + `#download` | 3 | done |
+| UC-024 | Strict 32-char prefix length validator | 1 | done |
+| UC-025 | Externalise preset definitions to `config/presets.yml` | 2 | done |
+| UC-026 | Repair 4 failing specs to match shipped reality | 2 | done |
+| UC-027 | Harmony swatch XSS hardening (Stimulus, replace inline onclick) | 2 | done |
 
-**Sprint goal check criteria:**
-- `bundle exec rspec` exits 0 (all 81+ specs green)
-- `bundle exec rubocop` exits 0
-- `ThemesController#preview` returns 422 on invalid hex input
-- Preset definitions live in `config/presets.yml`, not scattered in views
+**Sprint goal check:** All criteria met — 85/85 specs green, 0 RuboCop offenses, validation gate in place, presets in YAML, inline onclick eliminated.
+
+**Notable bug found and fixed during sprint:** `excluded_components: [""]` sentinel (from Rails hidden field) was failing the component validator on every preview request — silent bug pre-existing since Sprint 3, only surfaced when the validation gate was wired.
 
 ---
 

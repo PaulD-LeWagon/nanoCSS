@@ -39,11 +39,47 @@ RSpec.describe "Themes", type: :request do
       expect(response.media_type).to eq('text/vnd.turbo-stream.html')
     end
 
-    it "includes compiled CSS in the turbo stream response" do
+    # Per ADR-003: preview swaps a <link href> — not an inline <style> tag.
+    it "includes a stylesheet link swap in the turbo stream response" do
       post theme_preview_path, params: { theme_configuration: { primary: "#ff0000" } },
            headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
-      expect(response.body).to include('<style>')
-      expect(response.body).to include('.nanocss-')
+      expect(response.body).to include('/themes/css')
+      expect(response.body).to include('nanocss-preview-style')
+    end
+  end
+
+  # --- UC-023: Validation gate ---
+  describe "POST /themes/preview with invalid params (UC-023)" do
+    # Preview returns 200 even on validation failure — Turbo must process the error
+    # turbo stream without triggering a page reload (which would break live typing).
+    it "returns 200 with an error turbo stream for an invalid hex colour" do
+      post theme_preview_path,
+           params: { theme_configuration: { primary: "not-a-colour" } },
+           headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('validation-errors')
+    end
+
+    it "returns 200 with an error turbo stream for a prefix exceeding 32 characters" do
+      post theme_preview_path,
+           params: { theme_configuration: { prefix: "a" * 33 } },
+           headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('validation-errors')
+    end
+
+    # Download is a non-turbo endpoint — 422 is semantically correct here.
+    it "returns 422 on download for an invalid hex colour" do
+      post theme_download_path,
+           params: { theme_configuration: { primary: "bad" } }
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it "does NOT update the stylesheet link when invalid" do
+      post theme_preview_path,
+           params: { theme_configuration: { primary: "not-a-colour" } },
+           headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
+      expect(response.body).not_to include('/themes/css')
     end
   end
 

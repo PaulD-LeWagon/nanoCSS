@@ -93,6 +93,9 @@ bundle exec brakeman --no-pager     # Security scan
 
 ## Hard Do-Nots
 
+- **[CRITICAL] Never** remove or alter existing UI/UX unless the story's ACs **explicitly**
+  authorise it. "Refactor"/"replace" ≠ permission to drop features. Take before + after
+  screenshots and compare before every commit. (The repo was reset 7 days over this.)
 - **Never** add a `before_action :authenticate_user!` — there is no auth
 - **Never** call `Model.find(id)` — there are no AR models
 - **Never** run `rails db:migrate` — there is no schema

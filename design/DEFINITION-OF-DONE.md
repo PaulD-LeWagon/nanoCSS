@@ -12,6 +12,7 @@
 - [ ] `bundle exec rspec` — exits 0, no skipped specs without a dated comment
 - [ ] `bundle exec rubocop` — exits 0, no offences
 - [ ] `bundle exec brakeman --no-pager` — no new warnings introduced
+- [ ] **[CRITICAL] Before/after visual comparison** — screenshot every affected page/component *before* starting, screenshot again *after* implementing, compare side-by-side before committing. Any visual element that disappears without explicit authorisation in the story's ACs is a regression — stop, restore, flag.
 - [ ] Story committed with Conventional Commit: `type(scope): description [UC-NNN]`
 - [ ] `design/BACKLOG.md` updated — story status → `🟢 Done`
 - [ ] `design/SPRINT-PLAN.md` updated — story table status → `done`
@@ -55,3 +56,4 @@
 - A new `@import` or `url()` was added to SCSS without going through `GoogleFontsService.valid?`
 - A new gem was added without updating `design/PRD.md §11.3` (Gem Dependencies)
 - The `app/assets/stylesheets/nanocss/_*.scss` source files were edited without an explicit UC instructing it
+- **A UI/UX feature visible before the story started is absent after it, unless the story explicitly authorises removal** — "refactor" and "replace" do not grant permission to drop functionality or visual elements

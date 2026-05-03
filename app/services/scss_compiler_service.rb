@@ -22,7 +22,7 @@ class ScssCompilerService
   end
 
   def call
-    base_path = Rails.root.join('app', 'assets', 'stylesheets', 'nanocss')
+    base_path = Rails.root.join("app", "assets", "stylesheets", "nanocss")
 
     begin
       # 1. Dynamic user overrides (prepended before !default declarations)
@@ -40,35 +40,35 @@ class ScssCompilerService
       end
 
       # 2. Framework partials — always included
-      variables_scss = File.read(File.join(base_path, '_variables.scss'))
-      mixins_scss    = File.read(File.join(base_path, '_mixins.scss'))
+      variables_scss = File.read(File.join(base_path, "_variables.scss"))
+      mixins_scss    = File.read(File.join(base_path, "_mixins.scss"))
 
       # 3. CSS Custom Properties (maps SCSS vars → :root { --prefix-* })
-      custom_props_scss = File.read(File.join(base_path, '_custom-properties.scss'))
+      custom_props_scss = File.read(File.join(base_path, "_custom-properties.scss"))
 
       # 4. Bespoke reset — always included (FR-013)
-      reset_scss = File.read(File.join(base_path, '_reset.scss'))
+      reset_scss = File.read(File.join(base_path, "_reset.scss"))
 
       # 5. Semantic HTML base styling — Nano tier (FR-005)
-      base_scss = File.read(File.join(base_path, '_base.scss'))
+      base_scss = File.read(File.join(base_path, "_base.scss"))
 
       # 5a. UI Components styling
       components_scss = ""
-      if [:standard, :full].include?(@tier)
-        components_scss = File.read(File.join(base_path, '_components.scss'))
+      if [ :standard, :full ].include?(@tier)
+        components_scss = File.read(File.join(base_path, "_components.scss"))
         if @configuration.excluded_components.present?
           @configuration.excluded_components.each do |c|
             # Simple regex parser to strip out sections of the monolithic _components.scss based on header names
             components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*#{Regexp.escape(c.capitalize)}\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
-            
+
             # Special aliases due to file naming
-            if c == 'btn' || c == 'button'
+            if c == "btn" || c == "button"
               components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*Buttons?\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
             end
-            if c == 'nav' || c == 'navbar'
+            if c == "nav" || c == "navbar"
               components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*Nav\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
             end
-            if c == 'loader'
+            if c == "loader"
               components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*Loading\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
             end
           end
@@ -77,8 +77,8 @@ class ScssCompilerService
 
       # 6. Standard tier: utility classes
       utilities_scss = ""
-      if [:standard, :full].include?(@tier)
-        utilities_scss = File.read(File.join(base_path, '_utilities.scss'))
+      if [ :standard, :full ].include?(@tier)
+        utilities_scss = File.read(File.join(base_path, "_utilities.scss"))
       end
 
       # Assemble in correct dependency order
@@ -124,11 +124,11 @@ class ScssCompilerService
 
       # Execute Dart Sass in-memory compilation
       result = Sass.compile_string(full_scss)
-      
+
       css_output = result.css
-      
+
       # Remove any @charset declaration added by Sass so it doesn't invalidate the layer block
-      css_output = css_output.gsub(/@charset[^;]+;\n*/, '')
+      css_output = css_output.gsub(/@charset[^;]+;\n*/, "")
 
       # UC-012: CSS Layer block wrapping
       if @configuration.wrap_in_layer
@@ -140,12 +140,12 @@ class ScssCompilerService
       if @scope.present?
         css_output = "@layer config {\n#{css_output}\n}"
       end
-      
+
       # UC-014: Google Fonts Injection at top level
       font_imports = []
-      fonts = [@configuration.font_heading, @configuration.font_subtitle, @configuration.font_body, @configuration.font_code]
+      fonts = [ @configuration.font_heading, @configuration.font_subtitle, @configuration.font_body, @configuration.font_code ]
       fonts.compact.reject(&:blank?).uniq.each do |font_name|
-        formatted_name = font_name.gsub(' ', '+')
+        formatted_name = font_name.gsub(" ", "+")
         font_imports << "@import url('https://fonts.googleapis.com/css2?family=#{formatted_name}:wght@300;400;500;700&display=swap');"
       end
 

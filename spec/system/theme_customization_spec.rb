@@ -5,6 +5,10 @@ require 'rails_helper'
 RSpec.describe "Theme Customization", type: :system do
   before do
     driven_by(:selenium_chrome_headless)
+    # Prevent live Google Fonts API calls during system tests — validators
+    # run on every form submission now that the validation gate is wired (UC-023).
+    allow(GoogleFontsService).to receive(:catalogue)
+      .and_return(%w[Inter Roboto Oswald Fira\ Code Source\ Code\ Pro JetBrains\ Mono Merriweather])
   end
 
   # --- UC-001: Preset Theme & Live Preview ---
@@ -28,12 +32,12 @@ RSpec.describe "Theme Customization", type: :system do
 
       # The turbo stream injects a link tag into #nanocss-preview-style with base64 theme params
       expect(page).to have_css("#nanocss-preview-style link[href*='theme=']", visible: false, wait: 5)
-      
+
       link = page.find("#nanocss-preview-style link", visible: false)
       uri = URI.parse(link[:href])
       params = CGI.parse(uri.query)
       decoded = Base64.urlsafe_decode64(params["theme"].first)
-      
+
       # Playful uses primary #f43f5e
       expect(decoded).to include("f43f5e")
     end
@@ -78,7 +82,7 @@ RSpec.describe "Theme Customization", type: :system do
 
     it "AC2: switching modes retains previously entered values" do
       fill_in "Primary", with: "#123456"
-      
+
       check "Advanced Options"
       fill_in "Namespace Prefix", with: "mypref"
       uncheck "Advanced Options"
@@ -92,15 +96,24 @@ RSpec.describe "Theme Customization", type: :system do
 
     it "AC4: changing an input causes a VISIBLE change in the preview pane" do
       check "Advanced Options"
-      fill_in "Namespace Prefix", with: "livetest"
 
-      sleep 1
-      
+      # Set the value atomically via JS to avoid char-by-char Selenium typing which
+      # creates invalid intermediate states (e.g. "l" fails the format regex) that
+      # compete with the final valid submission. The AC is "field change → preview
+      # update" — this tests that contract without racing against intermediate input events.
+      page.execute_script(<<~JS)
+        const f = document.getElementById('theme_configuration_prefix');
+        f.value = 'livetest';
+        f.dispatchEvent(new Event('input', { bubbles: true }));
+      JS
+
+      sleep 2
+
       link = page.find("#nanocss-preview-style link", visible: false)
       uri = URI.parse(link[:href])
       params = CGI.parse(uri.query)
       decoded = Base64.urlsafe_decode64(params["theme"].first)
-      
+
       expect(decoded).to include('"prefix":"livetest"')
     end
 
@@ -109,12 +122,12 @@ RSpec.describe "Theme Customization", type: :system do
       fill_in "Primary", with: "#ff0000"
 
       sleep 1
-      
+
       link = page.find("#nanocss-preview-style link", visible: false)
       uri = URI.parse(link[:href])
       params = CGI.parse(uri.query)
       decoded = Base64.urlsafe_decode64(params["theme"].first)
-      
+
       expect(decoded).to include('"primary":"#ff0000"')
     end
   end
@@ -161,12 +174,12 @@ RSpec.describe "Theme Customization", type: :system do
       visit configure_path(theme: encoded)
 
       expect(page).to have_css("#nanocss-preview-style link[href*='theme=']", visible: false, wait: 5)
-      
+
       link = page.find("#nanocss-preview-style link", visible: false)
       uri = URI.parse(link[:href])
       params = CGI.parse(uri.query)
       decoded = Base64.urlsafe_decode64(params["theme"].first)
-      
+
       expect(decoded).to include('"prefix":"tester"')
       expect(decoded).to include('"primary":"#00ff00"')
     end

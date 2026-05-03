@@ -72,9 +72,9 @@ RSpec.describe ThemeConfiguration, type: :model do
     it 'outputs all Basic Mode anchor variables with correct prefix' do
       scss = config.to_scss_variables_string
       expect(scss).to include("$prefix: 'nanocss';")
-      expect(scss).to include('$nanocss-primary: #3b82f6;')
-      expect(scss).to include('$nanocss-secondary: #8b5cf6;')
-      expect(scss).to include('$nanocss-tertiary: #ec4899;')
+      expect(scss).to include('$nanocss-primary: #1e40af;')
+      expect(scss).to include('$nanocss-secondary: #6366f1;')
+      expect(scss).to include('$nanocss-tertiary: #06b6d4;')
       expect(scss).to include('$nanocss-base-typography: 1rem;')
       expect(scss).to include('$nanocss-base-space: 0.5rem;')
       expect(scss).to include('$nanocss-base-radius: 0.25rem;')
@@ -147,14 +147,14 @@ RSpec.describe ThemeConfiguration, type: :model do
     # --- UC-004 AC3: Malformed data gracefully falls back ---
     it 'returns default config for malformed base64' do
       decoded = described_class.from_base64('not_valid!!!')
-      expect(decoded.primary).to eq('#3b82f6')
+      expect(decoded.primary).to eq('#1e40af') # Corporate default per ADR-004
       expect(decoded.prefix).to eq('nanocss')
     end
 
     it 'returns default config for tampered JSON' do
       encoded = Base64.urlsafe_encode64('{"not_a_real_field": "value"}')
       decoded = described_class.from_base64(encoded)
-      expect(decoded.primary).to eq('#3b82f6') # defaults applied
+      expect(decoded.primary).to eq('#1e40af') # Corporate default per ADR-004
     end
   end
 
@@ -175,12 +175,12 @@ RSpec.describe ThemeConfiguration, type: :model do
   # --- UC-010: Per-Component Toggling ---
   describe 'Excluded Components' do
     it 'accepts an array of valid component names to exclude' do
-      config.excluded_components = ['modal', 'carousel']
+      config.excluded_components = [ 'modal', 'carousel' ]
       expect(config).to be_valid
     end
 
     it 'rejects unrecognised component names in exclusion list' do
-      config.excluded_components = ['modal', 'not-a-component']
+      config.excluded_components = [ 'modal', 'not-a-component' ]
       expect(config).not_to be_valid
       expect(config.errors[:excluded_components]).to include('contains invalid component names')
     end

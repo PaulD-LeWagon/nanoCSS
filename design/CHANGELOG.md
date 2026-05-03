@@ -16,14 +16,31 @@
 > _Changes merged to main but not yet in a numbered release.
 > Move entries to a versioned section at release time._
 
+---
+
+## [0.6.0] — 2026-05-03 — Sprint 6
+
 ### Added
-- _(empty — Sprint 6 has not yet started.)_
+- UC-024: Strict 32-char prefix length validator (`validates :prefix, length: { maximum: 32 }`).
+- UC-023: Validation gate in `ThemesController#preview` and `#download` — invalid params rejected before `ScssCompilerService` is invoked. Preview returns 200 with an error Turbo Stream; download returns 422.
+- UC-025: Preset definitions externalised to `config/presets.yml` — adding a new preset now requires editing only that file, no controller change.
+- UC-027: Harmony swatch buttons rewritten with Stimulus `harmony_controller.js` — eliminates the only inline `onclick` ERB interpolation in the codebase (XSS surface removed).
+- `harmony_controller.js` registered in the Stimulus manifest.
+- `<div id="validation-errors">` in the configure form; `preview.turbo_stream.erb` populates it on invalid submit.
 
 ### Changed
-- _(empty)_
+- Sprint cadence updated: AI-assisted pace is 2–3 sprints per day; story point scale recalibrated to hours (1 pt ≈ 10–20 min, 5 pt ≈ 2–3 hr).
+- `ThemeConfiguration#initialize` now strips blank entries from `excluded_components` (sentinel `[""]` sent by the hidden field no longer fails validation).
+- `DEFINITION-OF-DONE.md` updated with mandatory before/after screenshot gate and UI-preservation rule.
+- `CLAUDE.md` updated with `[CRITICAL]` hard do-not for unauthorised UI removal.
 
 ### Fixed
-- _(empty)_
+- UC-026: Four specs repaired to match shipped reality (Corporate defaults, `<link>` swap instead of `<style>` tag).
+- System specs for colour harmony and theme customisation now stub `GoogleFontsService.catalogue` to avoid live API calls on every Turbo Stream submit.
+- `excluded_components: [""]` sentinel from the hidden field no longer causes a validation error on every preview request.
+
+### Security
+- UC-027: Removed the only inline `onclick="…'<%= hex %>'…"` ERB→JS interpolation — XSS surface eliminated. Harmony swatch values now flow through Stimulus `data-` attributes.
 
 ---
 

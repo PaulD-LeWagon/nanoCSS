@@ -95,14 +95,14 @@ RSpec.describe ScssCompilerService do
       result = described_class.call(config)
       css = result[:css]
       expected_classes = [
-        '.nanocss-hero', '.nanocss-carousel', '.nanocss-card', 
+        '.nanocss-hero', '.nanocss-carousel', '.nanocss-card',
         '.nanocss-dropdown', '.nanocss-group', '.nanocss-loader',
-        '.nanocss-modal', '.nanocss-nav', '.nanocss-badge', 
-        '.nanocss-tag', '[aria-label=breadcrumb]', '.nanocss-pagination', 
+        '.nanocss-modal', '.nanocss-nav', '.nanocss-badge',
+        '.nanocss-tag', '[aria-label=breadcrumb]', '.nanocss-pagination',
         '.nanocss-tabs', '.nanocss-btn-primary', '.nanocss-btn-secondary',
         '[data-tooltip]'
       ]
-      
+
       expected_classes.each do |css_class|
         expect(css).to include(css_class), "Expected compiled CSS to include #{css_class} but it was missing"
       end
@@ -127,7 +127,7 @@ RSpec.describe ScssCompilerService do
 
     # --- UC-010: Per-Component Toggling Omission ---
     it 'omits excluded components from the compiled CSS' do
-      config.excluded_components = ['modal', 'carousel']
+      config.excluded_components = [ 'modal', 'carousel' ]
       result = described_class.call(config)
       expect(result[:css]).not_to include('.nanocss-modal')
       expect(result[:css]).not_to include('.nanocss-carousel')

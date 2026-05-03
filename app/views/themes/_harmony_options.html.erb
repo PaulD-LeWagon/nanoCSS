@@ -1,17 +1,18 @@
 <%# Harmony Options Partial — rendered by ThemesController#show and replaced via Turbo Stream
     on ThemesController#preview when the primary colour changes.
-    Traces: design/BACKLOG.md UC-006 %>
+    Per UC-027: swatch buttons use Stimulus data-action (no inline onclick ERB interpolation).
+    Traces: design/BACKLOG.md UC-006, UC-027 %>
 
-<div class="form-group" id="harmony-options">
+<div class="form-group" id="harmony-options" data-controller="harmony">
   <label class="form-label" style="color: var(--chrome-muted);">Auto Harmony</label>
   <div style="display: flex; flex-direction: column; gap: 0.4rem;">
 
     <% if defined?(complementary) && complementary.present? %>
       <div style="display: flex; gap: 0.5rem; align-items: center;">
         <button type="button" class="harmony-swatch-btn" style="flex:1;"
-          onclick="document.getElementById('theme_configuration_secondary').value='<%= complementary[0] %>';
-                   document.getElementById('theme_configuration_tertiary').value='<%= complementary[1] %>';
-                   this.closest('form').requestSubmit()">
+          data-action="harmony#apply"
+          data-harmony-secondary="<%= complementary[0] %>"
+          data-harmony-tertiary="<%= complementary[1] %>">
           Complementary
         </button>
         <div class="swatch-box" style="background:<%= complementary[0] %>;"></div>
@@ -22,9 +23,9 @@
     <% if defined?(analogous) && analogous.present? %>
       <div style="display: flex; gap: 0.5rem; align-items: center;">
         <button type="button" class="harmony-swatch-btn" style="flex:1;"
-          onclick="document.getElementById('theme_configuration_secondary').value='<%= analogous[0] %>';
-                   document.getElementById('theme_configuration_tertiary').value='<%= analogous[1] %>';
-                   this.closest('form').requestSubmit()">
+          data-action="harmony#apply"
+          data-harmony-secondary="<%= analogous[0] %>"
+          data-harmony-tertiary="<%= analogous[1] %>">
           Analogous
         </button>
         <div class="swatch-box" style="background:<%= analogous[0] %>;"></div>
@@ -35,9 +36,9 @@
     <% if defined?(triadic) && triadic.present? %>
       <div style="display: flex; gap: 0.5rem; align-items: center;">
         <button type="button" class="harmony-swatch-btn" style="flex:1;"
-          onclick="document.getElementById('theme_configuration_secondary').value='<%= triadic[0] %>';
-                   document.getElementById('theme_configuration_tertiary').value='<%= triadic[1] %>';
-                   this.closest('form').requestSubmit()">
+          data-action="harmony#apply"
+          data-harmony-secondary="<%= triadic[0] %>"
+          data-harmony-tertiary="<%= triadic[1] %>">
           Triadic
         </button>
         <div class="swatch-box" style="background:<%= triadic[0] %>;"></div>

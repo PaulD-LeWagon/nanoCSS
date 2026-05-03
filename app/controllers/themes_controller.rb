@@ -1,13 +1,10 @@
 class ThemesController < ApplicationController
   # Download is a stateless read operation — no server mutation occurs.
   # The CSRF token can fail when formaction overrides the original form target.
-  skip_forgery_protection only: [:download, :css]
+  skip_forgery_protection only: [ :download, :css ]
   def index
-    @presets = [
-      { name: "Corporate", primary: "#1e40af", secondary: "#6366f1", tertiary: "#06b6d4", default: true },
-      { name: "Playful", primary: "#f43f5e", secondary: "#a855f7", tertiary: "#f97316" },
-      { name: "Minimalist", primary: "#000000", secondary: "#404040", tertiary: "#737373" }
-    ]
+    # Per UC-025: presets loaded from config/presets.yml — no controller edit needed to add one.
+    @presets = YAML.load_file(Rails.root.join("config/presets.yml")).values.map(&:symbolize_keys)
     # @nanocss_css is compiled by ApplicationController#compile_default_nanocss.
     # We alias it to @css so the landing page preview pane has it available if needed.
     @config = ThemeConfiguration.new
@@ -22,33 +19,48 @@ class ThemesController < ApplicationController
     end
 
     # Pre-compile the CSS for the initial page render
-    result = ScssCompilerService.call(@config, scope: '#preview-canvas')
+    result = ScssCompilerService.call(@config, scope: "#preview-canvas")
     @css = result[:css] || ""
-    
+
     @complementary = ColourHarmonyService.call(@config.primary, harmony_type: :complementary)
     @analogous = ColourHarmonyService.call(@config.primary, harmony_type: :analogous)
     @triadic = ColourHarmonyService.call(@config.primary, harmony_type: :triadic)
   end
 
   def preview
-    @is_preview = request.referer&.include?('/configure')
+    @is_preview = request.referer&.include?("/configure")
     @config = ThemeConfiguration.new(theme_params)
-    
+
+    # Per UC-023: validate before invoking the SCSS compiler.
+    # Return 200 (not 422) so Turbo processes the error turbo stream without
+    # triggering a page reload that would break Selenium's mid-type focus.
+    unless @config.valid?
+      render status: :ok
+      return
+    end
+
     # We scope if it's the config page preview to prevent bleed.
     # On the landing page, we WANT global dogfooding as per PRD.
-    scope = @is_preview ? '#preview-canvas' : nil
+    scope = @is_preview ? "#preview-canvas" : nil
     result = ScssCompilerService.call(@config, scope: scope)
     @css = result[:css] || ""
-    
+
     @complementary = ColourHarmonyService.call(@config.primary, harmony_type: :complementary)
     @analogous = ColourHarmonyService.call(@config.primary, harmony_type: :analogous)
     @triadic = ColourHarmonyService.call(@config.primary, harmony_type: :triadic)
-    
+
     # Renders preview.turbo_stream.erb implicitly
   end
 
   def download
     config = ThemeConfiguration.new(theme_params)
+
+    # Per UC-023: validate before invoking the SCSS compiler.
+    unless config.valid?
+      head :unprocessable_entity
+      return
+    end
+
     result = ScssCompilerService.call(config)
 
     if result[:css].nil?
@@ -56,16 +68,16 @@ class ThemesController < ApplicationController
       return
     end
 
-    format = params[:download_format] || 'all'
+    format = params[:download_format] || "all"
 
-    if format == 'css'
+    if format == "css"
       send_data result[:css],
-                type: 'text/css',
+                type: "text/css",
                 disposition: "attachment; filename=\"#{config.prefix.presence || 'nanocss'}.css\""
     else
       zip_data = ZipAssemblerService.call(config, result[:css], format)
       send_data zip_data,
-                type: 'application/zip',
+                type: "application/zip",
                 disposition: "attachment; filename=\"#{config.prefix.presence || 'nanocss'}.zip\""
     end
   end
@@ -76,11 +88,11 @@ class ThemesController < ApplicationController
     else
       config = ThemeConfiguration.new(theme_params.presence || {})
     end
-    
-    scope = params[:preview] == 'true' ? '#preview-canvas' : nil
+
+    scope = params[:preview] == "true" ? "#preview-canvas" : nil
     result = ScssCompilerService.call(config, scope: scope)
     css = result[:css] || ""
-    
+
     render plain: css, content_type: "text/css"
   end
 

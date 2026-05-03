@@ -1,20 +1,34 @@
 <%# preview.turbo_stream.erb
-    Updates three targets on every preview request:
-    1. nanocss-preview-style — the style tag scoped to the /configure preview pane
-    2. nanocss-base — the global layout style tag, so the app chrome updates too (dogfooding)
-    3. harmony-options — the colour harmony suggestion swatches below the colour pickers
-    Traces: design/BACKLOG.md UC-002 AC4, UC-006 %>
-<%= turbo_stream.replace "nanocss-preview-style" do %>
-  <div id="nanocss-preview-style">
-    <link rel="stylesheet" href="<%= theme_css_path(theme: @config.to_base64, preview: @is_preview) %>" data-action="load->preview#onStyleLoad">
-  </div>
+    On success: clears errors, updates stylesheet link, harmony swatches, share button.
+    On validation failure (422): shows errors only — stylesheet is NOT updated.
+    Traces: design/BACKLOG.md UC-002 AC4, UC-006, UC-023 %>
+
+<%# Always replace the errors target — clears on success, populates on failure %>
+<%= turbo_stream.replace "validation-errors" do %>
+  <% if @config.errors.any? %>
+    <div id="validation-errors" style="background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.4); border-radius: 0.375rem; padding: 0.625rem 0.875rem; margin-bottom: 0.75rem; font-size: 0.8125rem; color: #fca5a5;">
+      <% @config.errors.full_messages.each do |msg| %>
+        <p style="margin: 0 0 0.25rem;">⚠ <%= msg %></p>
+      <% end %>
+    </div>
+  <% else %>
+    <div id="validation-errors"></div>
+  <% end %>
 <% end %>
-<%= turbo_stream.replace "harmony-options",
-      partial: "themes/harmony_options",
-      locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic } %>
-<%= turbo_stream.replace "share-link-btn" do %>
-  <button type="button" class="btn-preset-outline" id="share-link-btn"
-    onclick="navigator.clipboard.writeText(window.location.origin + '/configure?theme=<%= @config.to_base64 %>'); alert('Share link copied!');">
-    🔗 Copy Share Link
-  </button>
+
+<% unless @config.errors.any? %>
+  <%= turbo_stream.replace "nanocss-preview-style" do %>
+    <div id="nanocss-preview-style">
+      <link rel="stylesheet" href="<%= theme_css_path(theme: @config.to_base64, preview: @is_preview) %>" data-action="load->preview#onStyleLoad">
+    </div>
+  <% end %>
+  <%= turbo_stream.replace "harmony-options",
+        partial: "themes/harmony_options",
+        locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic } %>
+  <%= turbo_stream.replace "share-link-btn" do %>
+    <button type="button" class="btn-preset-outline" id="share-link-btn"
+      onclick="navigator.clipboard.writeText(window.location.origin + '/configure?theme=<%= @config.to_base64 %>'); alert('Share link copied!');">
+      🔗 Copy Share Link
+    </button>
+  <% end %>
 <% end %>

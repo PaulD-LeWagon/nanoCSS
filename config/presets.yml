@@ -1,0 +1,23 @@
+# Preset theme definitions for nanoCSS Configurator
+# To add a new preset: add a new top-level key with name/primary/secondary/tertiary.
+# No controller change required — ThemesController#index loads this file at request time.
+# The `default: true` flag marks the form's initial preset (only one preset should have this).
+
+corporate:
+  name: "Corporate"
+  primary: "#1e40af"
+  secondary: "#6366f1"
+  tertiary: "#06b6d4"
+  default: true
+
+playful:
+  name: "Playful"
+  primary: "#f43f5e"
+  secondary: "#a855f7"
+  tertiary: "#f97316"
+
+minimalist:
+  name: "Minimalist"
+  primary: "#000000"
+  secondary: "#404040"
+  tertiary: "#737373"

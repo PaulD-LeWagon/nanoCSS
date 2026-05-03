@@ -424,15 +424,14 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-## Sprint 6 — Validation Enforcement & Spec Compliance _(Planned)_
+## ✅ Sprint 6 — Validation Enforcement & Spec Compliance · CLOSED 2026-05-03
 
 > **Sprint Goal:** Close the gap between the validators we *defined* in Sprint 1 and the validators we *enforce*. Bring the test suite back to green.
-> **Sprint Dates (proposed):** 2026-04-25 → 2026-05-09
-> **Estimated Capacity:** 10 story points
+> **Result:** ACHIEVED — 10/10 pts · All 5 stories shipped · 85/85 specs green
 
 ---
 
-### UC-023 · Wire Validation Gate Into Controller · 🟥 Must Have · 3 pts · ⚪ To Do
+### UC-023 · Wire Validation Gate Into Controller · 🟥 Must Have · 3 pts · 🟢 Done
 
 **As a** site operator,
 **I want** invalid form submissions rejected before they hit the SCSS compiler,
@@ -444,11 +443,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC3: A new spec exercises every validator (hex regex, prefix regex, prefix max length, font whitelist).
 
 **Dependencies:** None
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 6
 
 ---
 
-### UC-024 · Strict Prefix Length Validator · 🟥 Must Have · 1 pt · ⚪ To Do
+### UC-024 · Strict Prefix Length Validator · 🟥 Must Have · 1 pt · 🟢 Done
 
 **As a** site operator,
 **I want** the prefix capped at 32 characters (per PRD §8),
@@ -458,11 +457,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC1: `validates :prefix, length: { maximum: 32 }` is added.
 - AC2: Spec asserts a 33-character prefix is rejected.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 6
 
 ---
 
-### UC-025 · Preset Authoring Tidy · 🟧 Should Have · 2 pts · ⚪ To Do
+### UC-025 · Preset Authoring Tidy · 🟧 Should Have · 2 pts · 🟢 Done
 
 **As an** indie developer,
 **I want** the three preset cards on the landing page to remain Corporate / Playful / Minimalist with a clean palette each,
@@ -473,11 +472,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC2: Preset definitions live in a single `config/presets.yml` (or similar), not scattered in views.
 - AC3: Adding a new preset requires only editing that file plus an icon — no controller change.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 6
 
 ---
 
-### UC-026 · Repair Failing Specs · 🟥 Must Have · 2 pts · ⚪ To Do
+### UC-026 · Repair Failing Specs · 🟥 Must Have · 2 pts · 🟢 Done
 
 **As a** developer,
 **I want** the four currently-failing specs updated to match the shipped reality,
@@ -489,11 +488,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC3: `themes_spec.rb:42` — update preview expectation from inline `<style>` to `<link rel="stylesheet" href="/themes/css?…">` swap (per ADR-003).
 - AC4: After UC-023 lands, add new specs for the validation gate.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 6
 
 ---
 
-### UC-027 · Harmony Swatch XSS Hardening · 🟧 Should Have · 2 pts · ⚪ To Do
+### UC-027 · Harmony Swatch XSS Hardening · 🟧 Should Have · 2 pts · 🟢 Done
 
 **As a** site operator,
 **I want** the harmony swatch buttons to set form values via Stimulus event binding,
@@ -504,7 +503,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC2: Remove the only ERB → JS string interpolation in the codebase.
 - AC3: Existing system spec for harmony swatches still passes.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 6
 
 ---
 
