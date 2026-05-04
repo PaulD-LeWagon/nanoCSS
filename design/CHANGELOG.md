@@ -18,6 +18,30 @@
 
 ---
 
+## [0.7.0] — 2026-05-04 — Sprint 7
+
+### Added
+- UC-028: Stimulus `dropdown_controller.js` — dropdowns inside navbars stay open during item clicks; Esc + outside-click close; multi-dropdown isolation.
+- UC-029: Stimulus `navbar_controller.js` — mobile hamburger toggle with Esc-close and `aria-expanded` tracking. Responsive chrome media query eliminates horizontal overflow at 320 px.
+- UC-030: Prefixed breadcrumb (`.{prefix}-breadcrumb`) and tooltip (`.{prefix}-tooltip`) CSS selectors; backward-compat `nav[aria-label]` and `[data-tooltip]` aliases retained.
+- UC-031: Three-tier dark mode — Tier 1 `@media (prefers-color-scheme: dark) { :root { … } }`, Tier 2a `[data-theme="dark"]`, Tier 2b `[data-theme="light"]`. Tier 3 (localStorage) was already shipped.
+- UC-032: `_components.scss` split into 18 individual partials under `nanocss/components/`. `ScssCompilerService` replaced brittle regex-strip with `COMPONENT_ALIASES` include-list. `ZipAssemblerService` auto-exports the modular tree.
+- UC-033: Responsiveness spec suite — 320 / 768 / 1280 / 1920 px × no-overflow + key-component assertions. PNG artefacts saved to `tmp/breakpoint_*.png`.
+- UC-046: Obsidian glass-morphism preset — `surface_blur`, `surface_opacity`, `border_glow_alpha` tokens added to `ThemeConfiguration`; Obsidian entry in `config/presets.yml`; 4th preset card auto-renders on landing page. Hero uses `primary → secondary` CSS-var gradient. Card + nav gain `backdrop-filter` consuming `surface-blur`.
+
+### Changed
+- Hero component now uses a `linear-gradient(primary, secondary)` background instead of a flat neutral colour.
+- Card component headers now carry `font-size: var(--{prefix}-text-md)` from the typography scale.
+- Quick Apply preset button now passes all preset YAML attributes to `ThemeConfiguration` (not just primary/secondary/tertiary).
+
+### Known Issues (regressions discovered in Sprint 7 QA — tracked in Sprint 8)
+- UC-047: Dark mode Theme Switcher broken — `theme_controller.js` removes `data-theme` instead of setting it to `"light"`, causing OS media query to re-engage.
+- UC-048: Component Catalogue dark-mode contamination — OS media query darkens catalogue component renders on dark-mode systems.
+- UC-049: Hero `color: #fff` cascades into nested child components in the preview pane.
+- UC-050: Body font change does not update in live preview; breadcrumb shows broken styling in scoped preview context.
+
+---
+
 ## [0.6.0] — 2026-05-03 — Sprint 6
 
 ### Added

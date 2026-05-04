@@ -17,7 +17,9 @@
 | Sprint 3 | 16 pts | 16 pts | 16 |
 | Sprint 4 | 20 pts | 14 pts | 14 |
 | Sprint 5 | 8 pts | 8 pts | 8 |
-| **Rolling avg** | — | — | **~13 pts** |
+| Sprint 6 | 10 pts | 10 pts | 10 |
+| Sprint 7 | 26 pts | 26 pts | 26 |
+| **Rolling avg** | — | — | **~15 pts** |
 
 ---
 
@@ -60,36 +62,68 @@
 
 ---
 
-## Sprint 7 — NanoCSS Framework Polish, Responsiveness & Obsidian Capture · Planned
+## ✅ Sprint 7 — NanoCSS Framework Polish, Responsiveness & Obsidian Capture · CLOSED 2026-05-04
 
 > **Goal:** Nail down the actual product — components, responsiveness, mobile. Capture the Obsidian glass-morphism aesthetic as a preset before Sprint 8 strips the source.
-> **Dates (proposed):** 2026-05-09 → 2026-05-23
+> **Delivered:** 26/26 pts · All 7 stories shipped
+
+| ID | Story | Points | Status |
+|---|---|---|---|
+| UC-028 | Fix dropdown-inside-navbar (stays open) | 3 | done |
+| UC-029 | Mobile navbar with hamburger toggle | 5 | done |
+| UC-030 | Prefix Breadcrumb + Tooltip selectors (FR-011) | 2 | done |
+| UC-031 | Tier 1 dark mode `@media (prefers-color-scheme: dark)` | 2 | done |
+| UC-032 | Split monolithic `_components.scss` into modular partials | 5 | done |
+| UC-033 | Responsiveness sweep — all 20 components @ 4 breakpoints | 4 | done |
+| UC-046 | Obsidian Preset — capture glass-morphism, extend `ThemeConfiguration`, wire components | 5 | done |
+
+**Sprint goal check:** All 7 stories committed and 125 specs green. Sprint goal achieved.
+
+**Sprint 7 Retrospective · 2026-05-04**
+
+**What shipped?**
+- UC-028/029: Navbar fully functional — dropdown-in-navbar bug fixed via Stimulus `dropdown_controller`; mobile hamburger menu wired with Esc-close and `aria-expanded` tracking.
+- UC-030: Breadcrumb and Tooltip selectors prefixed (`.{prefix}-breadcrumb`, `.{prefix}-tooltip`) with backward-compat aliases.
+- UC-031: Three-tier dark mode — Tier 1 OS media query, Tier 2 explicit `[data-theme]` overrides.
+- UC-032: Monolithic `_components.scss` split into 18 individual partials under `components/`; `ScssCompilerService` exclusion logic replaced with a clean COMPONENT_ALIASES include-list.
+- UC-033: Responsiveness sweep spec suite (4 breakpoints × 2 assertions); all viewports already clean from UC-029.
+- UC-046: Obsidian glass-morphism preset — 3 new glass-surface tokens, 4th preset card on landing page, hero uses CSS-var gradient, card/nav gain `backdrop-filter`.
+
+**What broke (visual QA findings, 2026-05-04)?**
+Four regressions surfaced during manual QA. All raised as UC-047–UC-050, promoted to top of Sprint 8:
+
+1. **Dark mode theme-switcher broken** (UC-047): UC-031's OS media query means removing `data-theme` no longer restores light mode. `theme_controller.js` must set `data-theme="light"` explicitly.
+2. **Catalogue dark-mode contamination** (UC-048): OS media query inverts neutral tokens globally — catalogue component renders show dark-on-dark text on machines with OS dark mode.
+3. **Hero `color: #fff` cascades** (UC-049): UC-046's hero gradient change added `color: #fff` which cascades into nested child components.
+4. **Live preview — body font + breadcrumb** (UC-050): body font changes don't update the preview pane; breadcrumb shows broken styling in the preview context.
+
+**Quick Apply not reskinning chrome** — confirmed by QA; tracked as UC-035 (Sprint 8 planned story, unchanged).
+
+**Retrospective notes:**
+- Sprint 7 was the largest sprint to date (26 pts, 7 stories) and every story passed automated DoD gates.
+- The four regressions are purely visual and all traceable to three specific decisions: the UC-031 media query scoping, the UC-046 hero `color: #fff`, and the preview scoping of breadcrumbs. No data loss, no security issues.
+- Mitigation for Sprint 8: run visual QA on the preview pane and catalogue page immediately after each story commit, before moving to the next story.
+
+---
+
+## Sprint 8 — Sprint 7 Regressions + Deep Dogfooding · Planned
+
+> **Goal:** Fix four visual regressions first (UC-047–UC-050), then execute the dogfooding plan. Quick Apply must visibly re-skin the app. Replace custom chrome with nanoCSS components. Strip inline styles.
+> **Dates (proposed):** 2026-05-23 → 2026-06-06
 > **Capacity:** 26 pts
 
 | ID | Story | Points | Status |
 |---|---|---|---|
-| UC-028 | Fix dropdown-inside-navbar (stays open) | 3 | todo |
-| UC-029 | Mobile navbar with hamburger toggle | 5 | todo |
-| UC-030 | Prefix Breadcrumb + Tooltip selectors (FR-011) | 2 | todo |
-| UC-031 | Tier 1 dark mode `@media (prefers-color-scheme: dark)` | 2 | todo |
-| UC-032 | Split monolithic `_components.scss` into modular partials | 5 | todo |
-| UC-033 | Responsiveness sweep — all 20 components @ 4 breakpoints | 4 | todo |
-| UC-046 | Obsidian Preset — capture glass-morphism, extend `ThemeConfiguration`, wire components | 5 | todo |
-
----
-
-## Sprint 8 — Deep Dogfooding · Planned
-
-> **Goal:** Make Quick Apply visibly re-skin the app. Replace custom chrome with nanoCSS components. Strip inline styles.
-> **Dates (proposed):** 2026-05-23 → 2026-06-06
-> **Capacity:** 18 pts
-
-| ID | Story | Points | Status |
-|---|---|---|---|
+| UC-047 | Fix dark mode theme-switcher regression | 1 | todo |
+| UC-048 | Fix dark-mode contamination of Component Catalogue | 2 | todo |
+| UC-049 | Fix hero `color: #fff` cascade | 1 | todo |
+| UC-050 | Fix live preview — body font + breadcrumb rendering | 2 | todo |
 | UC-034 | Eliminate all 81 inline `style=` attributes in views | 5 | todo |
 | UC-035 | Quick Apply visibly re-skins the app chrome | 5 | todo |
 | UC-036 | Replace `.top-nav`/`.glass-panel`/`.configure-layout` with nanoCSS components | 5 | todo |
 | UC-037 | Mount floating Theme Switcher in application layout | 3 | todo |
+
+> **Note:** UC-047–UC-050 are regression fixes that should be resolved before beginning UC-034 work. The remaining 6 pts buffer can be used if any regression fix proves unexpectedly complex.
 
 ---
 

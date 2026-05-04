@@ -4,9 +4,9 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 # Product Backlog
 
 > **Project:** nanoCSS
-> **Last Updated:** 2026-04-25 (Sprint 5 close — retrofit + Sprints 6–10 added)
-> **Current Sprint:** 5 closing → 6 opening
-> **Sprint Cadence:** 2 weeks
+> **Last Updated:** 2026-05-04 (Sprint 7 close — 4 regressions logged as UC-047–UC-050 in Sprint 8)
+> **Current Sprint:** Sprint 7 closed → Sprint 8 opening
+> **Sprint Cadence:** AI-assisted — 2–3 sprints per day
 
 ---
 
@@ -515,7 +515,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-### UC-028 · Fix Dropdown Inside Navbar · 🟥 Must Have · 3 pts · ⚪ To Do
+### UC-028 · Fix Dropdown Inside Navbar · 🟥 Must Have · 3 pts · 🟢 Done
 
 **As a** user,
 **I want** a dropdown placed inside a navbar to stay open while I interact with its items,
@@ -532,7 +532,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-### UC-029 · Mobile Navbar · 🟥 Must Have · 5 pts · ⚪ To Do
+### UC-029 · Mobile Navbar · 🟥 Must Have · 5 pts · 🟢 Done
 
 **As a** user on a phone,
 **I want** the navbar to collapse into a hamburger menu and expand smoothly,
@@ -549,7 +549,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-### UC-030 · Prefix Breadcrumb & Tooltip Components · 🟧 Should Have · 2 pts · ⚪ To Do
+### UC-030 · Prefix Breadcrumb & Tooltip Components · 🟧 Should Have · 2 pts · 🟢 Done
 
 **As an** indie developer following FR-011,
 **I want** every component selector prefixed with my chosen namespace,
@@ -564,7 +564,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-### UC-031 · Tier 1 Dark Mode (`prefers-color-scheme`) · 🟧 Should Have · 2 pts · ⚪ To Do
+### UC-031 · Tier 1 Dark Mode (`prefers-color-scheme`) · 🟧 Should Have · 2 pts · 🟢 Done
 
 **As a** user with system-level dark mode,
 **I want** nanoCSS to honour my OS preference unless I have explicitly chosen a mode,
@@ -579,7 +579,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-### UC-032 · Modular Component Partials · 🟧 Should Have · 5 pts · ⚪ To Do
+### UC-032 · Modular Component Partials · 🟧 Should Have · 5 pts · 🟢 Done
 
 **As a** maintainer,
 **I want** `_components.scss` split into `components/_button.scss`, `_nav.scss`, `_card.scss`, etc.,
@@ -596,7 +596,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-### UC-033 · Responsiveness Sweep Across All 20 Components · 🟥 Must Have · 4 pts · ⚪ To Do
+### UC-033 · Responsiveness Sweep Across All 20 Components · 🟥 Must Have · 4 pts · 🟢 Done
 
 **As a** user,
 **I want** every component to look and behave correctly from 320 px to 1920 px viewport,
@@ -611,7 +611,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-### UC-046 · Obsidian Preset (Glass-Morphism Capture) · 🟧 Should Have · 5 pts · ⚪ To Do
+### UC-046 · Obsidian Preset (Glass-Morphism Capture) · 🟧 Should Have · 5 pts · 🟡 Partial
 
 > _See full specification above under the Sprint 8 section where it was originally drafted — moved here to Sprint 7 to ensure the values are captured before Sprint 8 strips the source files._
 
@@ -621,11 +621,91 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-## Sprint 8 — Deep Dogfooding _(Planned)_
+## Sprint 8 — Deep Dogfooding + Sprint 7 Regressions _(Planned)_
 
-> **Sprint Goal:** _(User-mandated bugbear.)_ Make the Quick Apply preset buttons actually visibly re-skin the app. Replace the custom chrome with nanoCSS components. Strip inline styles. By this point the Obsidian preset is already defined (Sprint 7 UC-046), so when the custom chrome is dismantled and rebuilt from nanoCSS components, applying Obsidian restores the original look.
+> **Sprint Goal:** Fix four visual regressions surfaced in Sprint 7 QA (UC-047–UC-050), then begin deep dogfooding. Quick Apply must visibly re-skin the app. Replace custom chrome with nanoCSS components. Strip inline styles.
 > **Sprint Dates (proposed):** 2026-05-23 → 2026-06-06
-> **Estimated Capacity:** 18 story points
+> **Estimated Capacity:** 26 pts (capacity raised — regression fixes prepend the original 18 pts)
+
+---
+
+### UC-047 · Fix Dark Mode Theme-Switcher Regression · 🟥 Must Have · 1 pt · ⚪ To Do
+
+**As a** user toggling between light and dark mode,
+**I want** the "Toggle Dark Mode" button to reliably switch both ways,
+**so that** I can choose a mode regardless of my OS setting.
+
+**Regression from:** UC-031 — the new `@media (prefers-color-scheme: dark)` tier means removing `data-theme` leaves the OS query in control, so "return to light" on a dark-OS machine is broken.
+
+**Acceptance Criteria:**
+- AC1: Clicking "Toggle Dark Mode" from light → sets `data-theme="dark"` on `<html>`. Clicking again → sets `data-theme="light"` (explicitly, not remove-attribute). The `data-theme` attribute is always set after the first toggle.
+- AC2: On an OS with dark mode, the page still starts in dark, and toggling "light" explicitly sets `[data-theme="light"]` so the Tier-2b rule overrides the media query.
+- AC3: System spec covers the toggle round-trip; existing `theme_switcher_spec.rb` updated to match.
+
+**Root cause:** `theme_controller.js#toggleDark` calls `removeAttribute("data-theme")` instead of `setAttribute("data-theme", "light")`.
+
+**Status:** ⚪ To Do
+
+---
+
+### UC-048 · Fix Dark-Mode Contamination of Component Catalogue · 🟥 Must Have · 2 pts · ⚪ To Do
+
+**As a** developer browsing the Component Catalogue,
+**I want** component previews to always render in light mode,
+**so that** I can evaluate the components without OS dark mode distorting the render.
+
+**Regression from:** UC-031 — `@media (prefers-color-scheme: dark) { :root { ... } }` inverts the neutral token scale globally. On any machine with OS dark mode, catalogue cards show dark-on-dark text and dark backgrounds.
+
+**Acceptance Criteria:**
+- AC1: Component Catalogue (`/components`) renders with correct light-mode neutral colours regardless of the user's OS dark-mode setting.
+- AC2: The app chrome still responds to OS dark mode (that is correct behaviour and must not regress).
+- AC3: System spec asserts `.nanocss-card` on the catalogue page does not produce invisible text at any viewport.
+
+**Fix approach:** Add `data-theme="light"` to the `<body>` of pages that include the nanoCSS framework style (or scope dark mode so it only applies when the user has explicitly chosen it via the Theme Switcher).
+
+**Status:** ⚪ To Do
+
+---
+
+### UC-049 · Fix Hero `color: #fff` Cascade · 🟥 Must Have · 1 pt · ⚪ To Do
+
+**As a** developer using the Component Catalogue and live preview,
+**I want** `.{prefix}-hero` to not force white text on child components,
+**so that** text inside nested components is readable.
+
+**Regression from:** UC-046 — added `color: #fff` to `.{prefix}-hero` for gradient legibility; this value cascades to all child elements including components embedded inside the hero in the preview pane.
+
+**Acceptance Criteria:**
+- AC1: `.{prefix}-hero > *` inherits white text only on the direct text nodes inside the hero wrapper, not on nested components.
+- AC2: A card or nav placed inside `.{prefix}-hero` maintains its own text colour.
+- AC3: Hero text itself remains light/white against the gradient (the original purpose of the change is preserved).
+
+**Fix approach:** Replace `color: #fff` with a more scoped rule: `color: var(--{prefix}-neutral-50, #f9fafb)` on `h1, h2, h3, p` direct children only, or wrap the hero text in a specific selector.
+
+**Status:** ⚪ To Do
+
+---
+
+### UC-050 · Fix Live Preview — Body Font + Breadcrumb Rendering · 🟥 Must Have · 2 pts · ⚪ To Do
+
+**As a** developer previewing a theme,
+**I want** all font and component changes to appear immediately in the live preview,
+**so that** what I configure is what I see.
+
+**Two defects to fix:**
+
+**Defect A — Body font not updating:**
+Changing `font_body` on the configure form does not update the live-preview body text font. The preview likely re-scopes only heading/subtitle font imports or the scoped compile path omits the font-body custom property re-emit.
+
+**Defect B — Breadcrumb broken in preview:**
+The breadcrumb component in the live preview shows broken styling. Likely cause: the backward-compat `nav[aria-label="breadcrumb"]` selector in `_breadcrumbs.scss` picks up conflicting styles from the scoped preview context (the configurator's own nav is also a `<nav>` element), OR the scoped compilation strips or reorders the breadcrumb rule unexpectedly.
+
+**Acceptance Criteria:**
+- AC1: Changing `font_body` and clicking "Preview" updates the body-text font in the `#preview-canvas` pane.
+- AC2: The breadcrumb component in the live preview renders with visible separator characters and correct text/background contrast.
+- AC3: System spec covers both ACs with a Turbo Stream interaction.
+
+**Status:** ⚪ To Do
 
 ---
 
@@ -675,7 +755,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-### UC-046 · Obsidian Preset (Glass-Morphism Capture) · 🟧 Should Have · 5 pts · ⚪ To Do
+### UC-046 · Obsidian Preset (Glass-Morphism Capture) · 🟧 Should Have · 5 pts · 🟡 Partial
 
 **As an** indie developer who likes the look of the configurator's current chrome,
 **I want** that entire aesthetic — deep navy gradients, smoked-glass surface blur, luminous border glow, and oversized hero typography — captured as a fourth nanoCSS preset called **Obsidian**,
