@@ -421,7 +421,8 @@ dialog.#{$prefix}-modal {
   }
 }
 
-/* 11. Tooltip */
+/* 11. Tooltip — primary selector is .{prefix}-tooltip; [data-tooltip] kept as backward-compat alias */
+.#{$prefix}-tooltip,
 [data-tooltip] {
   position: relative;
   cursor: help;
@@ -447,7 +448,7 @@ dialog.#{$prefix}-modal {
 
   /* Bubble */
   &::after {
-    content: attr(data-tooltip);
+    content: attr(data-tooltip); /* tooltip text sourced from data-tooltip attribute */
     background: #333;
     color: #fff;
     padding: var(--#{$prefix}-space-xs, 0.25rem) var(--#{$prefix}-space-sm, 0.5rem);
@@ -541,7 +542,8 @@ dialog.#{$prefix}-modal {
   }
 }
 
-/* 15. Breadcrumbs */
+/* 15. Breadcrumbs — primary selector is .{prefix}-breadcrumb; nav[aria-label] kept as backward-compat alias */
+.#{$prefix}-breadcrumb,
 nav[aria-label="breadcrumb"] {
   ol {
     list-style: none;
