@@ -1,0 +1,25 @@
+/* 6. Group (Input / Button groups joining elements) */
+.#{$prefix}-group {
+  display: flex;
+  align-items: stretch;
+
+  > * {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    position: relative;
+
+    &:focus-within {
+      z-index: 10;
+    }
+  }
+
+  > *:first-child {
+    border-top-left-radius: var(--#{$prefix}-radius-md, 0.25rem) !important;
+    border-bottom-left-radius: var(--#{$prefix}-radius-md, 0.25rem) !important;
+  }
+
+  > *:last-child {
+    border-top-right-radius: var(--#{$prefix}-radius-md, 0.25rem) !important;
+    border-bottom-right-radius: var(--#{$prefix}-radius-md, 0.25rem) !important;
+  }
+}

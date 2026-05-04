@@ -1,0 +1,25 @@
+/* 14. Tags */
+.#{$prefix}-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--#{$prefix}-neutral-200, #e5e7eb);
+  color: var(--#{$prefix}-neutral-800, #1f2937);
+  padding: var(--#{$prefix}-space-xs, 0.25rem) var(--#{$prefix}-space-sm, 0.5rem);
+  border-radius: var(--#{$prefix}-radius-sm, 0.125rem);
+  font-size: var(--#{$prefix}-text-sm, 0.875rem);
+
+  button {
+    background: transparent;
+    border: none;
+    color: currentColor;
+    margin-left: var(--#{$prefix}-space-sm, 0.5rem);
+    padding: 0;
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

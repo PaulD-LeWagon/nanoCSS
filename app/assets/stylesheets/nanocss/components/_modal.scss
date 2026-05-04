@@ -1,0 +1,13 @@
+/* 8. Modal */
+dialog.#{$prefix}-modal {
+  padding: var(--#{$prefix}-space-lg, 1.5rem);
+  border: none;
+  border-radius: var(--#{$prefix}-radius-lg, 0.5rem);
+  box-shadow: var(--#{$prefix}-shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1));
+  max-width: 32rem;
+  width: 100%;
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}

@@ -1,0 +1,36 @@
+/* 16. Pagination */
+.#{$prefix}-pagination {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: var(--#{$prefix}-space-xs, 0.25rem);
+
+  li {
+    a,
+    span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+      border-radius: var(--#{$prefix}-radius-sm, 0.125rem);
+      text-decoration: none;
+      color: var(--#{$prefix}-primary, #3b82f6);
+    }
+
+    &.active span,
+    a:hover {
+      background-color: var(--#{$prefix}-primary, #3b82f6);
+      color: #fff;
+      border-color: var(--#{$prefix}-primary, #3b82f6);
+    }
+
+    &.disabled span {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: var(--#{$prefix}-neutral-100, #f3f4f6);
+    }
+  }
+}

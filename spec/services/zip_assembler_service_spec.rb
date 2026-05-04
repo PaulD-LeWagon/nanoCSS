@@ -34,6 +34,24 @@ RSpec.describe ZipAssemblerService do
       expect(entries).to include('scss/_utilities.scss')
     end
 
+    # UC-032 AC4: ZIP ships the modular component tree
+    it 'AC4: ZIP includes individual component partials from components/ directory' do
+      zip_data = described_class.call(config, compiled_css)
+      entries = extract_entry_names(zip_data)
+      expect(entries).to include('scss/components/_nav.scss')
+      expect(entries).to include('scss/components/_card.scss')
+      expect(entries).to include('scss/components/_buttons.scss')
+    end
+
+    it 'AC4: excluded components are omitted from the ZIP scss/components/ tree' do
+      config.excluded_components = [ 'modal' ]
+      css = ScssCompilerService.call(config)[:css]
+      zip_data = described_class.call(config, css)
+      entries = extract_entry_names(zip_data)
+      expect(entries).not_to include('scss/components/_modal.scss')
+      expect(entries).to include('scss/components/_card.scss')
+    end
+
     # UC-003 AC3: Custom prefix respected in filenames
     it 'uses the custom prefix for CSS filenames' do
       config.prefix = 'mytheme'

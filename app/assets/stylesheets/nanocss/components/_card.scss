@@ -1,0 +1,105 @@
+/* 4. Card — Base
+   ------------------------------------------------------------------ */
+.#{$prefix}-card {
+  background-color: var(--#{$prefix}-neutral-100, #f3f4f6);
+  border: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+  border-radius: var(--#{$prefix}-radius-md, 0.25rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+  header,
+  footer,
+  .card-body {
+    padding: var(--#{$prefix}-space-md, 1rem);
+  }
+
+  header {
+    border-bottom: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+  }
+
+  footer {
+    border-top: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+    margin-top: auto;
+  }
+
+  &:hover {
+    box-shadow: var(--#{$prefix}-shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+    transform: translateY(-2px);
+  }
+}
+
+/* 4a. Card Variant — Primary */
+.#{$prefix}-card-primary {
+  @extend .#{$prefix}-card;
+  border-color: var(--#{$prefix}-primary, #3b82f6);
+
+  header {
+    background-color: var(--#{$prefix}-primary, #3b82f6);
+    color: #ffffff;
+    border-bottom-color: var(--#{$prefix}-primary, #3b82f6);
+    font-weight: var(--#{$prefix}-weight-bold, 700);
+  }
+
+  footer {
+    border-top-color: var(--#{$prefix}-primary, #3b82f6);
+    background-color: color-mix(in srgb, var(--#{$prefix}-primary, #3b82f6) 8%, transparent);
+  }
+}
+
+/* 4b. Card Variant — Secondary */
+.#{$prefix}-card-secondary {
+  @extend .#{$prefix}-card;
+  border-color: var(--#{$prefix}-secondary, #8b5cf6);
+
+  header {
+    background-color: var(--#{$prefix}-secondary, #8b5cf6);
+    color: #ffffff;
+    border-bottom-color: var(--#{$prefix}-secondary, #8b5cf6);
+    font-weight: var(--#{$prefix}-weight-bold, 700);
+  }
+
+  footer {
+    border-top-color: var(--#{$prefix}-secondary, #8b5cf6);
+    background-color: color-mix(in srgb, var(--#{$prefix}-secondary, #8b5cf6) 8%, transparent);
+  }
+}
+
+/* 4c. Card Variant — Tertiary */
+.#{$prefix}-card-tertiary {
+  @extend .#{$prefix}-card;
+  border-color: var(--#{$prefix}-tertiary, #ec4899);
+
+  header {
+    background-color: var(--#{$prefix}-tertiary, #ec4899);
+    color: #ffffff;
+    border-bottom-color: var(--#{$prefix}-tertiary, #ec4899);
+    font-weight: var(--#{$prefix}-weight-bold, 700);
+  }
+
+  footer {
+    border-top-color: var(--#{$prefix}-tertiary, #ec4899);
+    background-color: color-mix(in srgb, var(--#{$prefix}-tertiary, #ec4899) 8%, transparent);
+  }
+}
+
+/* 4d. Card Variant — Neutral */
+.#{$prefix}-card-neutral {
+  @extend .#{$prefix}-card;
+  background-color: var(--#{$prefix}-neutral-100, #f3f4f6);
+  border-color: var(--#{$prefix}-neutral-300, #d1d5db);
+
+  header {
+    background-color: var(--#{$prefix}-neutral-700, #374151);
+    color: var(--#{$prefix}-neutral-100, #f3f4f6);
+    border-bottom-color: var(--#{$prefix}-neutral-700, #374151);
+    font-weight: var(--#{$prefix}-weight-bold, 700);
+  }
+
+  footer {
+    background-color: var(--#{$prefix}-neutral-300, #d1d5db);
+    border-top-color: var(--#{$prefix}-neutral-300, #d1d5db);
+    color: var(--#{$prefix}-neutral-700, #374151);
+  }
+}

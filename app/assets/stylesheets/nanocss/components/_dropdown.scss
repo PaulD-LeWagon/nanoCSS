@@ -1,0 +1,36 @@
+/* 5. Dropdown */
+.#{$prefix}-dropdown {
+  position: relative;
+  display: inline-block;
+
+  ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    background-color: var(--#{$prefix}-neutral-50, #f9fafb);
+    border: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+    border-radius: var(--#{$prefix}-radius-sm, 0.125rem);
+    box-shadow: var(--#{$prefix}-shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+    list-style: none;
+    margin: var(--#{$prefix}-space-xs, 0.25rem) 0 0 0;
+    padding: 0;
+    min-width: 10rem;
+
+    li {
+      padding: var(--#{$prefix}-space-sm, 0.5rem) var(--#{$prefix}-space-md, 1rem);
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--#{$prefix}-neutral-200, #e5e7eb);
+      }
+    }
+  }
+
+  /* Reveal logic: when wrapping a details or simple focus-within block */
+  &:focus-within ul,
+  &.open ul {
+    display: block;
+  }
+}
