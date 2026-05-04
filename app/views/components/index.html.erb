@@ -277,8 +277,8 @@
     <section class="component-section" data-controller="clipboard">
       <div class="component-header"><h2>Dropdown</h2></div>
       <div class="component-preview" style="height: 200px;">
-        <div class="<%= @prefix %>-dropdown">
-          <button class="<%= @prefix %>-btn-outline">Actions ▼</button>
+        <div class="<%= @prefix %>-dropdown" data-controller="dropdown">
+          <button class="<%= @prefix %>-btn-outline" data-action="click->dropdown#toggle">Actions ▼</button>
           <ul>
             <li>Edit Profile</li>
             <li>Settings</li>
@@ -288,8 +288,8 @@
       </div>
       <div class="component-code">
         <button class="copy-btn" data-action="clipboard#copy">Copy</button>
-        <pre><code data-clipboard-target="source">&lt;div class="<%= @prefix %>-dropdown" tabindex="0"&gt;
-  &lt;button class="<%= @prefix %>-btn-outline"&gt;Actions ▼&lt;/button&gt;
+        <pre><code data-clipboard-target="source">&lt;div class="<%= @prefix %>-dropdown" data-controller="dropdown"&gt;
+  &lt;button class="<%= @prefix %>-btn-outline" data-action="click-&gt;dropdown#toggle"&gt;Actions ▼&lt;/button&gt;
   &lt;ul&gt;
     &lt;li&gt;Edit Profile&lt;/li&gt;
     &lt;li&gt;Settings&lt;/li&gt;
@@ -393,11 +393,11 @@
     <section class="component-section" data-controller="clipboard">
       <div class="component-header"><h2>Tooltip</h2></div>
       <div class="component-preview">
-        <span tabindex="0" data-tooltip="This is an informational message!">Hover or Focus Me</span>
+        <span class="<%= @prefix %>-tooltip" tabindex="0" data-tooltip="This is an informational message!">Hover or Focus Me</span>
       </div>
       <div class="component-code">
         <button class="copy-btn" data-action="clipboard#copy">Copy</button>
-        <pre><code data-clipboard-target="source">&lt;span data-tooltip="Informational message here"&gt;Hover Me&lt;/span&gt;</code></pre>
+        <pre><code data-clipboard-target="source">&lt;span class="<%= @prefix %>-tooltip" data-tooltip="Informational message here"&gt;Hover Me&lt;/span&gt;</code></pre>
       </div>
     </section>
 
@@ -452,7 +452,7 @@
     <section class="component-section" data-controller="clipboard">
       <div class="component-header"><h2>Breadcrumbs</h2></div>
       <div class="component-preview">
-        <nav aria-label="breadcrumb">
+        <nav class="<%= @prefix %>-breadcrumb" aria-label="breadcrumb">
           <ol>
             <li><a href="#">Home</a></li>
             <li><a href="#">Products</a></li>
@@ -462,7 +462,7 @@
       </div>
       <div class="component-code">
         <button class="copy-btn" data-action="clipboard#copy">Copy</button>
-        <pre><code data-clipboard-target="source">&lt;nav aria-label="breadcrumb"&gt;
+        <pre><code data-clipboard-target="source">&lt;nav class="<%= @prefix %>-breadcrumb" aria-label="breadcrumb"&gt;
   &lt;ol&gt;
     &lt;li&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href="#"&gt;Products&lt;/a&gt;&lt;/li&gt;

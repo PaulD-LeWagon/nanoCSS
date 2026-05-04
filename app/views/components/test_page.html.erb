@@ -9,21 +9,22 @@
 
 <div style="background-color: var(--nanocss-bg-body, #f8fafc); min-height: 100vh; font-family: var(--nanocss-font-body, system-ui);">
   <!-- Navbar -->
-  <nav class="<%= @prefix %>-nav">
+  <nav class="<%= @prefix %>-nav" data-controller="navbar">
     <div class="nav-brand">TestLogo</div>
-    <button class="nav-toggle" aria-label="Toggle Navigation">
+    <button class="nav-toggle" aria-label="Toggle Navigation" aria-expanded="false"
+            data-navbar-target="toggle" data-action="click->navbar#toggle">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="3" y1="12" x2="21" y2="12"></line>
         <line x1="3" y1="6" x2="21" y2="6"></line>
         <line x1="3" y1="18" x2="21" y2="18"></line>
       </svg>
     </button>
-    <ul class="nav-menu <%= @prefix %>-ml-auto">
+    <ul class="nav-menu <%= @prefix %>-ml-auto" data-navbar-target="menu">
       <li><a href="#">Home</a></li>
       <li><a href="#">Features</a></li>
       <li>
-        <div class="<%= @prefix %>-dropdown">
-          <a href="#" style="display:inline-block;">Products ▼</a>
+        <div class="<%= @prefix %>-dropdown" data-controller="dropdown">
+          <a href="#" style="display:inline-block;" data-action="click->dropdown#toggle">Products ▼</a>
           <ul>
             <li>Software</li>
             <li>Hardware</li>
@@ -56,7 +57,7 @@
     
     <!-- Grid System for Cards -->
     <h2 style="margin-bottom: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem;">Component Grid</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 2rem; margin-bottom: 4rem;">
       
       <article class="<%= @prefix %>-card-primary">
         <header>Feature One</header>
@@ -94,7 +95,7 @@
 
     <!-- Forms and Data -->
     <h2 style="margin-bottom: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem;">Interactive Elements</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; margin-bottom: 4rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 3rem; margin-bottom: 4rem;">
       
       <!-- Forms/Inputs -->
       <article class="<%= @prefix %>-card">
@@ -122,7 +123,7 @@
         <label for="test_tab1">Overview</label>
         <div class="panel" id="test_panel1">
           <p>This is a demonstration of the tabs component integrating nicely within a grid layout.</p>
-          <span tabindex="0" data-tooltip="More information available here">Hover for info</span>
+          <span class="<%= @prefix %>-tooltip" tabindex="0" data-tooltip="More information available here">Hover for info</span>
         </div>
 
         <input type="radio" id="test_tab2" name="test_tabs" />
