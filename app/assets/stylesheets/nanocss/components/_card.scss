@@ -8,6 +8,9 @@
   flex-direction: column;
   overflow: hidden;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
+  /* AC8 (UC-046): glass blur — no-op (0px) for standard presets, active for Obsidian */
+  backdrop-filter: blur(var(--#{$prefix}-surface-blur, 0px));
+  -webkit-backdrop-filter: blur(var(--#{$prefix}-surface-blur, 0px));
 
   header,
   footer,
@@ -16,6 +19,8 @@
   }
 
   header {
+    /* AC7 (UC-046): use typography scale so card header size tracks the preset's type scale */
+    font-size: var(--#{$prefix}-text-md, 1.25rem);
     border-bottom: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
   }
 

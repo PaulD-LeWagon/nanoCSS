@@ -7,6 +7,9 @@
   background: var(--#{$prefix}-neutral-50, #f9fafb);
   border-bottom: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
   flex-wrap: wrap; /* Allows menu to wrap on mobile */
+  /* AC8 (UC-046): glass blur — no-op (0px) for standard presets, active for Obsidian */
+  backdrop-filter: blur(var(--#{$prefix}-surface-blur, 0px));
+  -webkit-backdrop-filter: blur(var(--#{$prefix}-surface-blur, 0px));
 
   .nav-brand {
     font-weight: var(--#{$prefix}-weight-bold, 700);

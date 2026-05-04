@@ -34,11 +34,11 @@
           <div class="preset-card-actions">
             <%= button_to "Quick Apply",
                   theme_preview_path,
-                  params: { theme_configuration: { primary: preset[:primary], secondary: preset[:secondary], tertiary: preset[:tertiary] } },
+                  params: { theme_configuration: preset.except(:name, :default).compact },
                   form: { data: { turbo_stream: true } },
                   class: "btn-preset-primary" %>
             <%= link_to "Edit →",
-                  configure_path(theme: ThemeConfiguration.new(primary: preset[:primary], secondary: preset[:secondary], tertiary: preset[:tertiary]).to_base64),
+                  configure_path(theme: ThemeConfiguration.new(preset.except(:name, :default).compact).to_base64),
                   class: "btn-preset-outline" %>
           </div>
         </div>
