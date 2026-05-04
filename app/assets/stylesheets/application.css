@@ -545,4 +545,23 @@
   background-clip: text;
 }
 
+/* ─ Responsive chrome — prevents horizontal scroll below 768px (UC-029 AC3) ─ */
+@media (max-width: 767px) {
+  .top-nav {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .nav-links {
+    gap: 0.5rem;
+  }
+
+  .nav-links a,
+  .nav-links button {
+    padding: 0.3rem 0.625rem;
+    font-size: 0.75rem;
+  }
+}
+
 } /* End of @layer app */
