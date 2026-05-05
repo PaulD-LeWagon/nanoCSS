@@ -33,7 +33,8 @@ RSpec.describe ScssCompilerService do
       expect(Sass).to receive(:compile_string).with(
         a_string_starting_with("@use 'sass:color';")
         .and(a_string_including("$prefix: 'nanocss';"))
-        .and(a_string_including('$nanocss-primary: #ff0000;'))
+        .and(a_string_including('$nanocss-primary: #ff0000;')),
+        style: :expanded
       ).and_call_original
       result = described_class.call(config)
       expect(result[:error]).to be_nil
@@ -43,7 +44,8 @@ RSpec.describe ScssCompilerService do
     it 'prepends the font_code selection before Dart Sass compilation' do
       config.font_code = 'JetBrains Mono'
       expect(Sass).to receive(:compile_string).with(
-        a_string_including('$nanocss-font-code: "JetBrains Mono";')
+        a_string_including('$nanocss-font-code: "JetBrains Mono";'),
+        style: :expanded
       ).and_call_original
       result = described_class.call(config)
       expect(result[:error]).to be_nil

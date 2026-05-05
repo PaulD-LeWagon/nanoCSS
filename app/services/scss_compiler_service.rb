@@ -24,15 +24,16 @@ class ScssCompilerService
     "hgroup"       => "banner",
     "text_banner"  => "banner"
   }.freeze
-  def self.call(configuration, tier: nil, scope: nil)
+  def self.call(configuration, tier: nil, scope: nil, style: :expanded)
     tier ||= configuration.respond_to?(:tier) ? configuration.tier : :standard
-    new(configuration, tier, scope: scope).call
+    new(configuration, tier, scope: scope, style: style).call
   end
 
-  def initialize(configuration, tier, scope: nil)
+  def initialize(configuration, tier, scope: nil, style: :expanded)
     @configuration = configuration
     @tier = tier.to_sym
     @scope = scope
+    @style = style
   end
 
   def call
@@ -142,7 +143,7 @@ class ScssCompilerService
       end
 
       # Execute Dart Sass in-memory compilation
-      result = Sass.compile_string(full_scss)
+      result = Sass.compile_string(full_scss, style: @style)
 
       css_output = result.css
 
