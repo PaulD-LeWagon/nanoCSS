@@ -980,18 +980,10 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 
 ---
 
-### UC-042 · Capistrano Deployment Runbook · 🟥 Must Have · 5 pts · ⚪ To Do
+### ~~UC-042 · Capistrano Deployment Runbook~~ · 🧊 Removed
 
-**As an** operator,
-**I want** a documented, repeatable Capistrano flow targeting the IONOS AlmaLinux 9 VPS,
-**so that** deployment is not a tribal-knowledge exercise.
-
-**Acceptance Criteria:**
-- AC1: `config/deploy.rb` + `config/deploy/{staging,production}.rb` complete and committed.
-- AC2: `bin/deploy` wraps `cap production deploy` with pre-flight checks (asset-precompile, master-key present).
-- AC3: A markdown runbook in `docs/DEPLOY.md` covers cold-start, rollback, and Passenger restart.
-
-**Status:** 🟢 Done — Sprint 9 (2026-05-05)
+**Removed:** 2026-05-05  
+**Reason:** Operator explicitly rejected Capistrano. Deployment is performed manually via `git pull` on the server — no automation tool needed. See **ADR-007** for the full rationale and the manual deployment steps.
 
 ---
 
@@ -1002,24 +994,17 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 **so that** the repo is self-explanatory.
 
 **Acceptance Criteria:**
-- AC1: README replaces the Rails default.
-- AC2: Includes screenshots of the configurator, a curl-then-link example, and a "what's in the box" tree.
+- AC1: README replaces the Rails default with a proper project overview.
+- AC2: Includes screenshots of the configurator, a usage example (link to the hosted app), and a "what's in the box" tree for the downloaded ZIP.
 
-**Status:** 🟢 Done — Sprint 9 (2026-05-05)
+**Status:** ⚪ To Do
 
 ---
 
-### UC-044 · Active CHANGELOG Sync · 🟦 Nice to Have · 1 pt · ⚪ To Do
+### ~~UC-044 · Active CHANGELOG Sync~~ · 🧊 Removed
 
-**As a** maintainer,
-**I want** every merged PR to require a CHANGELOG entry under `## [Unreleased]`,
-**so that** the changelog stops decaying.
-
-**Acceptance Criteria:**
-- AC1: PR template includes a CHANGELOG checkbox.
-- AC2: A CI lint flags PRs that touch `app/` without touching `design/CHANGELOG.md`.
-
-**Status:** 🟢 Done — Sprint 9 (2026-05-05)
+**Removed:** 2026-05-05  
+**Reason:** The CHANGELOG is already updated at the close of every sprint as part of the ship-current-sprint workflow. A CI lint gate and PR template checkbox would add ceremony without value — the sprint workflow is the process.
 
 ---
 
@@ -1034,7 +1019,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC2: Each finding either fixed or recorded as a known limitation in `docs/ACCESSIBILITY.md`.
 - AC3: Tinted semantic colours (UC-011 AC3) re-tested for contrast under all three default presets.
 
-**Status:** 🟢 Done — Sprint 9 (2026-05-05)
+**Status:** ⚪ To Do
 
 ---
 

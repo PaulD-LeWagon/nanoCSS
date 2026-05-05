@@ -175,18 +175,20 @@ Sprint 9 is smaller (11 pts) and purely additive — no regressions to fix. Velo
 The CSS Grid `min-width: 0` bug on UC-039 was the only snag — one debugging cycle, one-liner fix.
 
 **What changes next sprint?**
-Sprint 10 (Deployment, Docs & Accessibility) is the final planned sprint. UC-051–054 QA findings from Sprint 8 still need to be triaged.
+Sprint 10 (Docs & Accessibility) is now 5 pts after removing UC-042 (Capistrano) and UC-044 (CHANGELOG lint). UC-051–054 QA findings are candidates to fill the freed capacity.
 
 ---
 
-## Sprint 10 — Deployment, Docs & Accessibility · Planned
+## Sprint 10 — Docs & Accessibility · Planned
 
 > **Dates (proposed):** 2026-06-20 → 2026-07-04
-> **Capacity:** 11 pts
+> **Capacity:** 5 pts (after removing UC-042 and UC-044)
 
 | ID | Story | Points | Status |
 |---|---|---|---|
-| UC-042 | Capistrano runbook for IONOS AlmaLinux 9 VPS | 5 | todo |
+| ~~UC-042~~ | ~~Capistrano runbook~~ | ~~5~~ | removed — see ADR-007 |
 | UC-043 | README rewrite | 2 | todo |
-| UC-044 | PR template + CI lint for CHANGELOG entries | 1 | todo |
+| ~~UC-044~~ | ~~PR template + CI lint for CHANGELOG~~ | ~~1~~ | removed — redundant with sprint workflow |
 | UC-045 | WCAG 2.1 AA audit (axe-core/pa11y) | 3 | todo |
+
+> **Note:** UC-051–054 (Sprint 8 QA findings) are candidates for this sprint — triage against the 5 pt capacity or extend to a Sprint 11.
