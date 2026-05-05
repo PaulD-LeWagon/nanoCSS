@@ -887,6 +887,91 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 
 ---
 
+## Sprint 8 QA Findings — Untriaged _(Awaiting Sprint Assignment)_
+
+> Logged 2026-05-05 after visual QA review. Not yet assigned to a sprint.
+> UC-051/052/054 are regressions or long-standing bugs. UC-053 is a new feature request.
+
+---
+
+### UC-051 · Fix Light Mode — Dark Background Persists on Homepage & Catalogue · 🟥 Must Have · 2 pts · ⚪ To Do
+
+**As a** user toggling to light mode,
+**I want** the homepage and components page to switch to a light background,
+**so that** the app genuinely responds to my theme choice on every page.
+
+**Observed:** Toggling Theme Switcher → Light leaves the homepage hero + preset section and the components catalogue page with the dark/obsidian navy background.
+
+**Acceptance Criteria:**
+- AC1: `data-theme="light"` on `<html>` causes the homepage body/hero background to switch to the light-mode neutral token (no dark navy).
+- AC2: The component catalogue page (`/components`) also responds correctly — no dark background in light mode.
+- AC3: System spec: navigate to `/`, toggle to light, assert body background is not the dark navy token.
+
+**Root cause (suspected):** Background colour for the hero/page is hardcoded or uses a token not overridden by the `[data-theme="light"]` Tier-2b rule.
+
+**Dependencies:** UC-031, UC-047/048 (landed; verify interaction)
+**Status:** ⚪ To Do
+
+---
+
+### UC-052 · Fix Dark Mode Card Contrast — Body Text and Background Too Similar · 🟥 Must Have · 1 pt · ⚪ To Do
+
+**As a** user in dark mode,
+**I want** card body text to be clearly readable against the card background,
+**so that** the dark theme is usable, not just visually distinct.
+
+**Observed:** In dark mode, card body text and card background are too close in value — text is difficult to read.
+
+**Acceptance Criteria:**
+- AC1: `.{prefix}-card` body text achieves at least 4.5:1 contrast ratio against the card background in dark mode (WCAG 2.1 AA).
+- AC2: Fix applies across all four presets' dark-mode token sets.
+- AC3: Spec asserts the contrast-critical text colour token is not the same as the card background token in dark mode.
+
+**Status:** ⚪ To Do
+
+---
+
+### UC-053 · Expose Navbar Glass Morphism as a nanoCSS Utility Class · 🟧 Should Have · 2 pts · ⚪ To Do
+
+**As an** indie developer,
+**I want** the app's glass-blur navbar effect available as a reusable nanoCSS class,
+**so that** I can apply the same translucent surface treatment to any element in my project.
+
+**Background:** The app's top navbar uses a distinctive translucent blur effect (backdrop-filter + semi-transparent background + subtle border). This is a widely desired aesthetic that should be a first-class framework primitive, separate from the Obsidian preset's glass tokens.
+
+**Acceptance Criteria:**
+- AC1: A `.{prefix}-glass` utility class added to the nanoCSS SCSS — applies `backdrop-filter: blur(var(--{prefix}-surface-blur, 8px))`, a semi-transparent background using `surface_opacity`, and a subtle luminous border.
+- AC2: The navbar itself (`nanocss-nav` in `application.html.erb`) is refactored to use `.{prefix}-glass` rather than bespoke CSS, so the dogfooding is real.
+- AC3: `.{prefix}-glass` is documented in the Component Catalogue with an example panel.
+- AC4: On presets without glass tokens (Corporate, Playful, Minimalist), the class degrades gracefully (no backdrop-filter, standard opaque background).
+
+**Status:** ⚪ To Do
+
+---
+
+### UC-054 · Fix Quick Apply in Floating Theme Switcher — Must Re-Skin Current Page · 🟥 Must Have · 3 pts · ⚪ To Do
+
+**As a** user on any page of the app,
+**I want** the preset buttons in the floating Theme Controls to immediately re-skin the page I'm on,
+**so that** I can preview presets from the catalogue, configure page, or anywhere — not just the landing page.
+
+**Observed:** Clicking a preset in the floating Theme Controls currently navigates to the configure page (or does nothing useful). The preset is never applied to the current page's chrome.
+
+**Required behaviour:** Same mechanism as the landing page Quick Apply — swap the `#nanocss-framework-style` link tag via a Turbo Stream, keeping the user on their current page. No navigation.
+
+**Acceptance Criteria:**
+- AC1: Clicking any preset button in the floating Theme Switcher re-skins the chrome on the current page (landing, catalogue, or configure) without navigation.
+- AC2: The re-skin applies within 500 ms and updates the same `#nanocss-framework-style` link already used by the landing page Quick Apply.
+- AC3: The active preset is visually indicated in the switcher (e.g., checked state or highlighted button).
+- AC4: The chosen preset is persisted to `localStorage` so a page refresh retains it.
+- AC5: System spec covers the interaction from the component catalogue page (`/components`) — the most important non-landing page.
+
+**Root cause:** The floating Theme Switcher's preset buttons were wired to navigate to the configure page rather than to a dedicated Quick Apply endpoint. The Turbo Stream + `#nanocss-framework-style` swap (built for UC-035) was never hooked up to the Theme Switcher.
+
+**Status:** ⚪ To Do
+
+---
+
 ## Sprint 10 — Deployment, Docs & Accessibility _(Planned)_
 
 > **Sprint Goal:** Cross the line from "working locally" to "deployable to the IONOS VPS with a real runbook," replace the README, and run a formal WCAG 2.1 AA audit.
