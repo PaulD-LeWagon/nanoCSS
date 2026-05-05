@@ -46,5 +46,31 @@
       </div>
     <% end %>
 
+    <% if defined?(monochromatic) && monochromatic.present? %>
+      <div class="harmony-row">
+        <button type="button" class="harmony-swatch-btn"
+          data-action="harmony#apply"
+          data-harmony-secondary="<%= monochromatic[0] %>"
+          data-harmony-tertiary="<%= monochromatic[1] %>">
+          Monochromatic
+        </button>
+        <div class="swatch-box" style="background:<%= monochromatic[0] %>;"></div>
+        <div class="swatch-box" style="background:<%= monochromatic[1] %>;"></div>
+      </div>
+    <% end %>
+
+    <% if defined?(split_complementary) && split_complementary.present? %>
+      <div class="harmony-row">
+        <button type="button" class="harmony-swatch-btn"
+          data-action="harmony#apply"
+          data-harmony-secondary="<%= split_complementary[0] %>"
+          data-harmony-tertiary="<%= split_complementary[1] %>">
+          Split-Complementary
+        </button>
+        <div class="swatch-box" style="background:<%= split_complementary[0] %>;"></div>
+        <div class="swatch-box" style="background:<%= split_complementary[1] %>;"></div>
+      </div>
+    <% end %>
+
   </div>
 </div>

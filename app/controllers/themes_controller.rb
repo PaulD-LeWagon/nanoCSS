@@ -22,9 +22,11 @@ class ThemesController < ApplicationController
     result = ScssCompilerService.call(@config, scope: "#preview-canvas")
     @css = result[:css] || ""
 
-    @complementary = ColourHarmonyService.call(@config.primary, harmony_type: :complementary)
-    @analogous = ColourHarmonyService.call(@config.primary, harmony_type: :analogous)
-    @triadic = ColourHarmonyService.call(@config.primary, harmony_type: :triadic)
+    @complementary       = ColourHarmonyService.call(@config.primary, harmony_type: :complementary)
+    @analogous           = ColourHarmonyService.call(@config.primary, harmony_type: :analogous)
+    @triadic             = ColourHarmonyService.call(@config.primary, harmony_type: :triadic)
+    @monochromatic       = ColourHarmonyService.call(@config.primary, harmony_type: :monochromatic)
+    @split_complementary = ColourHarmonyService.call(@config.primary, harmony_type: :split_complementary)
   end
 
   def preview
@@ -45,9 +47,11 @@ class ThemesController < ApplicationController
     result = ScssCompilerService.call(@config, scope: scope)
     @css = result[:css] || ""
 
-    @complementary = ColourHarmonyService.call(@config.primary, harmony_type: :complementary)
-    @analogous = ColourHarmonyService.call(@config.primary, harmony_type: :analogous)
-    @triadic = ColourHarmonyService.call(@config.primary, harmony_type: :triadic)
+    @complementary       = ColourHarmonyService.call(@config.primary, harmony_type: :complementary)
+    @analogous           = ColourHarmonyService.call(@config.primary, harmony_type: :analogous)
+    @triadic             = ColourHarmonyService.call(@config.primary, harmony_type: :triadic)
+    @monochromatic       = ColourHarmonyService.call(@config.primary, harmony_type: :monochromatic)
+    @split_complementary = ColourHarmonyService.call(@config.primary, harmony_type: :split_complementary)
 
     # Renders preview.turbo_stream.erb implicitly
   end
