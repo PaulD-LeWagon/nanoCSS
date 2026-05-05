@@ -1,7 +1,8 @@
 <%# preview.turbo_stream.erb
     On success: clears errors, updates stylesheet link, harmony swatches, share button.
+    Landing page (not @is_preview): ALSO updates #nanocss-framework-style so chrome re-skins.
     On validation failure (422): shows errors only — stylesheet is NOT updated.
-    Traces: design/BACKLOG.md UC-002 AC4, UC-006, UC-023 %>
+    Traces: design/BACKLOG.md UC-002 AC4, UC-006, UC-023, UC-035 %>
 
 <%# Always replace the errors target — clears on success, populates on failure %>
 <%= turbo_stream.replace "validation-errors" do %>
@@ -17,6 +18,12 @@
 <% end %>
 
 <% unless @config.errors.any? %>
+  <%# UC-035: update global chrome CSS on landing page so preset tokens apply to the whole app %>
+  <% unless @is_preview %>
+    <%= turbo_stream.replace "nanocss-framework-style" do %>
+      <style id="nanocss-framework-style"><%= @css.html_safe %></style>
+    <% end %>
+  <% end %>
   <%= turbo_stream.replace "nanocss-preview-style" do %>
     <div id="nanocss-preview-style">
       <link rel="stylesheet" href="<%= theme_css_path(theme: @config.to_base64, preview: @is_preview) %>" data-action="load->preview#onStyleLoad">
