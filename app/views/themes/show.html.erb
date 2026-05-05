@@ -326,10 +326,9 @@
 
           <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
             <span tabindex="0" data-tooltip="No JS tooltip — CSS only!">Hover for tooltip ℹ️</span>
-            <nav class="<%= @config.prefix %>-nav" style="display: inline-flex;" aria-label="breadcrumb">
-              <ol style="display: flex; list-style: none; padding: 0; margin: 0; gap: 0.25rem; font-size: 0.8125rem;">
+            <nav class="<%= @config.prefix %>-breadcrumb" aria-label="breadcrumb">
+              <ol>
                 <li><a href="#">Home</a></li>
-                <li style="margin: 0 0.25rem; color: var(--<%= @config.prefix %>-neutral-400);">/</li>
                 <li>Current Page</li>
               </ol>
             </nav>

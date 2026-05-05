@@ -113,11 +113,19 @@ class ScssCompilerService
         # do not need to be re-emitted every preview update.
         scoped_custom_props = custom_props_scss.gsub(/:root/, @scope)
 
+        # UC-050: _base.scss is excluded from the scoped preview (see ADR-003) but that
+        # means `body { font-family: var(--prefix-font-body) }` never fires in the pane.
+        # Emit an explicit font-family rule scoped to the canvas so font_body changes
+        # are visible without re-introducing the full-page reflow problem.
+        prefix_val = @configuration.prefix.presence || "nanocss"
+        font_body_rule = "#{@scope} { font-family: var(--#{prefix_val}-font-body, system-ui, sans-serif); }"
+
         full_scss = [
           dynamic_vars,
           variables_scss,
           mixins_scss,
           scoped_custom_props,
+          font_body_rule,
           components_scss   # component selectors are global — safe to include
         ].join("\n\n")
       else
