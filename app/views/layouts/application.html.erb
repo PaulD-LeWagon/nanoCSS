@@ -46,7 +46,8 @@
       </main>
     </div>
 
-    <%# UC-022: Floating Theme Switcher %>
+    <%# UC-022: Floating Theme Switcher — suppressed on /configure (UC-037 AC2) to avoid colliding with the config form %>
+    <% unless request.path == configure_path %>
     <div class="<%= @prefix || "nanocss" %>-theme-switcher" data-controller="theme">
       <details>
         <summary>
@@ -75,5 +76,6 @@
         </div>
       </details>
     </div>
+    <% end %>
   </body>
 </html>
