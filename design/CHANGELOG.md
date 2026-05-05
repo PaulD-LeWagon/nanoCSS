@@ -18,6 +18,28 @@
 
 ---
 
+## [0.8.0] — 2026-05-05 — Sprint 8
+
+### Fixed
+- UC-047: `theme_controller.js` now always sets `data-theme` explicitly — `removeAttribute` replaced with `setAttribute("data-theme", "light")` so OS media query is never re-engaged on a dark machine.
+- UC-048: Catalogue and preview pages force `data-theme="light"` on the body — prevents `@media (prefers-color-scheme: dark)` from inverting component renders on dark-OS machines.
+- UC-049: Hero `color: #fff` scoped to direct `h1/h2/h3/p` children only — nested components inside `.{prefix}-hero` no longer inherit white text.
+- UC-050: Live-preview body font now emitted correctly (canvas-scoped `font-family` in `ScssCompilerService`); breadcrumb conflict with host nav resolved via scoped selector ordering.
+
+### Changed
+- UC-034: All 81 inline `style=` attributes removed from `app/views/`; replacements use nanoCSS utility classes. `spec/lint/inline_styles_spec.rb` fails CI if new inline styles are introduced.
+- UC-036: App chrome replaced — `.top-nav` swapped for `nanocss-nav`; `.glass-panel`/`.nav-links` custom CSS blocks removed; `application.css` reduced to layout shims only.
+- UC-037: Floating Theme Switcher mounted in `application.html.erb`; suppressed on `/themes/configure` to avoid colliding with the config form.
+
+### Added
+- UC-035: Quick Apply on the landing page now replaces both the preview stylesheet (`#nanocss-preview-link`) and the chrome stylesheet (`#nanocss-framework-style`) — preset colour changes are immediately visible in the navbar, hero, and buttons.
+
+### Sprint Metrics
+- Planned: 24 pts · Delivered: 24 pts · Velocity: 24
+- 145 specs, 0 failures · 0 RuboCop offences · 0 Brakeman warnings
+
+---
+
 ## [0.7.0] — 2026-05-04 — Sprint 7
 
 ### Added
@@ -34,11 +56,8 @@
 - Card component headers now carry `font-size: var(--{prefix}-text-md)` from the typography scale.
 - Quick Apply preset button now passes all preset YAML attributes to `ThemeConfiguration` (not just primary/secondary/tertiary).
 
-### Known Issues (regressions discovered in Sprint 7 QA — tracked in Sprint 8)
-- UC-047: Dark mode Theme Switcher broken — `theme_controller.js` removes `data-theme` instead of setting it to `"light"`, causing OS media query to re-engage.
-- UC-048: Component Catalogue dark-mode contamination — OS media query darkens catalogue component renders on dark-mode systems.
-- UC-049: Hero `color: #fff` cascades into nested child components in the preview pane.
-- UC-050: Body font change does not update in live preview; breadcrumb shows broken styling in scoped preview context.
+### Known Issues
+All four regressions (UC-047–UC-050) fixed in Sprint 8 (v0.8.0).
 
 ---
 

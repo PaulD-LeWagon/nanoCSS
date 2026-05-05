@@ -4,8 +4,8 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 # Product Backlog
 
 > **Project:** nanoCSS
-> **Last Updated:** 2026-05-04 (Sprint 7 close — 4 regressions logged as UC-047–UC-050 in Sprint 8)
-> **Current Sprint:** Sprint 7 closed → Sprint 8 opening
+> **Last Updated:** 2026-05-05 (Sprint 8 close — all 8 stories shipped, 145 specs green)
+> **Current Sprint:** Sprint 8 closed → Sprint 9 opening
 > **Sprint Cadence:** AI-assisted — 2–3 sprints per day
 
 ---
@@ -629,7 +629,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-### UC-047 · Fix Dark Mode Theme-Switcher Regression · 🟥 Must Have · 1 pt · ⚪ To Do
+### UC-047 · Fix Dark Mode Theme-Switcher Regression · 🟥 Must Have · 1 pt · 🟢 Done
 
 **As a** user toggling between light and dark mode,
 **I want** the "Toggle Dark Mode" button to reliably switch both ways,
@@ -644,11 +644,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 **Root cause:** `theme_controller.js#toggleDark` calls `removeAttribute("data-theme")` instead of `setAttribute("data-theme", "light")`.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04)
 
 ---
 
-### UC-048 · Fix Dark-Mode Contamination of Component Catalogue · 🟥 Must Have · 2 pts · ⚪ To Do
+### UC-048 · Fix Dark-Mode Contamination of Component Catalogue · 🟥 Must Have · 2 pts · 🟢 Done
 
 **As a** developer browsing the Component Catalogue,
 **I want** component previews to always render in light mode,
@@ -663,11 +663,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 **Fix approach:** Add `data-theme="light"` to the `<body>` of pages that include the nanoCSS framework style (or scope dark mode so it only applies when the user has explicitly chosen it via the Theme Switcher).
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04)
 
 ---
 
-### UC-049 · Fix Hero `color: #fff` Cascade · 🟥 Must Have · 1 pt · ⚪ To Do
+### UC-049 · Fix Hero `color: #fff` Cascade · 🟥 Must Have · 1 pt · 🟢 Done
 
 **As a** developer using the Component Catalogue and live preview,
 **I want** `.{prefix}-hero` to not force white text on child components,
@@ -682,11 +682,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 **Fix approach:** Replace `color: #fff` with a more scoped rule: `color: var(--{prefix}-neutral-50, #f9fafb)` on `h1, h2, h3, p` direct children only, or wrap the hero text in a specific selector.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04)
 
 ---
 
-### UC-050 · Fix Live Preview — Body Font + Breadcrumb Rendering · 🟥 Must Have · 2 pts · ⚪ To Do
+### UC-050 · Fix Live Preview — Body Font + Breadcrumb Rendering · 🟥 Must Have · 2 pts · 🟢 Done
 
 **As a** developer previewing a theme,
 **I want** all font and component changes to appear immediately in the live preview,
@@ -705,11 +705,11 @@ The breadcrumb component in the live preview shows broken styling. Likely cause:
 - AC2: The breadcrumb component in the live preview renders with visible separator characters and correct text/background contrast.
 - AC3: System spec covers both ACs with a Turbo Stream interaction.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04)
 
 ---
 
-### UC-034 · Eliminate Inline Styles in App Views · 🟥 Must Have · 5 pts · ⚪ To Do
+### UC-034 · Eliminate Inline Styles in App Views · 🟥 Must Have · 5 pts · 🟢 Done
 
 **As a** maintainer,
 **I want** zero inline `style="…"` attributes in `app/views/`,
@@ -720,11 +720,11 @@ The breadcrumb component in the live preview shows broken styling. Likely cause:
 - AC2: Replacements use nanoCSS utility classes (`.{prefix}-stack`, `.{prefix}-grid-*`, `.{prefix}-text-muted`, etc.).
 - AC3: A RuboCop or Brakeman rule fails CI if a new inline `style=` is introduced.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04). Lint spec at `spec/lint/inline_styles_spec.rb` enforces the rule in CI.
 
 ---
 
-### UC-035 · Quick Apply Visibly Re-skins the App Chrome · 🟥 Must Have · 5 pts · ⚪ To Do
+### UC-035 · Quick Apply Visibly Re-skins the App Chrome · 🟥 Must Have · 5 pts · 🟢 Done
 
 **As a** user clicking "Apply Corporate" / "Apply Playful" / "Apply Minimalist" on the landing page,
 **I want** the app's chrome (top nav, sidebar, footer, hero) to immediately reflect that preset,
@@ -736,11 +736,11 @@ The breadcrumb component in the live preview shows broken styling. Likely cause:
 - AC3: Capybara system spec: from a vanilla landing page, click "Apply Playful" → primary brand colour visible in the navbar background changes within 500 ms.
 
 **Dependencies:** UC-034, UC-036
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04). Turbo Stream in `preview.turbo_stream.erb` replaces `#nanocss-framework-style` on landing page Quick Apply.
 
 ---
 
-### UC-036 · Replace Custom Chrome With nanoCSS Components · 🟥 Must Have · 5 pts · ⚪ To Do
+### UC-036 · Replace Custom Chrome With nanoCSS Components · 🟥 Must Have · 5 pts · 🟢 Done
 
 **As a** maintainer,
 **I want** the app's top navigation, sidebar/configure layout, and hero replaced with the framework's own `<prefix>-nav`, `<prefix>-card`, `<prefix>-hero` components,
@@ -751,7 +751,7 @@ The breadcrumb component in the live preview shows broken styling. Likely cause:
 - AC2: `.glass-panel`, `.configure-layout`, and other bespoke blocks replaced with nanoCSS components or utility compositions.
 - AC3: `application.css` shrinks to layout shims only — no overrides of nanoCSS tokens.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04). `.top-nav` replaced with `nanocss-nav`; `.glass-panel` and `.nav-links` rules removed; layout shims retained.
 
 ---
 
@@ -806,7 +806,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 
 ---
 
-### UC-037 · Theme Switcher Lives In The Chrome · 🟦 Nice to Have · 3 pts · ⚪ To Do
+### UC-037 · Theme Switcher Lives In The Chrome · 🟦 Nice to Have · 3 pts · 🟢 Done
 
 **As a** user,
 **I want** the floating Theme Switcher (UC-022) available on every page of the app,
@@ -816,7 +816,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC1: Theme Switcher mounted in the application layout, not just the test page.
 - AC2: Switcher is suppressed on `/themes/configure` to avoid colliding with the form (or coordinated — TBD by UX).
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04). Mounted in `application.html.erb`; suppressed on `configure_path` via `unless` guard.
 
 ---
 
