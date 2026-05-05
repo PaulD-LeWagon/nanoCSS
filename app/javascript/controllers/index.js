@@ -27,3 +27,6 @@ application.register("dropdown", DropdownController)
 
 import NavbarController from "./navbar_controller"
 application.register("navbar", NavbarController)
+
+import CatalogueSidebarController from "./catalogue_sidebar_controller"
+application.register("catalogue-sidebar", CatalogueSidebarController)
