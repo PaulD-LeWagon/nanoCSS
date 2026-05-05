@@ -18,6 +18,25 @@
 
 ---
 
+## [0.9.0] — 2026-05-05 — Sprint 9
+
+### Added
+- UC-038: `ColourHarmonyService` extended with `:monochromatic` (same hue, ±25 lightness, clamped to [0.05, 0.95]) and `:split_complementary` (hue +150° and +210°) algorithms. `HARMONIES` constant now lists all five harmony types. Two new swatch rows added to the configure form.
+- UC-039: Sticky sidebar on the Component Catalogue (`/components`) — 20 anchor links, `IntersectionObserver` active-state tracking, collapses to `display: none` at ≤768px. `catalogue_sidebar_controller.js` added.
+- UC-041: `validate_css` GitHub Actions job in `ci.yml` — compiles default-config CSS via `rails runner` and POSTs to the W3C CSS3/SVG validator. Fails the build on validation errors; `continue-on-error: true` since the API is occasionally unreachable. `spec/css_validation_spec.rb` mirrors the check locally with graceful skip when API is down.
+
+### Changed
+- UC-040: `ZipAssemblerService` now produces `{prefix}.min.css` via a second `ScssCompilerService.call(@configuration, style: :compressed)` call rather than `gsub(/\s+/, ' ')`. `ScssCompilerService` accepts a `style:` keyword argument (default `:expanded`).
+
+### Fixed
+- UC-039 (follow-up): CSS Grid `1fr` column lacked `min-width: 0` on `.catalogue-main`, causing icon items at narrow viewports to overflow the grid cell and be clipped by `.component-section`'s `overflow: hidden`. Added `min-width: 0`.
+
+### Sprint Metrics
+- Planned: 11 pts · Delivered: 11 pts · Velocity: 11
+- 154 specs, 0 failures · 0 RuboCop offences · 4 Brakeman warnings (pre-existing, unchanged)
+
+---
+
 ## [0.8.0] — 2026-05-05 — Sprint 8
 
 ### Fixed

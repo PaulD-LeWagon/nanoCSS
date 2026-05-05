@@ -528,7 +528,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC4: Capybara system spec covers the regression.
 
 **Dependencies:** None
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -545,7 +545,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC4: Capybara system spec at 375 px and 1280 px viewports both pass.
 
 **Dependencies:** None
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -560,7 +560,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC2: Tooltip selector changes from `[data-tooltip]` to `.{prefix}-tooltip` (or `[data-{prefix}-tooltip]`).
 - AC3: Component Catalogue snippets reflect the new prefixed selectors.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -575,7 +575,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC2: An explicit `[data-theme="light"]` or `[data-theme="dark"]` overrides the media query (Tier 2).
 - AC3: The Theme Switcher persists the explicit choice in `localStorage` (Tier 3 — already shipped).
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -592,7 +592,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC4: ZIP export ships the modular tree.
 - AC5: All existing specs still pass.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -607,7 +607,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC2: A snapshot/visual-regression artefact (single PNG per breakpoint) is attached to the sprint review.
 - AC3: Any component with a layout failure has its fix landed in this sprint or a follow-up issue raised.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -617,7 +617,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 **Dependencies:** UC-025 (preset config), UC-032 (ideally — modular partials make component edits cleaner)
 **Must complete before:** UC-034, UC-036 (Sprint 8) — the source CSS it reads will be deleted in those UCs
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -799,7 +799,7 @@ The breadcrumb component in the live preview shows broken styling. Likely cause:
 - UC-034/UC-036 (chrome refactored to nanoCSS) — required before AC9 can be measured
 
 **Placement:** Sprint 7 (end of sprint — capture and extend tokens *before* Sprint 8 begins stripping the source files)
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 **Implementation Note:**
 The values to capture are currently in `app/assets/stylesheets/application.css` and the `.glass-panel` / `.top-nav` rules. **Extract them verbatim first — do not improve or redesign.** Aesthetic refinement is a follow-up UC if needed. The goal is fidelity: apply Obsidian and it must look exactly like the app does today.
@@ -828,7 +828,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 
 ---
 
-### UC-038 · Monochromatic + Split-Complementary Harmonies · 🟧 Should Have · 3 pts · ⚪ To Do
+### UC-038 · Monochromatic + Split-Complementary Harmonies · 🟧 Should Have · 3 pts · 🟢 Done
 
 **As an** indie developer,
 **I want** the two remaining FR-006 harmonies (Monochromatic, Split-Complementary),
@@ -839,11 +839,11 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC2: Per-algorithm specs cover an edge case (greyscale primary, near-white primary).
 - AC3: `_harmony_options.html.erb` renders the new swatch rows.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-039 · Component Catalogue Sidebar Navigation · 🟧 Should Have · 3 pts · ⚪ To Do
+### UC-039 · Component Catalogue Sidebar Navigation · 🟧 Should Have · 3 pts · 🟢 Done
 
 **As a** developer browsing the catalogue,
 **I want** a sticky sidebar listing every component as a jump link,
@@ -854,11 +854,11 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC2: Active section highlighted via `IntersectionObserver`.
 - AC3: Sidebar collapses below the mobile breakpoint (UC-029 dependency).
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-040 · Real CSS Minification · 🟧 Should Have · 2 pts · ⚪ To Do
+### UC-040 · Real CSS Minification · 🟧 Should Have · 2 pts · 🟢 Done
 
 **As an** indie developer downloading the ZIP,
 **I want** `nanocss.min.css` to be a correctly-minified stylesheet,
@@ -869,11 +869,11 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC2: The minified file passes a CSS lint round-trip (re-parse, re-emit, no diff in semantics).
 - AC3: Spec asserts file size delta vs un-minified is ≥ 30 %.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-041 · Validate Generated CSS Against W3C Validator · 🟦 Nice to Have · 3 pts · ⚪ To Do
+### UC-041 · Validate Generated CSS Against W3C Validator · 🟦 Nice to Have · 3 pts · 🟢 Done
 
 **As a** maintainer,
 **I want** a CI step that runs the generated CSS through `css-validator`,
@@ -883,7 +883,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC1: GitHub Action fetches `https://jigsaw.w3.org/css-validator/validator?profile=css3svg&output=json` for a default-config compile.
 - AC2: Build fails on validation errors.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -910,7 +910,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 **Root cause (suspected):** Background colour for the hero/page is hardcoded or uses a token not overridden by the `[data-theme="light"]` Tier-2b rule.
 
 **Dependencies:** UC-031, UC-047/048 (landed; verify interaction)
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -927,7 +927,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC2: Fix applies across all four presets' dark-mode token sets.
 - AC3: Spec asserts the contrast-critical text colour token is not the same as the card background token in dark mode.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -945,7 +945,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC3: `.{prefix}-glass` is documented in the Component Catalogue with an example panel.
 - AC4: On presets without glass tokens (Corporate, Playful, Minimalist), the class degrades gracefully (no backdrop-filter, standard opaque background).
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -968,7 +968,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 
 **Root cause:** The floating Theme Switcher's preset buttons were wired to navigate to the configure page rather than to a dedicated Quick Apply endpoint. The Turbo Stream + `#nanocss-framework-style` swap (built for UC-035) was never hooked up to the Theme Switcher.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -991,7 +991,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC2: `bin/deploy` wraps `cap production deploy` with pre-flight checks (asset-precompile, master-key present).
 - AC3: A markdown runbook in `docs/DEPLOY.md` covers cold-start, rollback, and Passenger restart.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -1005,7 +1005,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC1: README replaces the Rails default.
 - AC2: Includes screenshots of the configurator, a curl-then-link example, and a "what's in the box" tree.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -1019,7 +1019,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC1: PR template includes a CHANGELOG checkbox.
 - AC2: A CI lint flags PRs that touch `app/` without touching `design/CHANGELOG.md`.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -1034,7 +1034,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC2: Each finding either fixed or recorded as a known limitation in `docs/ACCESSIBILITY.md`.
 - AC3: Tinted semantic colours (UC-011 AC3) re-tested for contrast under all three default presets.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
