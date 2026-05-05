@@ -31,7 +31,7 @@
   <% end %>
   <%= turbo_stream.replace "harmony-options",
         partial: "themes/harmony_options",
-        locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic } %>
+        locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic, monochromatic: @monochromatic, split_complementary: @split_complementary } %>
   <%= turbo_stream.replace "share-link-btn" do %>
     <button type="button" class="btn-preset-outline" id="share-link-btn"
       onclick="navigator.clipboard.writeText(window.location.origin + '/configure?theme=<%= @config.to_base64 %>'); alert('Share link copied!');">
