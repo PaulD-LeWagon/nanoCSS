@@ -49,7 +49,7 @@ class ScssCompilerService
           $nanocss-success: color.mix(#10b981, #{@configuration.primary}, 90%) !default;
           $nanocss-info: color.mix(#0ea5e9, #{@configuration.primary}, 90%) !default;
           $nanocss-warning: color.mix(#f59e0b, #{@configuration.primary}, 90%) !default;
-          $nanocss-danger: color.mix(#ef4444, #{@configuration.primary}, 90%) !default;
+          $nanocss-danger: color.mix(#dc2626, #{@configuration.primary}, 90%) !default; // UC-045: darkened base
         SCSS
         dynamic_vars += "\n" + semantic_tints
       end

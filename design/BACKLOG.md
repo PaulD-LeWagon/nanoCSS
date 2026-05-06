@@ -997,7 +997,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC1: README replaces the Rails default with a proper project overview.
 - AC2: Includes screenshots of the configurator, a usage example (link to the hosted app), and a "what's in the box" tree for the downloaded ZIP.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 10 (2026-05-06)
 
 ---
 
@@ -1019,7 +1019,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC2: Each finding either fixed or recorded as a known limitation in `docs/ACCESSIBILITY.md`.
 - AC3: Tinted semantic colours (UC-011 AC3) re-tested for contrast under all three default presets.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 10 (2026-05-06)
 
 ---
 

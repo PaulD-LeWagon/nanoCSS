@@ -16,6 +16,16 @@
 > _Changes merged to main but not yet in a numbered release.
 > Move entries to a versioned section at release time._
 
+## [0.10.0] — 2026-05-06 — Sprint 10
+
+### Added
+- UC-045: WCAG 2.1 AA accessibility audit — `axe-core-rspec` 4.11.3 integrated; `spec/system/accessibility_spec.rb` exercises all four configurator pages (/, /configure, /components, /components/test); `spec/services/semantic_colour_contrast_spec.rb` verifies semantic colour contrast under all three presets. Results documented in `docs/ACCESSIBILITY.md`.
+- UC-043: README rewritten — project overview, "what's in the box" ZIP tree, usage link, local dev and test commands, architecture summary.
+
+### Changed
+- UC-045 fix: Badge text colour changed from `#fff` to `var(--{prefix}-neutral-900, #111827)` for success, info, and warning variants — semantic backgrounds are too light for white text across all presets.
+- UC-045 fix: Base danger colour darkened from `#ef4444` to `#dc2626` (both `_variables.scss` and `ScssCompilerService`). Danger badges retain white text; darkened base achieves ≥ 5.4:1 contrast across all presets (was stuck in a contrast gap where neither white nor dark text cleared 4.5:1).
+
 ---
 
 ## [0.9.0] — 2026-05-05 — Sprint 9
