@@ -7,7 +7,8 @@
   border-radius: 9999px;
   /* Pill */
   background-color: var(--#{$prefix}-info, #3b82f6);
-  color: #fff;
+  /* UC-045: semantic colours are too light for white text across all presets — use dark text */
+  color: var(--#{$prefix}-neutral-900, #111827);
 
   &.success {
     background-color: var(--#{$prefix}-success, #10b981);
@@ -18,6 +19,7 @@
   }
 
   &.danger {
-    background-color: var(--#{$prefix}-danger, #ef4444);
+    background-color: var(--#{$prefix}-danger, #dc2626);
+    color: #fff; // UC-045: danger is dark enough for white text at 4.5:1+
   }
 }

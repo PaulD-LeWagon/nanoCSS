@@ -124,7 +124,7 @@ $nanocss-tertiary: #ec4899 !default;
 $nanocss-success: #10b981 !default;
 $nanocss-info: #0ea5e9 !default;
 $nanocss-warning: #f59e0b !default;
-$nanocss-danger: #ef4444 !default;
+$nanocss-danger: #dc2626 !default; // UC-045: darkened from #ef4444 — #ef4444 sat in contrast gap vs both text colours
 
 // Neutrals (Greyscale)
 $nanocss-neutral-100: #f3f4f6 !default;
