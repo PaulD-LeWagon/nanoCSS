@@ -94,7 +94,7 @@ jobs:
     continue-on-error: true  # W3C API can be flaky; don't block the pipeline
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
