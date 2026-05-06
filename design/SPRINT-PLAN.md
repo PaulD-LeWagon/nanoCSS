@@ -179,16 +179,27 @@ Sprint 10 (Docs & Accessibility) is now 5 pts after removing UC-042 (Capistrano)
 
 ---
 
-## Sprint 10 — Docs & Accessibility · Planned
+## ✅ Sprint 10 — Docs & Accessibility · CLOSED 2026-05-06
 
-> **Dates (proposed):** 2026-06-20 → 2026-07-04
-> **Capacity:** 5 pts (after removing UC-042 and UC-044)
+> **Goal:** Replace the Rails default README and run a formal WCAG 2.1 AA audit.
+> **Delivered:** 5/5 pts · Both stories shipped
 
 | ID | Story | Points | Status |
 |---|---|---|---|
 | ~~UC-042~~ | ~~Capistrano runbook~~ | ~~5~~ | removed — see ADR-007 |
-| UC-043 | README rewrite | 2 | todo |
+| UC-043 | README rewrite | 2 | done |
 | ~~UC-044~~ | ~~PR template + CI lint for CHANGELOG~~ | ~~1~~ | removed — redundant with sprint workflow |
-| UC-045 | WCAG 2.1 AA audit (axe-core/pa11y) | 3 | todo |
+| UC-045 | WCAG 2.1 AA audit (axe-core/pa11y) | 3 | done |
 
-> **Note:** UC-051–054 (Sprint 8 QA findings) are candidates for this sprint — triage against the 5 pt capacity or extend to a Sprint 11.
+**Sprint goal check:** Both stories committed. 170 specs, 0 failures. axe-core finds zero violations on all four pages. Semantic colour contrast verified for all three presets.
+
+---
+
+### Sprint 10 Retrospective · 2026-05-06
+
+**What shipped?**
+- UC-043: README rewritten — project overview, "what's in the box" ZIP tree, usage link, local dev and test commands, architecture table. Placeholder screenshot paths provided for contributors to fill in.
+- UC-045: axe-core-rspec integrated. Four browser-based WCAG 2.1 AA checks pass. Semantic colour contrast spec covers all four semantic colours under Corporate, Playful, and Minimalist presets. Two accessibility fixes landed: badge text changed to dark for success/info/warning variants; base danger colour darkened from `#ef4444` to `#dc2626` to escape the contrast gap. `docs/ACCESSIBILITY.md` documents findings, fixes, and known limitations (dark mode contrast pending).
+
+**What slowed us down?**
+The danger colour `#ef4444` sat in a contrast gap where neither white nor dark text cleared 4.5:1. Diagnosing this required WCAG luminance calculations; the fix (darken to `#dc2626`) required updating both `_variables.scss` and `ScssCompilerService` which hardcoded the base colour separately.
