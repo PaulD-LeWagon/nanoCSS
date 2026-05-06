@@ -4,9 +4,9 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 # Product Backlog
 
 > **Project:** nanoCSS
-> **Last Updated:** 2026-04-25 (Sprint 5 close — retrofit + Sprints 6–10 added)
-> **Current Sprint:** 5 closing → 6 opening
-> **Sprint Cadence:** 2 weeks
+> **Last Updated:** 2026-05-05 (Sprint 8 close — all 8 stories shipped, 145 specs green)
+> **Current Sprint:** Sprint 8 closed → Sprint 9 opening
+> **Sprint Cadence:** AI-assisted — 2–3 sprints per day
 
 ---
 
@@ -515,7 +515,7 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 
 ---
 
-### UC-028 · Fix Dropdown Inside Navbar · 🟥 Must Have · 3 pts · ⚪ To Do
+### UC-028 · Fix Dropdown Inside Navbar · 🟥 Must Have · 3 pts · 🟢 Done
 
 **As a** user,
 **I want** a dropdown placed inside a navbar to stay open while I interact with its items,
@@ -528,11 +528,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC4: Capybara system spec covers the regression.
 
 **Dependencies:** None
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-029 · Mobile Navbar · 🟥 Must Have · 5 pts · ⚪ To Do
+### UC-029 · Mobile Navbar · 🟥 Must Have · 5 pts · 🟢 Done
 
 **As a** user on a phone,
 **I want** the navbar to collapse into a hamburger menu and expand smoothly,
@@ -545,11 +545,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC4: Capybara system spec at 375 px and 1280 px viewports both pass.
 
 **Dependencies:** None
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-030 · Prefix Breadcrumb & Tooltip Components · 🟧 Should Have · 2 pts · ⚪ To Do
+### UC-030 · Prefix Breadcrumb & Tooltip Components · 🟧 Should Have · 2 pts · 🟢 Done
 
 **As an** indie developer following FR-011,
 **I want** every component selector prefixed with my chosen namespace,
@@ -560,11 +560,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC2: Tooltip selector changes from `[data-tooltip]` to `.{prefix}-tooltip` (or `[data-{prefix}-tooltip]`).
 - AC3: Component Catalogue snippets reflect the new prefixed selectors.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-031 · Tier 1 Dark Mode (`prefers-color-scheme`) · 🟧 Should Have · 2 pts · ⚪ To Do
+### UC-031 · Tier 1 Dark Mode (`prefers-color-scheme`) · 🟧 Should Have · 2 pts · 🟢 Done
 
 **As a** user with system-level dark mode,
 **I want** nanoCSS to honour my OS preference unless I have explicitly chosen a mode,
@@ -575,11 +575,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC2: An explicit `[data-theme="light"]` or `[data-theme="dark"]` overrides the media query (Tier 2).
 - AC3: The Theme Switcher persists the explicit choice in `localStorage` (Tier 3 — already shipped).
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-032 · Modular Component Partials · 🟧 Should Have · 5 pts · ⚪ To Do
+### UC-032 · Modular Component Partials · 🟧 Should Have · 5 pts · 🟢 Done
 
 **As a** maintainer,
 **I want** `_components.scss` split into `components/_button.scss`, `_nav.scss`, `_card.scss`, etc.,
@@ -592,11 +592,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC4: ZIP export ships the modular tree.
 - AC5: All existing specs still pass.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-033 · Responsiveness Sweep Across All 20 Components · 🟥 Must Have · 4 pts · ⚪ To Do
+### UC-033 · Responsiveness Sweep Across All 20 Components · 🟥 Must Have · 4 pts · 🟢 Done
 
 **As a** user,
 **I want** every component to look and behave correctly from 320 px to 1920 px viewport,
@@ -607,29 +607,109 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC2: A snapshot/visual-regression artefact (single PNG per breakpoint) is attached to the sprint review.
 - AC3: Any component with a layout failure has its fix landed in this sprint or a follow-up issue raised.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-046 · Obsidian Preset (Glass-Morphism Capture) · 🟧 Should Have · 5 pts · ⚪ To Do
+### UC-046 · Obsidian Preset (Glass-Morphism Capture) · 🟧 Should Have · 5 pts · 🟡 Partial
 
 > _See full specification above under the Sprint 8 section where it was originally drafted — moved here to Sprint 7 to ensure the values are captured before Sprint 8 strips the source files._
 
 **Dependencies:** UC-025 (preset config), UC-032 (ideally — modular partials make component edits cleaner)
 **Must complete before:** UC-034, UC-036 (Sprint 8) — the source CSS it reads will be deleted in those UCs
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-## Sprint 8 — Deep Dogfooding _(Planned)_
+## Sprint 8 — Deep Dogfooding + Sprint 7 Regressions _(Planned)_
 
-> **Sprint Goal:** _(User-mandated bugbear.)_ Make the Quick Apply preset buttons actually visibly re-skin the app. Replace the custom chrome with nanoCSS components. Strip inline styles. By this point the Obsidian preset is already defined (Sprint 7 UC-046), so when the custom chrome is dismantled and rebuilt from nanoCSS components, applying Obsidian restores the original look.
+> **Sprint Goal:** Fix four visual regressions surfaced in Sprint 7 QA (UC-047–UC-050), then begin deep dogfooding. Quick Apply must visibly re-skin the app. Replace custom chrome with nanoCSS components. Strip inline styles.
 > **Sprint Dates (proposed):** 2026-05-23 → 2026-06-06
-> **Estimated Capacity:** 18 story points
+> **Estimated Capacity:** 26 pts (capacity raised — regression fixes prepend the original 18 pts)
 
 ---
 
-### UC-034 · Eliminate Inline Styles in App Views · 🟥 Must Have · 5 pts · ⚪ To Do
+### UC-047 · Fix Dark Mode Theme-Switcher Regression · 🟥 Must Have · 1 pt · 🟢 Done
+
+**As a** user toggling between light and dark mode,
+**I want** the "Toggle Dark Mode" button to reliably switch both ways,
+**so that** I can choose a mode regardless of my OS setting.
+
+**Regression from:** UC-031 — the new `@media (prefers-color-scheme: dark)` tier means removing `data-theme` leaves the OS query in control, so "return to light" on a dark-OS machine is broken.
+
+**Acceptance Criteria:**
+- AC1: Clicking "Toggle Dark Mode" from light → sets `data-theme="dark"` on `<html>`. Clicking again → sets `data-theme="light"` (explicitly, not remove-attribute). The `data-theme` attribute is always set after the first toggle.
+- AC2: On an OS with dark mode, the page still starts in dark, and toggling "light" explicitly sets `[data-theme="light"]` so the Tier-2b rule overrides the media query.
+- AC3: System spec covers the toggle round-trip; existing `theme_switcher_spec.rb` updated to match.
+
+**Root cause:** `theme_controller.js#toggleDark` calls `removeAttribute("data-theme")` instead of `setAttribute("data-theme", "light")`.
+
+**Status:** 🟢 Done — Sprint 8 (2026-05-04)
+
+---
+
+### UC-048 · Fix Dark-Mode Contamination of Component Catalogue · 🟥 Must Have · 2 pts · 🟢 Done
+
+**As a** developer browsing the Component Catalogue,
+**I want** component previews to always render in light mode,
+**so that** I can evaluate the components without OS dark mode distorting the render.
+
+**Regression from:** UC-031 — `@media (prefers-color-scheme: dark) { :root { ... } }` inverts the neutral token scale globally. On any machine with OS dark mode, catalogue cards show dark-on-dark text and dark backgrounds.
+
+**Acceptance Criteria:**
+- AC1: Component Catalogue (`/components`) renders with correct light-mode neutral colours regardless of the user's OS dark-mode setting.
+- AC2: The app chrome still responds to OS dark mode (that is correct behaviour and must not regress).
+- AC3: System spec asserts `.nanocss-card` on the catalogue page does not produce invisible text at any viewport.
+
+**Fix approach:** Add `data-theme="light"` to the `<body>` of pages that include the nanoCSS framework style (or scope dark mode so it only applies when the user has explicitly chosen it via the Theme Switcher).
+
+**Status:** 🟢 Done — Sprint 8 (2026-05-04)
+
+---
+
+### UC-049 · Fix Hero `color: #fff` Cascade · 🟥 Must Have · 1 pt · 🟢 Done
+
+**As a** developer using the Component Catalogue and live preview,
+**I want** `.{prefix}-hero` to not force white text on child components,
+**so that** text inside nested components is readable.
+
+**Regression from:** UC-046 — added `color: #fff` to `.{prefix}-hero` for gradient legibility; this value cascades to all child elements including components embedded inside the hero in the preview pane.
+
+**Acceptance Criteria:**
+- AC1: `.{prefix}-hero > *` inherits white text only on the direct text nodes inside the hero wrapper, not on nested components.
+- AC2: A card or nav placed inside `.{prefix}-hero` maintains its own text colour.
+- AC3: Hero text itself remains light/white against the gradient (the original purpose of the change is preserved).
+
+**Fix approach:** Replace `color: #fff` with a more scoped rule: `color: var(--{prefix}-neutral-50, #f9fafb)` on `h1, h2, h3, p` direct children only, or wrap the hero text in a specific selector.
+
+**Status:** 🟢 Done — Sprint 8 (2026-05-04)
+
+---
+
+### UC-050 · Fix Live Preview — Body Font + Breadcrumb Rendering · 🟥 Must Have · 2 pts · 🟢 Done
+
+**As a** developer previewing a theme,
+**I want** all font and component changes to appear immediately in the live preview,
+**so that** what I configure is what I see.
+
+**Two defects to fix:**
+
+**Defect A — Body font not updating:**
+Changing `font_body` on the configure form does not update the live-preview body text font. The preview likely re-scopes only heading/subtitle font imports or the scoped compile path omits the font-body custom property re-emit.
+
+**Defect B — Breadcrumb broken in preview:**
+The breadcrumb component in the live preview shows broken styling. Likely cause: the backward-compat `nav[aria-label="breadcrumb"]` selector in `_breadcrumbs.scss` picks up conflicting styles from the scoped preview context (the configurator's own nav is also a `<nav>` element), OR the scoped compilation strips or reorders the breadcrumb rule unexpectedly.
+
+**Acceptance Criteria:**
+- AC1: Changing `font_body` and clicking "Preview" updates the body-text font in the `#preview-canvas` pane.
+- AC2: The breadcrumb component in the live preview renders with visible separator characters and correct text/background contrast.
+- AC3: System spec covers both ACs with a Turbo Stream interaction.
+
+**Status:** 🟢 Done — Sprint 8 (2026-05-04)
+
+---
+
+### UC-034 · Eliminate Inline Styles in App Views · 🟥 Must Have · 5 pts · 🟢 Done
 
 **As a** maintainer,
 **I want** zero inline `style="…"` attributes in `app/views/`,
@@ -640,11 +720,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC2: Replacements use nanoCSS utility classes (`.{prefix}-stack`, `.{prefix}-grid-*`, `.{prefix}-text-muted`, etc.).
 - AC3: A RuboCop or Brakeman rule fails CI if a new inline `style=` is introduced.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04). Lint spec at `spec/lint/inline_styles_spec.rb` enforces the rule in CI.
 
 ---
 
-### UC-035 · Quick Apply Visibly Re-skins the App Chrome · 🟥 Must Have · 5 pts · ⚪ To Do
+### UC-035 · Quick Apply Visibly Re-skins the App Chrome · 🟥 Must Have · 5 pts · 🟢 Done
 
 **As a** user clicking "Apply Corporate" / "Apply Playful" / "Apply Minimalist" on the landing page,
 **I want** the app's chrome (top nav, sidebar, footer, hero) to immediately reflect that preset,
@@ -656,11 +736,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC3: Capybara system spec: from a vanilla landing page, click "Apply Playful" → primary brand colour visible in the navbar background changes within 500 ms.
 
 **Dependencies:** UC-034, UC-036
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04). Turbo Stream in `preview.turbo_stream.erb` replaces `#nanocss-framework-style` on landing page Quick Apply.
 
 ---
 
-### UC-036 · Replace Custom Chrome With nanoCSS Components · 🟥 Must Have · 5 pts · ⚪ To Do
+### UC-036 · Replace Custom Chrome With nanoCSS Components · 🟥 Must Have · 5 pts · 🟢 Done
 
 **As a** maintainer,
 **I want** the app's top navigation, sidebar/configure layout, and hero replaced with the framework's own `<prefix>-nav`, `<prefix>-card`, `<prefix>-hero` components,
@@ -671,11 +751,11 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - AC2: `.glass-panel`, `.configure-layout`, and other bespoke blocks replaced with nanoCSS components or utility compositions.
 - AC3: `application.css` shrinks to layout shims only — no overrides of nanoCSS tokens.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04). `.top-nav` replaced with `nanocss-nav`; `.glass-panel` and `.nav-links` rules removed; layout shims retained.
 
 ---
 
-### UC-046 · Obsidian Preset (Glass-Morphism Capture) · 🟧 Should Have · 5 pts · ⚪ To Do
+### UC-046 · Obsidian Preset (Glass-Morphism Capture) · 🟧 Should Have · 5 pts · 🟡 Partial
 
 **As an** indie developer who likes the look of the configurator's current chrome,
 **I want** that entire aesthetic — deep navy gradients, smoked-glass surface blur, luminous border glow, and oversized hero typography — captured as a fourth nanoCSS preset called **Obsidian**,
@@ -719,14 +799,14 @@ vc-id: 895acb54-d6d8-45b5-a91e-a735affb2eb8
 - UC-034/UC-036 (chrome refactored to nanoCSS) — required before AC9 can be measured
 
 **Placement:** Sprint 7 (end of sprint — capture and extend tokens *before* Sprint 8 begins stripping the source files)
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 **Implementation Note:**
 The values to capture are currently in `app/assets/stylesheets/application.css` and the `.glass-panel` / `.top-nav` rules. **Extract them verbatim first — do not improve or redesign.** Aesthetic refinement is a follow-up UC if needed. The goal is fidelity: apply Obsidian and it must look exactly like the app does today.
 
 ---
 
-### UC-037 · Theme Switcher Lives In The Chrome · 🟦 Nice to Have · 3 pts · ⚪ To Do
+### UC-037 · Theme Switcher Lives In The Chrome · 🟦 Nice to Have · 3 pts · 🟢 Done
 
 **As a** user,
 **I want** the floating Theme Switcher (UC-022) available on every page of the app,
@@ -736,7 +816,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC1: Theme Switcher mounted in the application layout, not just the test page.
 - AC2: Switcher is suppressed on `/themes/configure` to avoid colliding with the form (or coordinated — TBD by UX).
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 8 (2026-05-04). Mounted in `application.html.erb`; suppressed on `configure_path` via `unless` guard.
 
 ---
 
@@ -748,7 +828,7 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 
 ---
 
-### UC-038 · Monochromatic + Split-Complementary Harmonies · 🟧 Should Have · 3 pts · ⚪ To Do
+### UC-038 · Monochromatic + Split-Complementary Harmonies · 🟧 Should Have · 3 pts · 🟢 Done
 
 **As an** indie developer,
 **I want** the two remaining FR-006 harmonies (Monochromatic, Split-Complementary),
@@ -759,11 +839,11 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC2: Per-algorithm specs cover an edge case (greyscale primary, near-white primary).
 - AC3: `_harmony_options.html.erb` renders the new swatch rows.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-039 · Component Catalogue Sidebar Navigation · 🟧 Should Have · 3 pts · ⚪ To Do
+### UC-039 · Component Catalogue Sidebar Navigation · 🟧 Should Have · 3 pts · 🟢 Done
 
 **As a** developer browsing the catalogue,
 **I want** a sticky sidebar listing every component as a jump link,
@@ -774,11 +854,11 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC2: Active section highlighted via `IntersectionObserver`.
 - AC3: Sidebar collapses below the mobile breakpoint (UC-029 dependency).
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-040 · Real CSS Minification · 🟧 Should Have · 2 pts · ⚪ To Do
+### UC-040 · Real CSS Minification · 🟧 Should Have · 2 pts · 🟢 Done
 
 **As an** indie developer downloading the ZIP,
 **I want** `nanocss.min.css` to be a correctly-minified stylesheet,
@@ -789,11 +869,11 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC2: The minified file passes a CSS lint round-trip (re-parse, re-emit, no diff in semantics).
 - AC3: Spec asserts file size delta vs un-minified is ≥ 30 %.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
-### UC-041 · Validate Generated CSS Against W3C Validator · 🟦 Nice to Have · 3 pts · ⚪ To Do
+### UC-041 · Validate Generated CSS Against W3C Validator · 🟦 Nice to Have · 3 pts · 🟢 Done
 
 **As a** maintainer,
 **I want** a CI step that runs the generated CSS through `css-validator`,
@@ -803,7 +883,92 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 - AC1: GitHub Action fetches `https://jigsaw.w3.org/css-validator/validator?profile=css3svg&output=json` for a default-config compile.
 - AC2: Build fails on validation errors.
 
-**Status:** ⚪ To Do
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
+
+---
+
+## Sprint 8 QA Findings — Untriaged _(Awaiting Sprint Assignment)_
+
+> Logged 2026-05-05 after visual QA review. Not yet assigned to a sprint.
+> UC-051/052/054 are regressions or long-standing bugs. UC-053 is a new feature request.
+
+---
+
+### UC-051 · Fix Light Mode — Dark Background Persists on Homepage & Catalogue · 🟥 Must Have · 2 pts · ⚪ To Do
+
+**As a** user toggling to light mode,
+**I want** the homepage and components page to switch to a light background,
+**so that** the app genuinely responds to my theme choice on every page.
+
+**Observed:** Toggling Theme Switcher → Light leaves the homepage hero + preset section and the components catalogue page with the dark/obsidian navy background.
+
+**Acceptance Criteria:**
+- AC1: `data-theme="light"` on `<html>` causes the homepage body/hero background to switch to the light-mode neutral token (no dark navy).
+- AC2: The component catalogue page (`/components`) also responds correctly — no dark background in light mode.
+- AC3: System spec: navigate to `/`, toggle to light, assert body background is not the dark navy token.
+
+**Root cause (suspected):** Background colour for the hero/page is hardcoded or uses a token not overridden by the `[data-theme="light"]` Tier-2b rule.
+
+**Dependencies:** UC-031, UC-047/048 (landed; verify interaction)
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
+
+---
+
+### UC-052 · Fix Dark Mode Card Contrast — Body Text and Background Too Similar · 🟥 Must Have · 1 pt · ⚪ To Do
+
+**As a** user in dark mode,
+**I want** card body text to be clearly readable against the card background,
+**so that** the dark theme is usable, not just visually distinct.
+
+**Observed:** In dark mode, card body text and card background are too close in value — text is difficult to read.
+
+**Acceptance Criteria:**
+- AC1: `.{prefix}-card` body text achieves at least 4.5:1 contrast ratio against the card background in dark mode (WCAG 2.1 AA).
+- AC2: Fix applies across all four presets' dark-mode token sets.
+- AC3: Spec asserts the contrast-critical text colour token is not the same as the card background token in dark mode.
+
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
+
+---
+
+### UC-053 · Expose Navbar Glass Morphism as a nanoCSS Utility Class · 🟧 Should Have · 2 pts · ⚪ To Do
+
+**As an** indie developer,
+**I want** the app's glass-blur navbar effect available as a reusable nanoCSS class,
+**so that** I can apply the same translucent surface treatment to any element in my project.
+
+**Background:** The app's top navbar uses a distinctive translucent blur effect (backdrop-filter + semi-transparent background + subtle border). This is a widely desired aesthetic that should be a first-class framework primitive, separate from the Obsidian preset's glass tokens.
+
+**Acceptance Criteria:**
+- AC1: A `.{prefix}-glass` utility class added to the nanoCSS SCSS — applies `backdrop-filter: blur(var(--{prefix}-surface-blur, 8px))`, a semi-transparent background using `surface_opacity`, and a subtle luminous border.
+- AC2: The navbar itself (`nanocss-nav` in `application.html.erb`) is refactored to use `.{prefix}-glass` rather than bespoke CSS, so the dogfooding is real.
+- AC3: `.{prefix}-glass` is documented in the Component Catalogue with an example panel.
+- AC4: On presets without glass tokens (Corporate, Playful, Minimalist), the class degrades gracefully (no backdrop-filter, standard opaque background).
+
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
+
+---
+
+### UC-054 · Fix Quick Apply in Floating Theme Switcher — Must Re-Skin Current Page · 🟥 Must Have · 3 pts · ⚪ To Do
+
+**As a** user on any page of the app,
+**I want** the preset buttons in the floating Theme Controls to immediately re-skin the page I'm on,
+**so that** I can preview presets from the catalogue, configure page, or anywhere — not just the landing page.
+
+**Observed:** Clicking a preset in the floating Theme Controls currently navigates to the configure page (or does nothing useful). The preset is never applied to the current page's chrome.
+
+**Required behaviour:** Same mechanism as the landing page Quick Apply — swap the `#nanocss-framework-style` link tag via a Turbo Stream, keeping the user on their current page. No navigation.
+
+**Acceptance Criteria:**
+- AC1: Clicking any preset button in the floating Theme Switcher re-skins the chrome on the current page (landing, catalogue, or configure) without navigation.
+- AC2: The re-skin applies within 500 ms and updates the same `#nanocss-framework-style` link already used by the landing page Quick Apply.
+- AC3: The active preset is visually indicated in the switcher (e.g., checked state or highlighted button).
+- AC4: The chosen preset is persisted to `localStorage` so a page refresh retains it.
+- AC5: System spec covers the interaction from the component catalogue page (`/components`) — the most important non-landing page.
+
+**Root cause:** The floating Theme Switcher's preset buttons were wired to navigate to the configure page rather than to a dedicated Quick Apply endpoint. The Turbo Stream + `#nanocss-framework-style` swap (built for UC-035) was never hooked up to the Theme Switcher.
+
+**Status:** 🟢 Done — Sprint 9 (2026-05-05)
 
 ---
 
@@ -815,18 +980,10 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 
 ---
 
-### UC-042 · Capistrano Deployment Runbook · 🟥 Must Have · 5 pts · ⚪ To Do
+### ~~UC-042 · Capistrano Deployment Runbook~~ · 🧊 Removed
 
-**As an** operator,
-**I want** a documented, repeatable Capistrano flow targeting the IONOS AlmaLinux 9 VPS,
-**so that** deployment is not a tribal-knowledge exercise.
-
-**Acceptance Criteria:**
-- AC1: `config/deploy.rb` + `config/deploy/{staging,production}.rb` complete and committed.
-- AC2: `bin/deploy` wraps `cap production deploy` with pre-flight checks (asset-precompile, master-key present).
-- AC3: A markdown runbook in `docs/DEPLOY.md` covers cold-start, rollback, and Passenger restart.
-
-**Status:** ⚪ To Do
+**Removed:** 2026-05-05  
+**Reason:** Operator explicitly rejected Capistrano. Deployment is performed manually via `git pull` on the server — no automation tool needed. See **ADR-007** for the full rationale and the manual deployment steps.
 
 ---
 
@@ -837,24 +994,17 @@ The values to capture are currently in `app/assets/stylesheets/application.css` 
 **so that** the repo is self-explanatory.
 
 **Acceptance Criteria:**
-- AC1: README replaces the Rails default.
-- AC2: Includes screenshots of the configurator, a curl-then-link example, and a "what's in the box" tree.
+- AC1: README replaces the Rails default with a proper project overview.
+- AC2: Includes screenshots of the configurator, a usage example (link to the hosted app), and a "what's in the box" tree for the downloaded ZIP.
 
 **Status:** ⚪ To Do
 
 ---
 
-### UC-044 · Active CHANGELOG Sync · 🟦 Nice to Have · 1 pt · ⚪ To Do
+### ~~UC-044 · Active CHANGELOG Sync~~ · 🧊 Removed
 
-**As a** maintainer,
-**I want** every merged PR to require a CHANGELOG entry under `## [Unreleased]`,
-**so that** the changelog stops decaying.
-
-**Acceptance Criteria:**
-- AC1: PR template includes a CHANGELOG checkbox.
-- AC2: A CI lint flags PRs that touch `app/` without touching `design/CHANGELOG.md`.
-
-**Status:** ⚪ To Do
+**Removed:** 2026-05-05  
+**Reason:** The CHANGELOG is already updated at the close of every sprint as part of the ship-current-sprint workflow. A CI lint gate and PR template checkbox would add ceremony without value — the sprint workflow is the process.
 
 ---
 

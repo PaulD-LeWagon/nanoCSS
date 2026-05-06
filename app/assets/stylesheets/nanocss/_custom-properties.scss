@@ -82,4 +82,9 @@
   --#{$prefix}-line-height: #{$nanocss-line-height};
   --#{$prefix}-line-height-body: #{$nanocss-line-height-body};
   --#{$prefix}-line-height-heading: #{$nanocss-line-height-heading};
+
+  // Glass-Surface Tokens (UC-046)
+  --#{$prefix}-surface-blur: #{$nanocss-surface-blur};
+  --#{$prefix}-surface-opacity: #{$nanocss-surface-opacity};
+  --#{$prefix}-border-glow-alpha: #{$nanocss-border-glow-alpha};
 }

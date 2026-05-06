@@ -1,0 +1,15 @@
+/* 0. Text Banner */
+hgroup {
+  :first-child {
+    font-size: var(--#{$prefix}-text-xl, 2rem);
+    margin-bottom: 0 !important;
+  }
+  :last-child {
+    font-size: var(--#{$prefix}-text-md, 1rem);
+    font-family: var(--#{$prefix}-font-subtitle);
+    font-weight: var(--#{$prefix}-weight-bold);
+    color: var(--#{$prefix}-neutral-500);
+    font-style: italic;
+    margin-top: 0 !important;
+  }
+}

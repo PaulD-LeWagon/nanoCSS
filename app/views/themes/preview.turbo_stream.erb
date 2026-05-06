@@ -1,14 +1,15 @@
 <%# preview.turbo_stream.erb
     On success: clears errors, updates stylesheet link, harmony swatches, share button.
+    Landing page (not @is_preview): ALSO updates #nanocss-framework-style so chrome re-skins.
     On validation failure (422): shows errors only — stylesheet is NOT updated.
-    Traces: design/BACKLOG.md UC-002 AC4, UC-006, UC-023 %>
+    Traces: design/BACKLOG.md UC-002 AC4, UC-006, UC-023, UC-035 %>
 
 <%# Always replace the errors target — clears on success, populates on failure %>
 <%= turbo_stream.replace "validation-errors" do %>
   <% if @config.errors.any? %>
-    <div id="validation-errors" style="background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.4); border-radius: 0.375rem; padding: 0.625rem 0.875rem; margin-bottom: 0.75rem; font-size: 0.8125rem; color: #fca5a5;">
+    <div id="validation-errors" class="validation-error-box">
       <% @config.errors.full_messages.each do |msg| %>
-        <p style="margin: 0 0 0.25rem;">⚠ <%= msg %></p>
+        <p class="validation-error-msg">⚠ <%= msg %></p>
       <% end %>
     </div>
   <% else %>
@@ -17,6 +18,12 @@
 <% end %>
 
 <% unless @config.errors.any? %>
+  <%# UC-035: update global chrome CSS on landing page so preset tokens apply to the whole app %>
+  <% unless @is_preview %>
+    <%= turbo_stream.replace "nanocss-framework-style" do %>
+      <style id="nanocss-framework-style"><%= @css.html_safe %></style>
+    <% end %>
+  <% end %>
   <%= turbo_stream.replace "nanocss-preview-style" do %>
     <div id="nanocss-preview-style">
       <link rel="stylesheet" href="<%= theme_css_path(theme: @config.to_base64, preview: @is_preview) %>" data-action="load->preview#onStyleLoad">
@@ -24,7 +31,7 @@
   <% end %>
   <%= turbo_stream.replace "harmony-options",
         partial: "themes/harmony_options",
-        locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic } %>
+        locals: { config: @config, complementary: @complementary, analogous: @analogous, triadic: @triadic, monochromatic: @monochromatic, split_complementary: @split_complementary } %>
   <%= turbo_stream.replace "share-link-btn" do %>
     <button type="button" class="btn-preset-outline" id="share-link-btn"
       onclick="navigator.clipboard.writeText(window.location.origin + '/configure?theme=<%= @config.to_base64 %>'); alert('Share link copied!');">

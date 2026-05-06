@@ -1,0 +1,86 @@
+/* 9. Nav / NavBar */
+.#{$prefix}-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--#{$prefix}-space-md, 1rem);
+  background: var(--#{$prefix}-neutral-50, #f9fafb);
+  border-bottom: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+  flex-wrap: wrap; /* Allows menu to wrap on mobile */
+  /* AC8 (UC-046): glass blur — no-op (0px) for standard presets, active for Obsidian */
+  backdrop-filter: blur(var(--#{$prefix}-surface-blur, 0px));
+  -webkit-backdrop-filter: blur(var(--#{$prefix}-surface-blur, 0px));
+
+  .nav-brand {
+    font-weight: var(--#{$prefix}-weight-bold, 700);
+    font-size: var(--#{$prefix}-text-lg, 1.25rem);
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: var(--#{$prefix}-space-xs, 0.25rem);
+    color: var(--#{$prefix}-neutral-700, #374151);
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  .nav-menu {
+    display: flex;
+    gap: var(--#{$prefix}-space-sm, 0.5rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+
+    a {
+      text-decoration: none;
+      color: var(--#{$prefix}-neutral-700, #374151);
+      padding: var(--#{$prefix}-space-sm, 0.5rem) var(--#{$prefix}-space-md, 1rem);
+      border-radius: var(--#{$prefix}-radius-sm, 0.125rem);
+      font-weight: var(--#{$prefix}-weight-medium, 500);
+      transition: background-color 0.2s, color 0.2s;
+
+      &:hover {
+        background-color: var(--#{$prefix}-neutral-200, #e5e7eb);
+        color: var(--#{$prefix}-primary, #3b82f6);
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-toggle {
+      display: block;
+    }
+
+    .nav-menu {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      margin-top: var(--#{$prefix}-space-md, 1rem);
+      align-items: stretch;
+
+      &.open {
+        display: flex;
+      }
+
+      a {
+        padding: var(--#{$prefix}-space-md, 1rem);
+        border-bottom: 1px solid var(--#{$prefix}-neutral-200, #e5e7eb);
+        border-radius: 0;
+      }
+
+      /* Reset auto margins on mobile so it stacks neatly */
+      .#{$prefix}-ml-auto {
+        margin-left: 0 !important;
+      }
+    }
+  }
+}

@@ -151,3 +151,11 @@ $nanocss-z-dropdown: 1000 !default;
 $nanocss-z-sticky: 1020 !default;
 $nanocss-z-modal: 1040 !default;
 $nanocss-z-toast: 1060 !default;
+
+// 11. Glass-Surface Tokens (UC-046)
+// Default values are no-ops so non-glass presets (Corporate, Playful, Minimalist)
+// look like standard opaque panels. Obsidian overrides all three.
+// ---------------------------------------------------------
+$nanocss-surface-blur: 0px !default;
+$nanocss-surface-opacity: 1 !default;
+$nanocss-border-glow-alpha: 0 !default;

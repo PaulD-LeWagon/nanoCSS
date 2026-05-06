@@ -33,7 +33,8 @@ RSpec.describe ScssCompilerService do
       expect(Sass).to receive(:compile_string).with(
         a_string_starting_with("@use 'sass:color';")
         .and(a_string_including("$prefix: 'nanocss';"))
-        .and(a_string_including('$nanocss-primary: #ff0000;'))
+        .and(a_string_including('$nanocss-primary: #ff0000;')),
+        style: :expanded
       ).and_call_original
       result = described_class.call(config)
       expect(result[:error]).to be_nil
@@ -43,7 +44,8 @@ RSpec.describe ScssCompilerService do
     it 'prepends the font_code selection before Dart Sass compilation' do
       config.font_code = 'JetBrains Mono'
       expect(Sass).to receive(:compile_string).with(
-        a_string_including('$nanocss-font-code: "JetBrains Mono";')
+        a_string_including('$nanocss-font-code: "JetBrains Mono";'),
+        style: :expanded
       ).and_call_original
       result = described_class.call(config)
       expect(result[:error]).to be_nil
@@ -150,6 +152,53 @@ RSpec.describe ScssCompilerService do
       result = described_class.call(config)
       expect(result[:css]).to match(/@layer nanocss \{/)
       expect(result[:css]).to match(/\}\s*\z/) # Ends with a closing brace
+    end
+
+    # --- UC-031: Tier 1 Dark Mode ---
+    it 'AC1: compiled CSS includes @media (prefers-color-scheme: dark) with :root block' do
+      result = described_class.call(config)
+      expect(result[:css]).to include('prefers-color-scheme: dark')
+      # The block must set at least one dark token on :root
+      expect(result[:css]).to match(/prefers-color-scheme:\s*dark\b.*?:root\s*\{.*?--nanocss-/m)
+    end
+
+    it 'AC2: [data-theme="light"] block exists to override the media query' do
+      result = described_class.call(config)
+      expect(result[:css]).to match(/\[data-theme=["']?light["']?\]/)
+    end
+
+    it 'AC2: [data-theme="dark"] explicit override still present (Tier 2)' do
+      result = described_class.call(config)
+      expect(result[:css]).to match(/\[data-theme=["']?dark["']?\]/)
+    end
+
+    # --- UC-032: Modular Component Partials ---
+    it 'AC1: individual component partial files exist in nanocss/components/' do
+      components_dir = Rails.root.join('app', 'assets', 'stylesheets', 'nanocss', 'components')
+      files = Dir.glob(File.join(components_dir, '_*.scss'))
+      expect(files.length).to be >= 17
+    end
+
+    it 'AC3: include-list exclusion uses component files (not regex strip)' do
+      config.excluded_components = [ 'modal', 'carousel' ]
+      result = described_class.call(config)
+      expect(result[:css]).not_to include('.nanocss-modal')
+      expect(result[:css]).not_to include('.nanocss-carousel')
+      expect(result[:css]).to include('.nanocss-card')
+    end
+
+    it 'AC3: btn alias correctly excludes buttons component' do
+      config.excluded_components = [ 'btn' ]
+      result = described_class.call(config)
+      expect(result[:css]).not_to include('.nanocss-btn-primary')
+      expect(result[:css]).to include('.nanocss-card')
+    end
+
+    it 'AC3: loader alias correctly excludes loading component' do
+      config.excluded_components = [ 'loader' ]
+      result = described_class.call(config)
+      expect(result[:css]).not_to include('.nanocss-loader')
+      expect(result[:css]).to include('.nanocss-nav')
     end
   end
 end

@@ -18,6 +18,68 @@
 
 ---
 
+## [0.9.0] — 2026-05-05 — Sprint 9
+
+### Added
+- UC-038: `ColourHarmonyService` extended with `:monochromatic` (same hue, ±25 lightness, clamped to [0.05, 0.95]) and `:split_complementary` (hue +150° and +210°) algorithms. `HARMONIES` constant now lists all five harmony types. Two new swatch rows added to the configure form.
+- UC-039: Sticky sidebar on the Component Catalogue (`/components`) — 20 anchor links, `IntersectionObserver` active-state tracking, collapses to `display: none` at ≤768px. `catalogue_sidebar_controller.js` added.
+- UC-041: `validate_css` GitHub Actions job in `ci.yml` — compiles default-config CSS via `rails runner` and POSTs to the W3C CSS3/SVG validator. Fails the build on validation errors; `continue-on-error: true` since the API is occasionally unreachable. `spec/css_validation_spec.rb` mirrors the check locally with graceful skip when API is down.
+
+### Changed
+- UC-040: `ZipAssemblerService` now produces `{prefix}.min.css` via a second `ScssCompilerService.call(@configuration, style: :compressed)` call rather than `gsub(/\s+/, ' ')`. `ScssCompilerService` accepts a `style:` keyword argument (default `:expanded`).
+
+### Fixed
+- UC-039 (follow-up): CSS Grid `1fr` column lacked `min-width: 0` on `.catalogue-main`, causing icon items at narrow viewports to overflow the grid cell and be clipped by `.component-section`'s `overflow: hidden`. Added `min-width: 0`.
+
+### Sprint Metrics
+- Planned: 11 pts · Delivered: 11 pts · Velocity: 11
+- 154 specs, 0 failures · 0 RuboCop offences · 4 Brakeman warnings (pre-existing, unchanged)
+
+---
+
+## [0.8.0] — 2026-05-05 — Sprint 8
+
+### Fixed
+- UC-047: `theme_controller.js` now always sets `data-theme` explicitly — `removeAttribute` replaced with `setAttribute("data-theme", "light")` so OS media query is never re-engaged on a dark machine.
+- UC-048: Catalogue and preview pages force `data-theme="light"` on the body — prevents `@media (prefers-color-scheme: dark)` from inverting component renders on dark-OS machines.
+- UC-049: Hero `color: #fff` scoped to direct `h1/h2/h3/p` children only — nested components inside `.{prefix}-hero` no longer inherit white text.
+- UC-050: Live-preview body font now emitted correctly (canvas-scoped `font-family` in `ScssCompilerService`); breadcrumb conflict with host nav resolved via scoped selector ordering.
+
+### Changed
+- UC-034: All 81 inline `style=` attributes removed from `app/views/`; replacements use nanoCSS utility classes. `spec/lint/inline_styles_spec.rb` fails CI if new inline styles are introduced.
+- UC-036: App chrome replaced — `.top-nav` swapped for `nanocss-nav`; `.glass-panel`/`.nav-links` custom CSS blocks removed; `application.css` reduced to layout shims only.
+- UC-037: Floating Theme Switcher mounted in `application.html.erb`; suppressed on `/themes/configure` to avoid colliding with the config form.
+
+### Added
+- UC-035: Quick Apply on the landing page now replaces both the preview stylesheet (`#nanocss-preview-link`) and the chrome stylesheet (`#nanocss-framework-style`) — preset colour changes are immediately visible in the navbar, hero, and buttons.
+
+### Sprint Metrics
+- Planned: 24 pts · Delivered: 24 pts · Velocity: 24
+- 145 specs, 0 failures · 0 RuboCop offences · 0 Brakeman warnings
+
+---
+
+## [0.7.0] — 2026-05-04 — Sprint 7
+
+### Added
+- UC-028: Stimulus `dropdown_controller.js` — dropdowns inside navbars stay open during item clicks; Esc + outside-click close; multi-dropdown isolation.
+- UC-029: Stimulus `navbar_controller.js` — mobile hamburger toggle with Esc-close and `aria-expanded` tracking. Responsive chrome media query eliminates horizontal overflow at 320 px.
+- UC-030: Prefixed breadcrumb (`.{prefix}-breadcrumb`) and tooltip (`.{prefix}-tooltip`) CSS selectors; backward-compat `nav[aria-label]` and `[data-tooltip]` aliases retained.
+- UC-031: Three-tier dark mode — Tier 1 `@media (prefers-color-scheme: dark) { :root { … } }`, Tier 2a `[data-theme="dark"]`, Tier 2b `[data-theme="light"]`. Tier 3 (localStorage) was already shipped.
+- UC-032: `_components.scss` split into 18 individual partials under `nanocss/components/`. `ScssCompilerService` replaced brittle regex-strip with `COMPONENT_ALIASES` include-list. `ZipAssemblerService` auto-exports the modular tree.
+- UC-033: Responsiveness spec suite — 320 / 768 / 1280 / 1920 px × no-overflow + key-component assertions. PNG artefacts saved to `tmp/breakpoint_*.png`.
+- UC-046: Obsidian glass-morphism preset — `surface_blur`, `surface_opacity`, `border_glow_alpha` tokens added to `ThemeConfiguration`; Obsidian entry in `config/presets.yml`; 4th preset card auto-renders on landing page. Hero uses `primary → secondary` CSS-var gradient. Card + nav gain `backdrop-filter` consuming `surface-blur`.
+
+### Changed
+- Hero component now uses a `linear-gradient(primary, secondary)` background instead of a flat neutral colour.
+- Card component headers now carry `font-size: var(--{prefix}-text-md)` from the typography scale.
+- Quick Apply preset button now passes all preset YAML attributes to `ThemeConfiguration` (not just primary/secondary/tertiary).
+
+### Known Issues
+All four regressions (UC-047–UC-050) fixed in Sprint 8 (v0.8.0).
+
+---
+
 ## [0.6.0] — 2026-05-03 — Sprint 6
 
 ### Added

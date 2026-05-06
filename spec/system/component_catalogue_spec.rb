@@ -52,6 +52,21 @@ RSpec.describe "Component Catalogue", type: :system do
       expect(page).not_to have_css("pre code", text: "nanocss-")
     end
 
+    # UC-039 AC1: Sidebar nav with anchor links for all 20 components
+    it "UC-039 AC1: sidebar nav contains anchor links for all 20 component sections" do
+      visit components_path
+      expect(page).to have_css(".catalogue-sidebar")
+      expect(page).to have_css(".catalogue-sidebar nav a", minimum: 20)
+      expect(page).to have_css(".catalogue-sidebar nav a[href='#text-banner']")
+      expect(page).to have_css(".catalogue-sidebar nav a[href='#icons']")
+    end
+
+    # UC-039 AC3: Sidebar collapses below mobile breakpoint (structure check)
+    it "UC-039 AC3: sidebar is rendered in the DOM for responsive collapse" do
+      visit components_path
+      expect(page).to have_css(".catalogue-sidebar", visible: :all)
+    end
+
     it "AC3: Clicking the copy icon copies the snippet to the clipboard and shows a toast", js: true do
       visit components_path
 

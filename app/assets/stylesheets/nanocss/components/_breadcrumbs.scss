@@ -1,0 +1,24 @@
+/* 15. Breadcrumbs — primary selector is .{prefix}-breadcrumb; nav[aria-label] kept as backward-compat alias */
+.#{$prefix}-breadcrumb,
+nav[aria-label="breadcrumb"] {
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--#{$prefix}-space-sm, 0.5rem);
+  }
+
+  li:not(:last-child)::after {
+    content: '/';
+    margin-left: var(--#{$prefix}-space-sm, 0.5rem);
+    color: var(--#{$prefix}-neutral-400, #9ca3af);
+  }
+
+  li:last-child {
+    color: var(--#{$prefix}-neutral-600, #4b5563);
+    pointer-events: none;
+  }
+}

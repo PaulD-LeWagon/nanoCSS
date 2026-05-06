@@ -1,0 +1,64 @@
+/* 20. Dark Mode — Three-Tier System (UC-031)
+   Tier 1: OS preference via @media (prefers-color-scheme: dark)
+   Tier 2: Explicit [data-theme="dark"] / [data-theme="light"] overrides
+   Tier 3: localStorage persistence — already shipped in theme_controller.js
+   ------------------------------------------------------------------ */
+
+/* Tier 1 — OS dark preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --#{$prefix}-bg-body: #0f172a;
+    --#{$prefix}-text-body: #f1f5f9;
+    --#{$prefix}-neutral-50: #1e293b;
+    --#{$prefix}-neutral-100: #334155;
+    --#{$prefix}-neutral-200: #475569;
+    --#{$prefix}-neutral-300: #64748b;
+    --#{$prefix}-neutral-400: #94a3b8;
+    --#{$prefix}-neutral-500: #cbd5e1;
+    --#{$prefix}-neutral-600: #e2e8f0;
+    --#{$prefix}-neutral-700: #f1f5f9;
+    --#{$prefix}-neutral-800: #f8fafc;
+    --#{$prefix}-neutral-900: #ffffff;
+    --chrome-glass: rgba(15, 23, 42, 0.8);
+    --chrome-border: rgba(255, 255, 255, 0.1);
+    --chrome-text: #f1f5f9;
+  }
+}
+
+/* Tier 2a — Explicit dark (overrides Tier 1 for users who want dark always) */
+[data-theme="dark"] {
+  --#{$prefix}-bg-body: #0f172a;
+  --#{$prefix}-text-body: #f1f5f9;
+  --#{$prefix}-neutral-50: #1e293b;
+  --#{$prefix}-neutral-100: #334155;
+  --#{$prefix}-neutral-200: #475569;
+  --#{$prefix}-neutral-300: #64748b;
+  --#{$prefix}-neutral-400: #94a3b8;
+  --#{$prefix}-neutral-500: #cbd5e1;
+  --#{$prefix}-neutral-600: #e2e8f0;
+  --#{$prefix}-neutral-700: #f1f5f9;
+  --#{$prefix}-neutral-800: #f8fafc;
+  --#{$prefix}-neutral-900: #ffffff;
+  --chrome-glass: rgba(15, 23, 42, 0.8);
+  --chrome-border: rgba(255, 255, 255, 0.1);
+  --chrome-text: #f1f5f9;
+}
+
+/* Tier 2b — Explicit light (overrides Tier 1 for users on dark OS who want light always) */
+[data-theme="light"] {
+  --#{$prefix}-bg-body: #ffffff;
+  --#{$prefix}-text-body: #{$nanocss-neutral-900};
+  --#{$prefix}-neutral-50: #f9fafb;
+  --#{$prefix}-neutral-100: #{$nanocss-neutral-100};
+  --#{$prefix}-neutral-200: #e5e7eb;
+  --#{$prefix}-neutral-300: #{$nanocss-neutral-300};
+  --#{$prefix}-neutral-400: #9ca3af;
+  --#{$prefix}-neutral-500: #{$nanocss-neutral-500};
+  --#{$prefix}-neutral-600: #4b5563;
+  --#{$prefix}-neutral-700: #{$nanocss-neutral-700};
+  --#{$prefix}-neutral-800: #1f2937;
+  --#{$prefix}-neutral-900: #{$nanocss-neutral-900};
+  --chrome-glass: rgba(255, 255, 255, 0.8);
+  --chrome-border: rgba(0, 0, 0, 0.1);
+  --chrome-text: #0f172a;
+}

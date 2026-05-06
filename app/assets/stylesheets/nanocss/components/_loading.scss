@@ -1,0 +1,16 @@
+/* 7. Loading Indicator */
+.#{$prefix}-loader {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--#{$prefix}-primary, #3b82f6);
+  animation: #{$prefix}-spin 1s linear infinite;
+}
+
+@keyframes #{$prefix}-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

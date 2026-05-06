@@ -7,7 +7,8 @@ class ThemeConfiguration
                 :base_radius, :base_border_width,
                 :text_shadow, :drop_shadow, :tier, :mode,
                 :margin_md, :space_md,
-                :excluded_components, :wrap_in_layer
+                :excluded_components, :wrap_in_layer,
+                :surface_blur, :surface_opacity, :border_glow_alpha
 
   VALID_COMPONENTS = [ "modal", "carousel", "card", "hero", "dropdown", "group", "loader", "nav", "badge", "tag", "breadcrumb", "pagination", "tabs", "btn", "tooltip" ].freeze
 
@@ -39,6 +40,10 @@ class ThemeConfiguration
     @base_border_width ||= "1px"
     @text_shadow ||= "0.25rem 0.25rem 0.5rem rgba(5, 5, 5, 0.5)"
     @drop_shadow ||= "0.5rem 0.5rem 1rem rgba(1, 1, 1, 0.25)"
+    # Glass-surface tokens (UC-046). Defaults are no-ops for non-glass presets.
+    @surface_blur ||= "0px"
+    @surface_opacity ||= "1"
+    @border_glow_alpha ||= "0"
   end
 
   def to_scss_variables_string
@@ -71,6 +76,11 @@ class ThemeConfiguration
     vars << "$nanocss-text-shadow: #{text_shadow};" if text_shadow.present?
     vars << "$nanocss-drop-shadow: #{drop_shadow};" if drop_shadow.present?
 
+    # Glass-surface tokens (UC-046)
+    vars << "$nanocss-surface-blur: #{surface_blur};" if surface_blur.present?
+    vars << "$nanocss-surface-opacity: #{surface_opacity};" if surface_opacity.present?
+    vars << "$nanocss-border-glow-alpha: #{border_glow_alpha};" if border_glow_alpha.present?
+
     # Advanced mode: decoupled overrides
     if mode == "advanced"
       vars << "$nanocss-margin-md: #{margin_md};" if margin_md.present?
@@ -88,7 +98,9 @@ class ThemeConfiguration
       "base_radius" => base_radius, "base_border_width" => base_border_width,
       "text_shadow" => text_shadow, "drop_shadow" => drop_shadow, "tier" => tier, "mode" => mode,
       "margin_md" => margin_md, "space_md" => space_md,
-      "excluded_components" => excluded_components, "wrap_in_layer" => wrap_in_layer
+      "excluded_components" => excluded_components, "wrap_in_layer" => wrap_in_layer,
+      "surface_blur" => surface_blur, "surface_opacity" => surface_opacity,
+      "border_glow_alpha" => border_glow_alpha
     }
   end
 

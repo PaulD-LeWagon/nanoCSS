@@ -21,3 +21,13 @@ minimalist:
   primary: "#000000"
   secondary: "#404040"
   tertiary: "#737373"
+
+obsidian:
+  name: "Obsidian"
+  primary: "#a855f7"
+  secondary: "#ec4899"
+  tertiary: "#1e293b"
+  base_radius: "0.5rem"
+  surface_blur: "12px"
+  surface_opacity: "0.85"
+  border_glow_alpha: "0.25"

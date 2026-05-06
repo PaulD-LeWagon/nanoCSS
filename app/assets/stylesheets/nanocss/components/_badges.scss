@@ -1,0 +1,23 @@
+/* 13. Badges */
+.#{$prefix}-badge {
+  display: inline-block;
+  padding: 0.125rem var(--#{$prefix}-space-sm, 0.5rem);
+  font-size: var(--#{$prefix}-text-xs, 0.75rem);
+  font-weight: var(--#{$prefix}-weight-bold, 700);
+  border-radius: 9999px;
+  /* Pill */
+  background-color: var(--#{$prefix}-info, #3b82f6);
+  color: #fff;
+
+  &.success {
+    background-color: var(--#{$prefix}-success, #10b981);
+  }
+
+  &.warning {
+    background-color: var(--#{$prefix}-warning, #f59e0b);
+  }
+
+  &.danger {
+    background-color: var(--#{$prefix}-danger, #ef4444);
+  }
+}

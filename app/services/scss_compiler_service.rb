@@ -8,17 +8,32 @@
 #   4. _custom-properties.scss (maps SCSS vars → CSS custom properties)
 #   5. _reset.scss (bespoke CSS reset — always included)
 #   6. _base.scss (semantic HTML element styling — Nano tier)
-#   7. _utilities.scss (Standard/Full tiers only)
+#   7. components/_*.scss (individual partials, include-list filtered — UC-032)
+#   8. _utilities.scss (Standard/Full tiers only)
 class ScssCompilerService
-  def self.call(configuration, tier: nil, scope: nil)
+  # Maps user-facing exclusion aliases to their canonical component filename stem.
+  # e.g. excluded_components: ['btn'] maps to components/_buttons.scss (Per UC-032 AC3)
+  COMPONENT_ALIASES = {
+    "btn"          => "buttons",
+    "button"       => "buttons",
+    "navbar"       => "nav",
+    "loader"       => "loading",
+    "badge"        => "badges",
+    "tag"          => "tags",
+    "breadcrumb"   => "breadcrumbs",
+    "hgroup"       => "banner",
+    "text_banner"  => "banner"
+  }.freeze
+  def self.call(configuration, tier: nil, scope: nil, style: :expanded)
     tier ||= configuration.respond_to?(:tier) ? configuration.tier : :standard
-    new(configuration, tier, scope: scope).call
+    new(configuration, tier, scope: scope, style: style).call
   end
 
-  def initialize(configuration, tier, scope: nil)
+  def initialize(configuration, tier, scope: nil, style: :expanded)
     @configuration = configuration
     @tier = tier.to_sym
     @scope = scope
+    @style = style
   end
 
   def call
@@ -52,27 +67,24 @@ class ScssCompilerService
       # 5. Semantic HTML base styling — Nano tier (FR-005)
       base_scss = File.read(File.join(base_path, "_base.scss"))
 
-      # 5a. UI Components styling
+      # 5a. UI Components styling — assembled from modular partials (UC-032)
       components_scss = ""
       if [ :standard, :full ].include?(@tier)
-        components_scss = File.read(File.join(base_path, "_components.scss"))
-        if @configuration.excluded_components.present?
-          @configuration.excluded_components.each do |c|
-            # Simple regex parser to strip out sections of the monolithic _components.scss based on header names
-            components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*#{Regexp.escape(c.capitalize)}\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
+        components_dir = File.join(base_path, "components")
+        component_files = Dir.glob(File.join(components_dir, "_*.scss")).sort
 
-            # Special aliases due to file naming
-            if c == "btn" || c == "button"
-              components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*Buttons?\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
-            end
-            if c == "nav" || c == "navbar"
-              components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*Nav\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
-            end
-            if c == "loader"
-              components_scss.gsub!(/\/\*\s*\d+[a-z]?\.\s*Loading\b.*?(?=\/\*\s*\d+[a-z]?\.|\z)/mi, "")
-            end
-          end
+        if @configuration.excluded_components.present?
+          excluded = @configuration.excluded_components.map { |c|
+            COMPONENT_ALIASES.fetch(c.downcase, c.downcase)
+          }.to_set
+
+          component_files = component_files.reject { |f|
+            stem = File.basename(f, ".scss").sub(/^_/, "")
+            excluded.include?(stem)
+          }
         end
+
+        components_scss = component_files.map { |f| File.read(f) }.join("\n\n")
       end
 
       # 6. Standard tier: utility classes
@@ -102,11 +114,19 @@ class ScssCompilerService
         # do not need to be re-emitted every preview update.
         scoped_custom_props = custom_props_scss.gsub(/:root/, @scope)
 
+        # UC-050: _base.scss is excluded from the scoped preview (see ADR-003) but that
+        # means `body { font-family: var(--prefix-font-body) }` never fires in the pane.
+        # Emit an explicit font-family rule scoped to the canvas so font_body changes
+        # are visible without re-introducing the full-page reflow problem.
+        prefix_val = @configuration.prefix.presence || "nanocss"
+        font_body_rule = "#{@scope} { font-family: var(--#{prefix_val}-font-body, system-ui, sans-serif); }"
+
         full_scss = [
           dynamic_vars,
           variables_scss,
           mixins_scss,
           scoped_custom_props,
+          font_body_rule,
           components_scss   # component selectors are global — safe to include
         ].join("\n\n")
       else
@@ -123,7 +143,7 @@ class ScssCompilerService
       end
 
       # Execute Dart Sass in-memory compilation
-      result = Sass.compile_string(full_scss)
+      result = Sass.compile_string(full_scss, style: @style)
 
       css_output = result.css
 

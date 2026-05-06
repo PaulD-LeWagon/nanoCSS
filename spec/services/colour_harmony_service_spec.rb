@@ -35,5 +35,44 @@ RSpec.describe ColourHarmonyService do
       expect(result.length).to eq(2)
       expect(result).to all(match(/\A#[0-9a-fA-F]{6}\z/))
     end
+
+    # UC-038 AC1: Monochromatic harmony
+    it "returns monochromatic colours (same hue, varied lightness)" do
+      result = described_class.call("#3b82f6", harmony_type: :monochromatic)
+      expect(result.length).to eq 2
+      expect(result).to all(match(/\A#[0-9a-fA-F]{6}\z/))
+      expect(result[0]).not_to eq(result[1])
+    end
+
+    it "handles greyscale primary for :monochromatic without raising" do
+      expect { described_class.call("#888888", harmony_type: :monochromatic) }.not_to raise_error
+      result = described_class.call("#888888", harmony_type: :monochromatic)
+      expect(result.length).to eq 2
+      expect(result).to all(match(/\A#[0-9a-fA-F]{6}\z/))
+    end
+
+    it "handles near-white primary for :monochromatic without clipping to invalid values" do
+      result = described_class.call("#f8f8f8", harmony_type: :monochromatic)
+      expect(result).to all(match(/\A#[0-9a-fA-F]{6}\z/))
+    end
+
+    # UC-038 AC1: Split-Complementary harmony
+    it "returns split-complementary colours (hue +150° and hue +210°)" do
+      result = described_class.call("#ff0000", harmony_type: :split_complementary)
+      expect(result.length).to eq 2
+      expect(result).to all(match(/\A#[0-9a-fA-F]{6}\z/))
+      expect(result[0]).not_to eq(result[1])
+    end
+
+    it "handles greyscale primary for :split_complementary without raising" do
+      expect { described_class.call("#808080", harmony_type: :split_complementary) }.not_to raise_error
+      result = described_class.call("#808080", harmony_type: :split_complementary)
+      expect(result.length).to eq 2
+    end
+
+    # UC-038 AC1: HARMONIES constant includes all five harmonies
+    it "HARMONIES constant lists all five harmony types" do
+      expect(described_class::HARMONIES).to include(:monochromatic, :split_complementary)
+    end
   end
 end

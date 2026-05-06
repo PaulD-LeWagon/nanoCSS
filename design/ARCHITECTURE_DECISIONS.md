@@ -30,6 +30,7 @@ Use the next sequential ID. Set status to **Proposed** → **Accepted** → **Su
 | ADR-004 | Corporate is the form-load default; PRD §9.1 palette becomes the Playful preset | ✅ Accepted | Sprint 4 | 2026-04-04 |
 | ADR-005 | Defer validator gate enforcement to UC-023 | 🟡 Proposed | Sprint 5 | 2026-04-25 |
 | ADR-006 | Use the undocumented Google Fonts metadata endpoint | ✅ Accepted | Sprint 3 | 2026-03-21 |
+| ADR-007 | No Capistrano — deploy via `git pull` on the server | ✅ Accepted | Sprint 10 | 2026-05-05 |
 
 ---
 
@@ -279,5 +280,38 @@ The unofficial endpoint `https://fonts.google.com/metadata/fonts` returns the sa
 - SYSTEM_DESIGN §5.4
 
 ---
+
+## ADR-007 · No Capistrano — deploy via `git pull` on the server
+
+**Date:** 2026-05-05
+**Sprint:** Sprint 10
+**Status:** ✅ Accepted
+
+### Context
+UC-042 proposed using Capistrano to automate deployments to the IONOS AlmaLinux 9 VPS. Capistrano was listed in the Sprint 10 backlog at draft time as the conventional choice for Rails deployment automation.
+
+The operator explicitly rejected this approach. The deployment workflow is deliberately simple: SSH into the server, `git pull`, restart Passenger. This is sufficient for a single-server, single-developer project with infrequent deploys.
+
+### Decision
+**Do not use Capistrano.** Do not add Capistrano (or capistrano-rbenv, capistrano-passenger, capistrano-bundler, etc.) to the Gemfile. Deployment to the IONOS VPS is a manual operation:
+
+1. `ssh user@server`
+2. `cd /path/to/app && git pull origin main`
+3. `bundle install --without development test` (if Gemfile changed)
+4. `bundle exec rails assets:precompile RAILS_ENV=production` (if assets changed)
+5. Restart Passenger (via Apache config or `passenger-config restart-app`)
+
+### Consequences
+- No `config/deploy.rb`, `config/deploy/production.rb`, `Capfile`, or `bin/deploy` in this repo — ever.
+- Any deployment runbook is a plain `docs/DEPLOY.md` covering the manual steps above.
+- UC-042 has been removed from the backlog.
+- Future automation, if any, should be a simple shell script — not a Rails deployment tool.
+
+### Why not automate?
+Deploys are infrequent (one per sprint, not continuous). Capistrano adds a significant gem surface area for zero additional safety in a single-server, single-developer setup. A `git pull` is auditable, reversible, and needs nothing beyond SSH access.
+
+### Related
+- UC-042 (removed from Sprint 10)
+- `design/SYSTEM_DESIGN.md §2.3` (Deployment & Environment)
 
 _Add new ADRs below this line, incrementing the ID._

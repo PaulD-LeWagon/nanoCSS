@@ -22,9 +22,10 @@ class ZipAssemblerService
       end
 
       if @format == "all" || @format == "min"
-        # Write minified CSS
+        # UC-040: Real minification via a second Sass.compile_string pass with style: :compressed
+        min_result = ScssCompilerService.call(@configuration, style: :compressed)
         out.put_next_entry("#{prefix}.min.css")
-        out.write(@compiled_css.gsub(/\s+/, " ").strip)
+        out.write(min_result[:css] || @compiled_css)
       end
 
       if @format == "all" || @format == "scss"

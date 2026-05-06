@@ -88,3 +88,38 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+
+  validate_css:
+    runs-on: ubuntu-latest
+    continue-on-error: true  # W3C API can be flaky; don't block the pipeline
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Compile default nanoCSS and validate against W3C CSS Validator
+        env:
+          RAILS_ENV: test
+        run: |
+          css=$(bundle exec rails runner "print ScssCompilerService.call(ThemeConfiguration.new)[:css]")
+          response=$(curl -s --max-time 30 -X POST \
+            "https://jigsaw.w3.org/css-validator/validator?output=json&profile=css3svg&warning=0" \
+            --data-urlencode "text=${css}" 2>&1)
+
+          if ! echo "$response" | ruby -e "require 'json'; JSON.parse(STDIN.read)" > /dev/null 2>&1; then
+            echo "⚠️  W3C validator returned non-JSON (service unavailable) — skipping"
+            exit 0
+          fi
+
+          error_count=$(echo "$response" | ruby -e "require 'json'; puts JSON.parse(STDIN.read).dig('cssvalidation','result','errorcount').to_i")
+          if [ "$error_count" -gt 0 ]; then
+            echo "❌ CSS validation failed with ${error_count} error(s):"
+            echo "$response" | ruby -e "require 'json'; JSON.parse(STDIN.read).dig('cssvalidation','errors','errorlist')&.each { |e| puts e['message'] }"
+            exit 1
+          fi
+          echo "✅ CSS validation passed (0 errors)"

@@ -1,0 +1,49 @@
+/* 17. Tabs */
+.#{$prefix}-tabs {
+  display: flex;
+  flex-wrap: wrap;
+
+  & > input[type="radio"] {
+    display: none;
+  }
+
+  & > label {
+    padding: var(--#{$prefix}-space-sm, 0.5rem) var(--#{$prefix}-space-md, 1rem);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    font-weight: var(--#{$prefix}-weight-medium, 500);
+    order: 1;
+    color: var(--#{$prefix}-neutral-600, #4b5563);
+
+    &:hover {
+      color: var(--#{$prefix}-primary, #3b82f6);
+    }
+  }
+
+  & > .panel {
+    display: none;
+    width: 100%;
+    order: 2;
+    padding: var(--#{$prefix}-space-md, 1rem);
+    border-top: var(--#{$prefix}-border-width-sm, 1px) solid var(--#{$prefix}-neutral-300, #d1d5db);
+  }
+
+  /* When radio is checked, highly active UI logic triggers */
+  & > input[type="radio"]:checked + label {
+    color: var(--#{$prefix}-primary, #3b82f6);
+    border-bottom-color: var(--#{$prefix}-primary, #3b82f6);
+  }
+
+  & > input[id^="tab1"]:checked ~ #panel1,
+  & > input[id^="tab2"]:checked ~ #panel2,
+  & > input[id^="tab3"]:checked ~ #panel3 {
+    display: block;
+  }
+
+  /* Cleaner :has() approach if supported, though the ID fallback above is safer */
+  &:has(> input[type="radio"]:nth-of-type(1):checked) > .panel:nth-of-type(1),
+  &:has(> input[type="radio"]:nth-of-type(2):checked) > .panel:nth-of-type(2),
+  &:has(> input[type="radio"]:nth-of-type(3):checked) > .panel:nth-of-type(3) {
+    display: block;
+  }
+}

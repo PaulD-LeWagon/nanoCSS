@@ -21,3 +21,12 @@ application.register("theme", ThemeController)
 
 import HarmonyController from "./harmony_controller"
 application.register("harmony", HarmonyController)
+
+import DropdownController from "./dropdown_controller"
+application.register("dropdown", DropdownController)
+
+import NavbarController from "./navbar_controller"
+application.register("navbar", NavbarController)
+
+import CatalogueSidebarController from "./catalogue_sidebar_controller"
+application.register("catalogue-sidebar", CatalogueSidebarController)

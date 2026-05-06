@@ -1,0 +1,95 @@
+/* 2. Carousel
+   Pure CSS carousel: wrap slides in .{prefix}-carousel, each slide in
+   .carousel-slide, add .carousel-prev / .carousel-next buttons.
+   Scroll-snap drives snapping; JS is optional for button wiring.
+   ------------------------------------------------------------------ */
+.#{$prefix}-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--#{$prefix}-radius-lg, 0.5rem);
+
+  /* ── Slide track ── */
+  .carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    gap: 0;
+    /* Hide scrollbar visually while keeping it functional */
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  /* ── Individual slides ── */
+  .carousel-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    position: relative;
+  }
+
+  /* ── Prev / Next controls ── */
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--#{$prefix}-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  .carousel-prev {
+    left: var(--#{$prefix}-space-md, 1rem);
+  }
+
+  .carousel-next {
+    right: var(--#{$prefix}-space-md, 1rem);
+  }
+
+  /* ── Dots indicator strip ── */
+  .carousel-dots {
+    position: absolute;
+    bottom: var(--#{$prefix}-space-md, 1rem);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--#{$prefix}-space-sm, 0.5rem);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.45);
+      transition: background 0.2s ease, transform 0.2s ease;
+
+      &.active {
+        background: #fff;
+        transform: scale(1.3);
+      }
+    }
+  }
+}

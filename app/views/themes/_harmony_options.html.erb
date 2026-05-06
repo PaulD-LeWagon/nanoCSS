@@ -4,12 +4,12 @@
     Traces: design/BACKLOG.md UC-006, UC-027 %>
 
 <div class="form-group" id="harmony-options" data-controller="harmony">
-  <label class="form-label" style="color: var(--chrome-muted);">Auto Harmony</label>
-  <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+  <label class="form-label harmony-label">Auto Harmony</label>
+  <div class="harmony-list">
 
     <% if defined?(complementary) && complementary.present? %>
-      <div style="display: flex; gap: 0.5rem; align-items: center;">
-        <button type="button" class="harmony-swatch-btn" style="flex:1;"
+      <div class="harmony-row">
+        <button type="button" class="harmony-swatch-btn"
           data-action="harmony#apply"
           data-harmony-secondary="<%= complementary[0] %>"
           data-harmony-tertiary="<%= complementary[1] %>">
@@ -21,8 +21,8 @@
     <% end %>
 
     <% if defined?(analogous) && analogous.present? %>
-      <div style="display: flex; gap: 0.5rem; align-items: center;">
-        <button type="button" class="harmony-swatch-btn" style="flex:1;"
+      <div class="harmony-row">
+        <button type="button" class="harmony-swatch-btn"
           data-action="harmony#apply"
           data-harmony-secondary="<%= analogous[0] %>"
           data-harmony-tertiary="<%= analogous[1] %>">
@@ -34,8 +34,8 @@
     <% end %>
 
     <% if defined?(triadic) && triadic.present? %>
-      <div style="display: flex; gap: 0.5rem; align-items: center;">
-        <button type="button" class="harmony-swatch-btn" style="flex:1;"
+      <div class="harmony-row">
+        <button type="button" class="harmony-swatch-btn"
           data-action="harmony#apply"
           data-harmony-secondary="<%= triadic[0] %>"
           data-harmony-tertiary="<%= triadic[1] %>">
@@ -43,6 +43,32 @@
         </button>
         <div class="swatch-box" style="background:<%= triadic[0] %>;"></div>
         <div class="swatch-box" style="background:<%= triadic[1] %>;"></div>
+      </div>
+    <% end %>
+
+    <% if defined?(monochromatic) && monochromatic.present? %>
+      <div class="harmony-row">
+        <button type="button" class="harmony-swatch-btn"
+          data-action="harmony#apply"
+          data-harmony-secondary="<%= monochromatic[0] %>"
+          data-harmony-tertiary="<%= monochromatic[1] %>">
+          Monochromatic
+        </button>
+        <div class="swatch-box" style="background:<%= monochromatic[0] %>;"></div>
+        <div class="swatch-box" style="background:<%= monochromatic[1] %>;"></div>
+      </div>
+    <% end %>
+
+    <% if defined?(split_complementary) && split_complementary.present? %>
+      <div class="harmony-row">
+        <button type="button" class="harmony-swatch-btn"
+          data-action="harmony#apply"
+          data-harmony-secondary="<%= split_complementary[0] %>"
+          data-harmony-tertiary="<%= split_complementary[1] %>">
+          Split-Complementary
+        </button>
+        <div class="swatch-box" style="background:<%= split_complementary[0] %>;"></div>
+        <div class="swatch-box" style="background:<%= split_complementary[1] %>;"></div>
       </div>
     <% end %>
 

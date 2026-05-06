@@ -1,6 +1,6 @@
 class ColourHarmonyService
-  # Harmonizes a given hex colour and returns an array of hex colours.
-  # harmony_type can be: :complementary, :analogous, :triadic
+  HARMONIES = %i[complementary analogous triadic monochromatic split_complementary].freeze
+
   def self.call(primary_hex, harmony_type: :complementary)
     primary_hex = "#3b82f6" if primary_hex.blank? || !primary_hex.match?(/\A#[0-9a-fA-F]{6}\z/i)
 
@@ -24,6 +24,16 @@ class ColourHarmonyService
       # +120 deg and +240 deg
       h1 = (h + 120) % 360
       h2 = (h + 240) % 360
+      [ rgb_to_hex(*hsl_to_rgb(h1, s, l)), rgb_to_hex(*hsl_to_rgb(h2, s, l)) ]
+    when :monochromatic
+      # Same hue, vary lightness ±25 percentage points, clamped to [0.05, 0.95]
+      l_dark  = [ l - 0.25, 0.05 ].max
+      l_light = [ l + 0.25, 0.95 ].min
+      [ rgb_to_hex(*hsl_to_rgb(h, s, l_dark)), rgb_to_hex(*hsl_to_rgb(h, s, l_light)) ]
+    when :split_complementary
+      # Two hues adjacent to the direct complement: +150° and +210°
+      h1 = (h + 150) % 360
+      h2 = (h + 210) % 360
       [ rgb_to_hex(*hsl_to_rgb(h1, s, l)), rgb_to_hex(*hsl_to_rgb(h2, s, l)) ]
     else
       [ primary_hex, primary_hex ]

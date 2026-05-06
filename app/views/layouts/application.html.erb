@@ -33,20 +33,21 @@
 
   <body>
     <div class="app-container">
-      <nav class="top-nav">
+      <nav class="nanocss-nav">
         <%= link_to "nanoCSS", root_path, class: "nav-brand" %>
-        <div class="nav-links">
-          <%= link_to "Component Catalogue", components_path, class: "btn btn-outline" %>
-          <%= link_to "Configure →", configure_path, class: "btn btn-outline" %>
-        </div>
+        <ul class="nav-menu">
+          <li><%= link_to "Component Catalogue", components_path %></li>
+          <li><%= link_to "Configure →", configure_path %></li>
+        </ul>
       </nav>
 
-      <main style="flex: 1; display: flex; flex-direction: column;">
+      <main class="app-main">
         <%= yield %>
       </main>
     </div>
 
-    <%# UC-022: Floating Theme Switcher %>
+    <%# UC-022: Floating Theme Switcher — suppressed on /configure (UC-037 AC2) to avoid colliding with the config form %>
+    <% unless request.path == configure_path %>
     <div class="<%= @prefix || "nanocss" %>-theme-switcher" data-controller="theme">
       <details>
         <summary>
@@ -58,7 +59,7 @@
         <div class="switcher-content">
           <h4>Appearance</h4>
           <div class="theme-options">
-            <button class="<%= @prefix || "nanocss" %>-btn-outline" data-action="click->theme#toggleDark" style="display: flex; align-items: center; gap: 0.5rem; justify-content: center; width: 100%;">
+            <button class="<%= @prefix || "nanocss" %>-btn-outline switcher-toggle-btn" data-action="click->theme#toggleDark">
               <%= nano_icon("moon", size: 16) %>
               <span>Toggle Dark Mode</span>
             </button>
@@ -67,7 +68,7 @@
           <h4>Presets</h4>
           <div class="theme-options">
             <% [["Corporate", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjMGI1ZWRmIiwiY29sb3VyX3NlY29uZGFyeSI6IiM0NzU1NjkiLCJjb2xvdXJfdGVydGlhcnkiOiIjOTRhM2I4IiwicmFkaXVzX2Jhc2UiOiIwLjVyZW0iLCJzcGFjaW5nX2Jhc2UiOiIxcmVtIn0="], ["Playful", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjZmM2YTljIiwiY29sb3VyX3NlY29uZGFyeSI6IiNmZGU2OGEiLCJjb2xvdXJfdGVydGlhcnkiOiIjODBlN2ZmIiwicmFkaXVzX2Jhc2UiOiIxLjVyZW0iLCJzcGFjaW5nX2Jhc2UiOiIxLjJyZW0ifQ=="], ["Minimalist", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjMTExODI3IiwiY29sb3VyX3NlY29uZGFyeSI6IiM2YjcyODAiLCJjb2xvdXJfdGVydGlhcnkiOiIjZTVlN2ViIiwicmFkaXVzX2Jhc2UiOiIwcmVtIiwic3BhY2luZ19iYXNlIjoiMC43NXJlbSJ9"]].each do |name, params| %>
-              <button class="<%= @prefix || "nanocss" %>-btn-outline" data-action="click->theme#applyPreset" data-theme-params="<%= params %>" style="width: 100%; text-align: left; padding: 0.5rem;">
+              <button class="<%= @prefix || "nanocss" %>-btn-outline switcher-preset-btn" data-action="click->theme#applyPreset" data-theme-params="<%= params %>">
                 <%= name %>
               </button>
             <% end %>
@@ -75,5 +76,6 @@
         </div>
       </details>
     </div>
+    <% end %>
   </body>
 </html>
