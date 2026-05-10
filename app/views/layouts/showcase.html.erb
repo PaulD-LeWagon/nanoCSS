@@ -12,23 +12,22 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Showcase uses only the compiled nanoCSS framework — no application.css dark chrome.
-        This ensures components are visible in their natural default state regardless of
-        the app's Obsidian theme overlay. The @nanocss_css variable is populated by
-        ApplicationController#compile_default_nanocss (always Corporate/default config). %>
+        _base.scss handles body background/color/typography using CSS custom properties,
+        so dark mode tokens flip automatically without any hardcoded overrides here. %>
     <% if @nanocss_css.present? %>
       <style id="nanocss-framework-style">
         <%= @nanocss_css.html_safe %>
       </style>
     <% end %>
 
-    <%# Minimal body reset — light neutral background so components read correctly %>
+    <%# Minimal layout reset — box-sizing only; overflow-x hidden prevents any component
+        from creating horizontal scroll at narrow viewports. Everything else deferred to nanoCSS _base.scss. %>
     <style>
       *, *::before, *::after { box-sizing: border-box; }
-      body { margin: 0; background: #f3f4f6; color: #111827; font-family: system-ui, sans-serif; }
-      ul { list-style: none; margin: 0; padding: 0; }
-      a { color: inherit; text-decoration: none; }
+      body { margin: 0; overflow-x: hidden; }
     </style>
 
+    <%= yield :head %>
     <%= javascript_importmap_tags %>
   </head>
 
@@ -54,8 +53,13 @@
           </div>
           <h4>Presets</h4>
           <div class="theme-options">
-            <% [["Corporate", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjMGI1ZWRmIiwiY29sb3VyX3NlY29uZGFyeSI6IiM0NzU1NjkiLCJjb2xvdXJfdGVydGlhcnkiOiIjOTRhM2I4IiwicmFkaXVzX2Jhc2UiOiIwLjVyZW0iLCJzcGFjaW5nX2Jhc2UiOiIxcmVtIn0="], ["Playful", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjZmM2YTljIiwiY29sb3VyX3NlY29uZGFyeSI6IiNmZGU2OGEiLCJjb2xvdXJfdGVydGlhcnkiOiIjODBlN2ZmIiwicmFkaXVzX2Jhc2UiOiIxLjVyZW0iLCJzcGFjaW5nX2Jhc2UiOiIxLjJyZW0ifQ=="], ["Minimalist", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjMTExODI3IiwiY29sb3VyX3NlY29uZGFyeSI6IiM2YjcyODAiLCJjb2xvdXJfdGVydGlhcnkiOiIjZTVlN2ViIiwicmFkaXVzX2Jhc2UiOiIwcmVtIiwic3BhY2luZ19iYXNlIjoiMC43NXJlbSJ9"], ["Obsidian", "eyJwcmVmaXgiOiJuYW5vY3NzIiwicHJpbWFyeSI6IiMxZTFiNGIiLCJzZWNvbmRhcnkiOiIjNGMxZDk1IiwidGVydGlhcnkiOiIjN2MzYWVkIiwic3VyZmFjZV9ibHVyIjoiMTJweCIsInN1cmZhY2Vfb3BhY2l0eSI6IjAuMTUiLCJib3JkZXJfZ2xvd19hbHBoYSI6IjAuMjUifQ=="]].each do |name, params| %>
-              <button class="nanocss-btn-outline switcher-preset-btn" data-action="click->theme#applyPreset" data-theme-params="<%= params %>">
+            <% [
+              ["Corporate",   "eyJwcmVmaXgiOiJuYW5vY3NzIiwicHJpbWFyeSI6IiMxZTQwYWYiLCJzZWNvbmRhcnkiOiIjNjM2NmYxIiwidGVydGlhcnkiOiIjMDZiNmQ0In0="],
+              ["Playful",     "eyJwcmVmaXgiOiJuYW5vY3NzIiwicHJpbWFyeSI6IiNmYzZhOWMiLCJzZWNvbmRhcnkiOiIjZmRlNjhhIiwidGVydGlhcnkiOiIjODBlN2ZmIn0="],
+              ["Minimalist",  "eyJwcmVmaXgiOiJuYW5vY3NzIiwicHJpbWFyeSI6IiMxMTE4MjciLCJzZWNvbmRhcnkiOiIjNmI3MjgwIiwidGVydGlhcnkiOiIjZTVlN2ViIn0="],
+              ["Obsidian",    "eyJwcmVmaXgiOiJuYW5vY3NzIiwicHJpbWFyeSI6IiMxZTFiNGIiLCJzZWNvbmRhcnkiOiIjNGMxZDk1IiwidGVydGlhcnkiOiIjN2MzYWVkIiwic3VyZmFjZV9ibHVyIjoiMTJweCIsInN1cmZhY2Vfb3BhY2l0eSI6IjAuMTUiLCJib3JkZXJfZ2xvd19hbHBoYSI6IjAuMjUifQ=="]
+            ].each do |name, token| %>
+              <button class="nanocss-btn-outline switcher-preset-btn" data-action="click->theme#applyPreset" data-theme-params="<%= token %>">
                 <%= name %>
               </button>
             <% end %>

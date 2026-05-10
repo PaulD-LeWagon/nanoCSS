@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 # Traces: design/BACKLOG.md UC-062 AC1
-# Asserts no inline style= attributes exist in app/views/showcase/
-# The showcase page must demonstrate nanoCSS is sufficient — no component-level overrides.
+# Asserts no inline style= attributes in app/views/showcase/.
+# A <style> block for page geometry (grid, breakpoints) is permitted —
+# the restriction targets component-level overrides, not layout geometry.
 RSpec.describe 'Showcase lint: no inline style= attributes', type: :request do
   it 'app/views/showcase/ contains no style= attribute declarations' do
     showcase_views = Dir.glob(Rails.root.join('app/views/showcase/**/*.erb'))
