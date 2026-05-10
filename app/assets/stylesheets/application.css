@@ -44,15 +44,13 @@
 }
 
 /* ─ App Navigation — chrome shim on nanocss-nav component (UC-036) ──────── */
+/* position: sticky now provided by .nanocss-sticky utility (UC-059 AC4) */
 .nanocss-nav {
   padding: 0.875rem 2rem !important;
   background: var(--chrome-glass) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   border-bottom: 1px solid var(--chrome-border) !important;
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 100 !important;
 }
 
 /* Brand link — gradient text signature retained as chrome identity */
@@ -607,8 +605,6 @@
 .preview-badge-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
 .preview-progress-mb { margin-bottom: 0.75rem; }
 .preview-loader-row { display: flex; align-items: center; gap: 1rem; }
-.preview-accordion-mb { margin-bottom: 1rem; }
-.preview-accordion-text { margin-top: 0.75rem; font-size: 0.875rem; }
 .preview-utils-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
 .preview-footer-note { text-align: center; color: var(--chrome-muted); font-size: 0.8125rem; margin-top: 1.5rem; }
 .preview-code-highlight { background: rgba(255,255,255,0.08); padding: 0.1em 0.4em; border-radius: 0.25rem; color: #a855f7; }

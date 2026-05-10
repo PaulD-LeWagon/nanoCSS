@@ -97,7 +97,22 @@ $margin-map: (
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
 }
 
-// 4. Display & Visibility
+// 4. Position Utilities
+// ---------------------------------------------------------
+.#{$prefix}-sticky {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: $nanocss-z-sticky !important;
+}
+
+.#{$prefix}-glass {
+    backdrop-filter: blur(var(--#{$prefix}-surface-blur, 8px)) !important;
+    -webkit-backdrop-filter: blur(var(--#{$prefix}-surface-blur, 8px)) !important;
+    background-color: rgba(255, 255, 255, calc(1 - var(--#{$prefix}-surface-opacity, 0.15))) !important;
+    border: 1px solid rgba(255, 255, 255, var(--#{$prefix}-border-glow-alpha, 0.15)) !important;
+}
+
+// 5. Display & Visibility
 // ---------------------------------------------------------
 .#{$prefix}-hidden {
     display: none !important;
