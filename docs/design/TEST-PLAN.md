@@ -1,4 +1,12 @@
-# Test Plan — nanoCSS Configurator
+---
+vc-id: d7195294-bd55-49e4-a24e-bd81e794156e
+---
+# TEST PLAN
+
+> **Project:** nanoCSS
+> **Date:** 2026-05-07
+> **Status:** 🟢 Active
+
 
 > **Project:** nanoCSS
 > **Purpose:** Defines the testing strategy, spec structure, patterns, and exemplars for every layer.

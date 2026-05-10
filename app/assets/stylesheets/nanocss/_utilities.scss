@@ -97,7 +97,24 @@ $margin-map: (
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
 }
 
-// 4. Display & Visibility
+// 4. Position Utilities
+// ---------------------------------------------------------
+.#{$prefix}-sticky {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: $nanocss-z-sticky !important;
+}
+
+// color-mix gives 85% of the neutral-50 token with transparency, so the glass
+// colour automatically inverts in dark mode without needing extra overrides.
+.#{$prefix}-glass {
+    backdrop-filter: blur(var(--#{$prefix}-surface-blur, 8px)) !important;
+    -webkit-backdrop-filter: blur(var(--#{$prefix}-surface-blur, 8px)) !important;
+    background-color: color-mix(in srgb, var(--#{$prefix}-neutral-50, #f9fafb) 85%, transparent) !important;
+    border: 1px solid rgba(255, 255, 255, var(--#{$prefix}-border-glow-alpha, 0.2)) !important;
+}
+
+// 5. Display & Visibility
 // ---------------------------------------------------------
 .#{$prefix}-hidden {
     display: none !important;

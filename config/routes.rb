@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   match "/themes/download", to: "themes#download", as: :theme_download, via: [ :get, :post ]
   get "/components", to: "components#index"
   get "/components/test", to: "components#test_page", as: :components_test
+  get "/showcase", to: "showcase#show", as: :showcase
   resources :fonts, only: [ :index ]
 
   # Defines the root path route ("/")

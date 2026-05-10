@@ -1,4 +1,12 @@
-# Agile & TDD Workflow Rules
+---
+vc-id: d502165c-4ca3-45d6-9474-69c7d89a6fbe
+---
+# AGILE_TDD_WORKFLOW_RULES
+
+> **Project:** nanoCSS
+> **Date:** 2026-05-07
+> **Status:** 🟢 Active
+
 
 > **Project:** [Project Name]
 > **Version:** 1.0

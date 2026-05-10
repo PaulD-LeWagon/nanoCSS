@@ -280,21 +280,55 @@
       }
     </script>
 
-    <!-- 3. Accordion -->
+    <!-- 3. Accordion (UC-060: first-class .{prefix}-accordion wrapper) -->
     <section id="accordion" class="component-section" data-controller="clipboard">
       <div class="component-header"><h2>Accordion</h2></div>
       <div class="component-preview">
-        <details>
-          <summary>Accordion Title 1</summary>
-          <p>Here is the hidden content that is now revealed natively by the browser.</p>
-        </details>
+        <%# Exclusive mode: shared name attribute → one open at a time (browser-native, zero JS) %>
+        <div class="<%= @prefix %>-accordion">
+          <details name="catalogue-demo" open>
+            <summary>Exclusive Panel 1</summary>
+            <p>Content for panel one. Only one panel can be open at a time (native browser mutual exclusivity via <code>name</code>).</p>
+          </details>
+          <details name="catalogue-demo">
+            <summary>Exclusive Panel 2</summary>
+            <p>Content for panel two. Clicking here closes panel one automatically.</p>
+          </details>
+        </div>
+
+        <%# Independent mode: no name attribute → each panel toggles independently %>
+        <div class="<%= @prefix %>-accordion <%= @prefix %>-accordion--independent" style="margin-top: 1rem;">
+          <details>
+            <summary>Independent Panel A</summary>
+            <p>This panel toggles independently. Multiple panels can be open at the same time.</p>
+          </details>
+          <details>
+            <summary>Independent Panel B</summary>
+            <p>Omit the <code>name</code> attribute to allow multiple panels open simultaneously.</p>
+          </details>
+        </div>
       </div>
       <div class="component-code">
         <button class="copy-btn" data-action="clipboard#copy">Copy</button>
-        <pre><code data-clipboard-target="source">&lt;details&gt;
-  &lt;summary&gt;Accordion Title 1&lt;/summary&gt;
-  &lt;p&gt;Here is the hidden content that is now revealed natively by the browser.&lt;/p&gt;
-&lt;/details&gt;</code></pre>
+        <pre><code data-clipboard-target="source">&lt;!-- Exclusive mode (one open at a time) --&gt;
+&lt;div class="<%= @prefix %>-accordion"&gt;
+  &lt;details name="my-accordion"&gt;
+    &lt;summary&gt;Panel Title&lt;/summary&gt;
+    &lt;p&gt;Panel content&lt;/p&gt;
+  &lt;/details&gt;
+  &lt;details name="my-accordion"&gt;
+    &lt;summary&gt;Panel Title 2&lt;/summary&gt;
+    &lt;p&gt;Panel content&lt;/p&gt;
+  &lt;/details&gt;
+&lt;/div&gt;
+
+&lt;!-- Independent mode (any open at a time) --&gt;
+&lt;div class="<%= @prefix %>-accordion <%= @prefix %>-accordion--independent"&gt;
+  &lt;details&gt;
+    &lt;summary&gt;Panel A&lt;/summary&gt;
+    &lt;p&gt;Panel content&lt;/p&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</code></pre>
       </div>
     </section>
 

@@ -1,0 +1,59 @@
+// AC1: Accordion wrapper — placed on a <div> or <section> wrapping <details> children
+.#{$prefix}-accordion {
+  border: $nanocss-border-width-md solid var(--#{$prefix}-neutral-300, #d1d5db);
+  border-radius: $nanocss-radius-md;
+  overflow: hidden;
+
+  // Individual panel — each <details> inside the wrapper
+  details {
+    border-bottom: $nanocss-border-width-md solid var(--#{$prefix}-neutral-300, #d1d5db);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    // AC3: CSS-only chevron rotates 90deg when open — zero JS
+    summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: $nanocss-space-lg $nanocss-space-xl;
+      cursor: pointer;
+      font-weight: $nanocss-weight-medium;
+      list-style: none;
+      user-select: none;
+
+      &::after {
+        content: '▸';
+        display: inline-block;
+        transition: transform 0.2s ease;
+        flex-shrink: 0;
+        margin-left: $nanocss-space-md;
+      }
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+    }
+
+    // AC4: Open state — tinted background on summary, padding on content
+    &[open] > summary {
+      background-color: var(--#{$prefix}-neutral-100, #f3f4f6);
+
+      &::after {
+        transform: rotate(90deg);
+      }
+    }
+
+    // AC4: Content area padding
+    & > *:not(summary) {
+      padding: $nanocss-space-md $nanocss-space-xl $nanocss-space-lg;
+    }
+  }
+
+  // AC5: Independent modifier — removes border-left accent (mutual-exclusivity indicator)
+  // Functional difference (all panels independent) comes from omitting the `name` attribute on <details>
+  &--independent details {
+    border-left: none;
+  }
+}

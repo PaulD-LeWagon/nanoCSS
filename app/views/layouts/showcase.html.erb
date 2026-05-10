@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "Showcase — nanoCSS" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Showcase uses only the compiled nanoCSS framework — no application.css dark chrome.
+        _base.scss handles body background/color/typography using CSS custom properties,
+        so dark mode tokens flip automatically without any hardcoded overrides here. %>
+    <% if @nanocss_css.present? %>
+      <style id="nanocss-framework-style">
+        <%= @nanocss_css.html_safe %>
+      </style>
+    <% end %>
+
+    <%# Minimal layout reset — box-sizing only; overflow-x hidden prevents any component
+        from creating horizontal scroll at narrow viewports. Everything else deferred to nanoCSS _base.scss. %>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; overflow-x: hidden; }
+    </style>
+
+    <%= yield :head %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%= yield %>
+
+    <%# Theme Switcher — lets visitors toggle presets and dark mode on the showcase %>
+    <div class="nanocss-theme-switcher" data-controller="theme">
+      <details>
+        <summary>
+          <div class="switcher-icon">
+            <%= nano_icon("settings", size: 20) %>
+            <span>Theme Controls</span>
+          </div>
+        </summary>
+        <div class="switcher-content">
+          <h4>Appearance</h4>
+          <div class="theme-options">
+            <button class="nanocss-btn-outline switcher-toggle-btn" data-action="click->theme#toggleDark">
+              <%= nano_icon("moon", size: 16) %>
+              <span>Toggle Dark Mode</span>
+            </button>
+          </div>
+          <h4>Presets</h4>
+          <div class="theme-options">
+            <% [
+              ["Corporate",   "eyJwcmVmaXgiOiJuYW5vY3NzIiwicHJpbWFyeSI6IiMxZTQwYWYiLCJzZWNvbmRhcnkiOiIjNjM2NmYxIiwidGVydGlhcnkiOiIjMDZiNmQ0In0="],
+              ["Playful",     "eyJwcmVmaXgiOiJuYW5vY3NzIiwicHJpbWFyeSI6IiNmYzZhOWMiLCJzZWNvbmRhcnkiOiIjZmRlNjhhIiwidGVydGlhcnkiOiIjODBlN2ZmIn0="],
+              ["Minimalist",  "eyJwcmVmaXgiOiJuYW5vY3NzIiwicHJpbWFyeSI6IiMxMTE4MjciLCJzZWNvbmRhcnkiOiIjNmI3MjgwIiwidGVydGlhcnkiOiIjZTVlN2ViIn0="],
+              ["Obsidian",    "eyJwcmVmaXgiOiJuYW5vY3NzIiwicHJpbWFyeSI6IiMxZTFiNGIiLCJzZWNvbmRhcnkiOiIjNGMxZDk1IiwidGVydGlhcnkiOiIjN2MzYWVkIiwic3VyZmFjZV9ibHVyIjoiMTJweCIsInN1cmZhY2Vfb3BhY2l0eSI6IjAuMTUiLCJib3JkZXJfZ2xvd19hbHBoYSI6IjAuMjUifQ=="]
+            ].each do |name, token| %>
+              <button class="nanocss-btn-outline switcher-preset-btn" data-action="click->theme#applyPreset" data-theme-params="<%= token %>">
+                <%= name %>
+              </button>
+            <% end %>
+          </div>
+        </div>
+      </details>
+    </div>
+  </body>
+</html>

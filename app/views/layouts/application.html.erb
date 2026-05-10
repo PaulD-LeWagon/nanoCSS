@@ -33,13 +33,16 @@
 
   <body>
     <div class="app-container">
-      <nav class="nanocss-nav">
+      <% unless @suppress_app_nav %>
+      <nav class="nanocss-nav nanocss-sticky">
         <%= link_to "nanoCSS", root_path, class: "nav-brand" %>
         <ul class="nav-menu">
           <li><%= link_to "Component Catalogue", components_path %></li>
+          <li><%= link_to "Showcase", showcase_path %></li>
           <li><%= link_to "Configure →", configure_path %></li>
         </ul>
       </nav>
+      <% end %>
 
       <main class="app-main">
         <%= yield %>
