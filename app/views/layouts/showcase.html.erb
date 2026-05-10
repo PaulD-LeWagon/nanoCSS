@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "Showcase — nanoCSS" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Showcase uses only the compiled nanoCSS framework — no application.css dark chrome.
+        This ensures components are visible in their natural default state regardless of
+        the app's Obsidian theme overlay. The @nanocss_css variable is populated by
+        ApplicationController#compile_default_nanocss (always Corporate/default config). %>
+    <% if @nanocss_css.present? %>
+      <style id="nanocss-framework-style">
+        <%= @nanocss_css.html_safe %>
+      </style>
+    <% end %>
+
+    <%# Minimal body reset — light neutral background so components read correctly %>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; background: #f3f4f6; color: #111827; font-family: system-ui, sans-serif; }
+      ul { list-style: none; margin: 0; padding: 0; }
+      a { color: inherit; text-decoration: none; }
+    </style>
+
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%= yield %>
+
+    <%# Theme Switcher — lets visitors toggle presets and dark mode on the showcase %>
+    <div class="nanocss-theme-switcher" data-controller="theme">
+      <details>
+        <summary>
+          <div class="switcher-icon">
+            <%= nano_icon("settings", size: 20) %>
+            <span>Theme Controls</span>
+          </div>
+        </summary>
+        <div class="switcher-content">
+          <h4>Appearance</h4>
+          <div class="theme-options">
+            <button class="nanocss-btn-outline switcher-toggle-btn" data-action="click->theme#toggleDark">
+              <%= nano_icon("moon", size: 16) %>
+              <span>Toggle Dark Mode</span>
+            </button>
+          </div>
+          <h4>Presets</h4>
+          <div class="theme-options">
+            <% [["Corporate", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjMGI1ZWRmIiwiY29sb3VyX3NlY29uZGFyeSI6IiM0NzU1NjkiLCJjb2xvdXJfdGVydGlhcnkiOiIjOTRhM2I4IiwicmFkaXVzX2Jhc2UiOiIwLjVyZW0iLCJzcGFjaW5nX2Jhc2UiOiIxcmVtIn0="], ["Playful", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjZmM2YTljIiwiY29sb3VyX3NlY29uZGFyeSI6IiNmZGU2OGEiLCJjb2xvdXJfdGVydGlhcnkiOiIjODBlN2ZmIiwicmFkaXVzX2Jhc2UiOiIxLjVyZW0iLCJzcGFjaW5nX2Jhc2UiOiIxLjJyZW0ifQ=="], ["Minimalist", "eyJwcmVmaXgiOiJuYW5vY3NzIiwiY29sb3VyX3ByaW1hcnkiOiIjMTExODI3IiwiY29sb3VyX3NlY29uZGFyeSI6IiM2YjcyODAiLCJjb2xvdXJfdGVydGlhcnkiOiIjZTVlN2ViIiwicmFkaXVzX2Jhc2UiOiIwcmVtIiwic3BhY2luZ19iYXNlIjoiMC43NXJlbSJ9"], ["Obsidian", "eyJwcmVmaXgiOiJuYW5vY3NzIiwicHJpbWFyeSI6IiMxZTFiNGIiLCJzZWNvbmRhcnkiOiIjNGMxZDk1IiwidGVydGlhcnkiOiIjN2MzYWVkIiwic3VyZmFjZV9ibHVyIjoiMTJweCIsInN1cmZhY2Vfb3BhY2l0eSI6IjAuMTUiLCJib3JkZXJfZ2xvd19hbHBoYSI6IjAuMjUifQ=="]].each do |name, params| %>
+              <button class="nanocss-btn-outline switcher-preset-btn" data-action="click->theme#applyPreset" data-theme-params="<%= params %>">
+                <%= name %>
+              </button>
+            <% end %>
+          </div>
+        </div>
+      </details>
+    </div>
+  </body>
+</html>

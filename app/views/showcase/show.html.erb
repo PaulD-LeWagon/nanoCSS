@@ -1,12 +1,10 @@
 <% content_for :title, "Showcase — nanoCSS Live Component Demo" %>
 
-<%# Showcase-specific layout — page dimensions and responsive grid.
-    nanoCSS utilities handle component styling; this block provides
-    layout geometry not covered by the framework's current utility set. %>
+<%# Page layout geometry — geometry that nanoCSS utilities don't yet cover (max-width,
+    grid gap, sticky sidebar offset). Component-level styling uses nanoCSS classes only. %>
 <style>
-  .showcase-layout { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; max-width: 1400px; margin: 0 auto; padding: 1.5rem; align-items: start; min-height: calc(100vh - 4rem); }
+  .showcase-layout { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; max-width: 1400px; margin: 0 auto; padding: 1.5rem; align-items: start; }
   .showcase-sidebar { position: sticky; top: 4.5rem; max-height: calc(100vh - 6rem); overflow-y: auto; }
-  .showcase-sidebar a { display: block; }
   @media (max-width: 768px) {
     .showcase-layout { grid-template-columns: 1fr; }
     .showcase-sidebar { position: static; max-height: none; }
