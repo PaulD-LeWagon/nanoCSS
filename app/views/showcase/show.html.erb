@@ -1,0 +1,368 @@
+<% content_for :title, "Showcase — nanoCSS Live Component Demo" %>
+
+<%# Showcase-specific layout — page dimensions and responsive grid.
+    nanoCSS utilities handle component styling; this block provides
+    layout geometry not covered by the framework's current utility set. %>
+<style>
+  .showcase-layout { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; max-width: 1400px; margin: 0 auto; padding: 1.5rem; align-items: start; min-height: calc(100vh - 4rem); }
+  .showcase-sidebar { position: sticky; top: 4.5rem; max-height: calc(100vh - 6rem); overflow-y: auto; }
+  .showcase-sidebar a { display: block; }
+  @media (max-width: 768px) {
+    .showcase-layout { grid-template-columns: 1fr; }
+    .showcase-sidebar { position: static; max-height: none; }
+  }
+  .showcase-cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (max-width: 768px) { .showcase-cards-grid { grid-template-columns: 1fr; } }
+  .hero-cta { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+</style>
+
+<%# UC-061 AC5: Showcase's own sticky glass navbar — built from nanoCSS components only %>
+<nav class="nanocss-nav nanocss-sticky nanocss-glass">
+  <%= link_to root_path, class: "nav-brand" do %>
+    <%= nano_icon("box", size: 20) %> nanoCSS
+  <% end %>
+  <ul class="nav-menu">
+    <li><%= link_to "Catalogue", components_path %></li>
+    <li>
+      <div class="nanocss-dropdown" data-controller="dropdown">
+        <button class="nanocss-btn-outline" data-action="click->dropdown#toggle" aria-expanded="false">
+          Menu ▾
+        </button>
+        <ul class="nanocss-dropdown-menu" data-dropdown-target="menu" role="menu">
+          <li><%= link_to "Catalogue", components_path, role: "menuitem" %></li>
+          <li><%= link_to "Configure", configure_path, role: "menuitem" %></li>
+          <li><%= link_to "Download", theme_download_path, role: "menuitem" %></li>
+        </ul>
+      </div>
+    </li>
+    <li><%= link_to "Configure →", configure_path, class: "nanocss-btn-primary" %></li>
+  </ul>
+</nav>
+
+<%# UC-062: Two-column layout — left sticky accordion sidebar + right content pane %>
+<div class="showcase-layout">
+
+  <%# AC2: Left pane — sticky accordion sidebar (independent mode) %>
+  <aside class="showcase-sidebar">
+    <div class="nanocss-accordion nanocss-accordion--independent">
+      <details open>
+        <summary>Components</summary>
+        <nav>
+          <ul class="nanocss-m-xs">
+            <li><a href="#hero" class="nanocss-p-sm nanocss-block">Hero</a></li>
+            <li><a href="#cards" class="nanocss-p-sm nanocss-block">Cards</a></li>
+            <li><a href="#copy" class="nanocss-p-sm nanocss-block">Typography</a></li>
+            <li><a href="#carousel" class="nanocss-p-sm nanocss-block">Carousel</a></li>
+            <li><a href="#interactive" class="nanocss-p-sm nanocss-block">Interactive</a></li>
+            <li><a href="#labels" class="nanocss-p-sm nanocss-block">Labels</a></li>
+            <li><a href="#navigation" class="nanocss-p-sm nanocss-block">Navigation</a></li>
+            <li><a href="#utilities" class="nanocss-p-sm nanocss-block">Utilities</a></li>
+            <li><a href="#alerts" class="nanocss-p-sm nanocss-block">Alerts</a></li>
+            <li><a href="#theming" class="nanocss-p-sm nanocss-block">Theming</a></li>
+          </ul>
+        </nav>
+      </details>
+      <details>
+        <summary>About nanoCSS</summary>
+        <p class="nanocss-p-sm">A stateless CSS framework generator. Configure design tokens, preview live, download your bespoke framework.</p>
+      </details>
+    </div>
+  </aside>
+
+  <%# AC3: Right pane — sections in order per UC-062 %>
+  <main>
+
+    <%# 1. Hero %>
+    <section id="hero" class="nanocss-mb-lg">
+      <h2 class="nanocss-text-center nanocss-mb-md">Hero Banner</h2>
+      <section class="nanocss-hero">
+        <hgroup>
+          <h1>Build bespoke CSS frameworks in seconds</h1>
+          <p>Configure your design tokens, preview live, download a framework that is exactly yours.</p>
+        </hgroup>
+        <div class="hero-cta">
+          <%= link_to "Get Started →", configure_path, class: "nanocss-btn-primary" %>
+          <%= link_to "View Catalogue", components_path, class: "nanocss-btn-outline" %>
+        </div>
+      </section>
+    </section>
+
+    <%# 2. Cards %>
+    <section id="cards" class="nanocss-mb-lg">
+      <h2 class="nanocss-text-center nanocss-mb-md">Cards</h2>
+      <div class="showcase-cards-grid">
+        <article class="nanocss-card">
+          <header>Dashboard Widget</header>
+          <div class="card-body">Use cards to surface key metrics, summaries, or any bounded content block. Compose with grid utilities for layouts.</div>
+          <footer><button class="nanocss-btn-primary">View Details</button></footer>
+        </article>
+        <article class="nanocss-card-primary">
+          <header>Primary Variant</header>
+          <div class="card-body">Card header inherits <code>--nanocss-primary</code>. Swap presets to see it retint automatically.</div>
+          <footer><button class="nanocss-btn-primary">Action</button></footer>
+        </article>
+        <article class="nanocss-card-secondary">
+          <header>Secondary Variant</header>
+          <div class="card-body">Uses <code>--nanocss-secondary</code> for the header. All token-driven, no hardcoded colours.</div>
+          <footer><button class="nanocss-btn-secondary">Action</button></footer>
+        </article>
+        <article class="nanocss-card-tertiary">
+          <header>Tertiary Variant</header>
+          <div class="card-body">The accent header draws from <code>--nanocss-tertiary</code>. One CSS variable change re-colours everything.</div>
+          <footer><button class="nanocss-btn-outline">Action</button></footer>
+        </article>
+      </div>
+    </section>
+
+    <%# 3. Typography %>
+    <section id="copy" class="nanocss-mb-lg">
+      <h2 class="nanocss-text-center nanocss-mb-md">Typography</h2>
+      <article class="nanocss-card">
+        <div class="card-body">
+          <h1>Heading 1 — Display</h1>
+          <h2>Heading 2 — Section</h2>
+          <h3>Heading 3 — Sub-section</h3>
+          <h4>Heading 4 — Label</h4>
+          <p>Body copy inherits <code>--nanocss-font-body</code> and the base typography scale. The Major Third scale (1.25×) keeps headings proportional regardless of which Google Font you choose in the configurator.</p>
+          <p>Inline elements: <strong>bold</strong>, <em>italic</em>, <code>monospace code</code>, and <a href="#">anchor links</a> all inherit theme tokens.</p>
+        </div>
+      </article>
+    </section>
+
+    <%# 4. Carousel %>
+    <section id="carousel" class="nanocss-mb-lg">
+      <h2 class="nanocss-text-center nanocss-mb-md">Carousel</h2>
+      <div class="nanocss-carousel" data-controller="carousel">
+        <div class="nanocss-carousel-track" data-carousel-target="track">
+          <div class="nanocss-carousel-slide">
+            <article class="nanocss-card">
+              <header>Slide 1 — Token-Driven Design</header>
+              <div class="card-body">Every colour, font, and spacing value in nanoCSS is a configurable token. Change one value, retint your entire framework instantly.</div>
+            </article>
+          </div>
+          <div class="nanocss-carousel-slide">
+            <article class="nanocss-card">
+              <header>Slide 2 — Zero Dependencies</header>
+              <div class="card-body">Download a pure CSS file with no runtime dependencies, no build step, and no JavaScript required for the framework itself.</div>
+            </article>
+          </div>
+          <div class="nanocss-carousel-slide">
+            <article class="nanocss-card">
+              <header>Slide 3 — Namespaced Classes</header>
+              <div class="card-body">Every class is prefixed with your custom namespace. Drop nanoCSS into any existing project without specificity conflicts.</div>
+            </article>
+          </div>
+        </div>
+        <div class="nanocss-carousel-controls">
+          <button class="nanocss-btn-outline" data-action="click->carousel#prev">← Prev</button>
+          <button class="nanocss-btn-outline" data-action="click->carousel#next">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <%# 5. Interactive — Tabs, Modal, Dropdown %>
+    <section id="interactive" class="nanocss-mb-lg">
+      <h2 class="nanocss-text-center nanocss-mb-md">Interactive</h2>
+
+      <%# Tabs %>
+      <article class="nanocss-card nanocss-mb-md">
+        <header>Tabs</header>
+        <div class="card-body">
+          <div class="nanocss-tabs" data-controller="tabs">
+            <nav class="nanocss-tabs-nav" role="tablist">
+              <button class="nanocss-tab active" role="tab" aria-selected="true" data-action="click->tabs#select" data-tabs-target="tab">Overview</button>
+              <button class="nanocss-tab" role="tab" aria-selected="false" data-action="click->tabs#select" data-tabs-target="tab">Usage</button>
+              <button class="nanocss-tab" role="tab" aria-selected="false" data-action="click->tabs#select" data-tabs-target="tab">API</button>
+            </nav>
+            <div class="nanocss-tab-panel active" data-tabs-target="panel">
+              <p>Tabs organise content into parallel sections. Use the Stimulus <code>tabs</code> controller for zero-boilerplate activation.</p>
+            </div>
+            <div class="nanocss-tab-panel" data-tabs-target="panel">
+              <p>Add <code>data-controller="tabs"</code> to the wrapper and <code>data-action="click->tabs#select"</code> to each tab button.</p>
+            </div>
+            <div class="nanocss-tab-panel" data-tabs-target="panel">
+              <p>Each tab and panel pair is linked by index. The active tab gets the <code>.active</code> class; its sibling panel is shown.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <%# Modal %>
+      <article class="nanocss-card nanocss-mb-md">
+        <header>Modal</header>
+        <div class="card-body">
+          <button class="nanocss-btn-primary" data-action="click->modal#open" data-modal-id="showcase-modal">Open Modal</button>
+          <div class="nanocss-modal" id="showcase-modal" data-controller="modal">
+            <div class="nanocss-modal-overlay" data-action="click->modal#close"></div>
+            <div class="nanocss-modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+              <button class="nanocss-modal-close" data-action="click->modal#close" aria-label="Close">×</button>
+              <h3 id="modal-title">Modal Component</h3>
+              <p>Modals surface focused content without navigating away. The overlay click closes the modal. Keyboard: <kbd>Esc</kbd> closes too.</p>
+              <footer><button class="nanocss-btn-primary" data-action="click->modal#close">Close</button></footer>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <%# Standalone Dropdown %>
+      <article class="nanocss-card">
+        <header>Dropdown</header>
+        <div class="card-body">
+          <div class="nanocss-dropdown" data-controller="dropdown">
+            <button class="nanocss-btn-outline" data-action="click->dropdown#toggle" aria-expanded="false">
+              Options ▾
+            </button>
+            <ul class="nanocss-dropdown-menu" data-dropdown-target="menu" role="menu">
+              <li><a href="#" role="menuitem">Edit profile</a></li>
+              <li><a href="#" role="menuitem">Download framework</a></li>
+              <li><a href="#" role="menuitem">View documentation</a></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <%# 6. Labels — Badges, Tags, Loading %>
+    <section id="labels" class="nanocss-mb-lg">
+      <h2 class="nanocss-text-center nanocss-mb-md">Labels</h2>
+      <article class="nanocss-card">
+        <div class="card-body">
+          <p class="nanocss-mb-md">
+            <strong>Badges: </strong>
+            <span class="nanocss-badge">Default</span>
+            <span class="nanocss-badge-primary">Primary</span>
+            <span class="nanocss-badge-success">Success</span>
+            <span class="nanocss-badge-warning">Warning</span>
+            <span class="nanocss-badge-danger">Danger</span>
+          </p>
+          <p class="nanocss-mb-md">
+            <strong>Tags: </strong>
+            <span class="nanocss-tag">CSS</span>
+            <span class="nanocss-tag">nanoCSS</span>
+            <span class="nanocss-tag">Design Tokens</span>
+            <span class="nanocss-tag">Open Source</span>
+          </p>
+          <p>
+            <strong>Loading: </strong>
+            <span class="nanocss-loader nanocss-loader-sm"></span>
+            <span class="nanocss-loader"></span>
+            <span class="nanocss-loader nanocss-loader-lg"></span>
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <%# 7. Navigation — Breadcrumbs, Pagination, Nav %>
+    <section id="navigation" class="nanocss-mb-lg">
+      <h2 class="nanocss-text-center nanocss-mb-md">Navigation</h2>
+      <article class="nanocss-card nanocss-mb-md">
+        <header>Breadcrumb</header>
+        <div class="card-body">
+          <nav class="nanocss-breadcrumb" aria-label="breadcrumb">
+            <ol>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Components</a></li>
+              <li aria-current="page">Showcase</li>
+            </ol>
+          </nav>
+        </div>
+      </article>
+      <article class="nanocss-card nanocss-mb-md">
+        <header>Pagination</header>
+        <div class="card-body">
+          <nav class="nanocss-pagination" aria-label="Pagination">
+            <a href="#" class="nanocss-pagination-prev" aria-label="Previous">←</a>
+            <a href="#" class="nanocss-pagination-item">1</a>
+            <a href="#" class="nanocss-pagination-item active" aria-current="page">2</a>
+            <a href="#" class="nanocss-pagination-item">3</a>
+            <a href="#" class="nanocss-pagination-next" aria-label="Next">→</a>
+          </nav>
+        </div>
+      </article>
+      <article class="nanocss-card">
+        <header>Nav Bar</header>
+        <div class="card-body">
+          <nav class="nanocss-nav">
+            <span class="nav-brand">My App</span>
+            <ul class="nav-menu">
+              <li><a href="#">Features</a></li>
+              <li><a href="#">Pricing</a></li>
+              <li><a href="#" class="nanocss-btn-primary">Sign Up</a></li>
+            </ul>
+          </nav>
+        </div>
+      </article>
+    </section>
+
+    <%# 8. Utilities — Tooltip, Progress, Group %>
+    <section id="utilities" class="nanocss-mb-lg">
+      <h2 class="nanocss-text-center nanocss-mb-md">Utilities</h2>
+      <article class="nanocss-card nanocss-mb-md">
+        <header>Tooltip</header>
+        <div class="card-body">
+          <button class="nanocss-btn-outline nanocss-tooltip" data-nanocss-tooltip="Tooltips surface contextual help without cluttering the UI">
+            Hover for tooltip
+          </button>
+        </div>
+      </article>
+      <article class="nanocss-card nanocss-mb-md">
+        <header>Progress</header>
+        <div class="card-body">
+          <div class="nanocss-progress nanocss-mb-md">
+            <div class="nanocss-progress-bar" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">35%</div>
+          </div>
+          <div class="nanocss-progress">
+            <div class="nanocss-progress-bar nanocss-progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">80%</div>
+          </div>
+        </div>
+      </article>
+      <article class="nanocss-card">
+        <header>Group</header>
+        <div class="card-body">
+          <div class="nanocss-group nanocss-mb-md">
+            <button class="nanocss-btn-primary">Save</button>
+            <button class="nanocss-btn-outline">Preview</button>
+            <button class="nanocss-btn-outline">Cancel</button>
+          </div>
+          <div class="nanocss-group">
+            <input class="nanocss-input" placeholder="Enter namespace prefix…">
+            <button class="nanocss-btn-primary">Apply</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <%# 9. Alerts — Banners — all four semantic variants %>
+    <section id="alerts" class="nanocss-mb-lg">
+      <h2 class="nanocss-text-center nanocss-mb-md">Alerts</h2>
+      <div class="nanocss-banner nanocss-banner-success nanocss-mb-md">
+        <strong>Success:</strong> Your framework has been compiled and is ready to download.
+      </div>
+      <div class="nanocss-banner nanocss-banner-info nanocss-mb-md">
+        <strong>Info:</strong> Tip — use the <code>?theme=</code> URL parameter to share your configuration.
+      </div>
+      <div class="nanocss-banner nanocss-banner-warning nanocss-mb-md">
+        <strong>Warning:</strong> Changing the prefix renames all CSS classes. Update your markup accordingly.
+      </div>
+      <div class="nanocss-banner nanocss-banner-danger">
+        <strong>Error:</strong> Invalid hex code. Please enter a valid six-digit colour (e.g. <code>#3b82f6</code>).
+      </div>
+    </section>
+
+    <%# 10. Theming %>
+    <section id="theming" class="nanocss-mb-lg">
+      <h2 class="nanocss-text-center nanocss-mb-md">Theming</h2>
+      <article class="nanocss-card">
+        <header>Theme Switcher</header>
+        <div class="card-body">
+          <p>The floating Theme Controls widget (bottom right) lets you toggle Dark Mode and switch presets on any page. Configure your own theme to generate a fully custom CSS framework.</p>
+          <div class="nanocss-flex nanocss-justify-center nanocss-mt-md">
+            <%# AC6: visible link back to /configure using .nanocss-btn %>
+            <%= link_to "Configure Your Theme →", configure_path, class: "nanocss-btn-primary" %>
+          </div>
+        </div>
+      </article>
+    </section>
+
+  </main>
+</div>
