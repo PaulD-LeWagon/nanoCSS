@@ -62,4 +62,4 @@ end
 gem "sass-embedded"
 gem "rubyzip"
 
-gem "cgi", "~> 0.5.1"
+gem "cgi", "~> 0.5.2"
